@@ -25,7 +25,7 @@ pytest
 ```
 
 ## Ground rules
-- Core stays **stdlib-only** and the `check` command stays **under 500 ms**.
+- Core stays **stdlib-only on Python 3.11+** (3.10 gets one small dependency, `tomli`, to read config) and the `check` command stays **under 500 ms**. New runtime dependencies need a strong reason.
 - Quiet beats clever: a new warning must not raise the false-alarm rate on the bench.
 
 ## Releasing (maintainers)

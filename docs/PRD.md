@@ -35,7 +35,7 @@ These mistakes are caught late (in CI, review or production) or never. AI coding
 **Goals (v0.1)**
 - G1. Catch the three mistakes above at commit time, locally, in under 500 ms.
 - G2. Stay **quiet**: on typical repos, at most 1 warning per 10 commits, and at least 80% of warnings judged useful on the bench.
-- G3. Install in one command on Windows, macOS and Linux. Stdlib-only Python.
+- G3. Install in one command on Windows, macOS and Linux. Stdlib-only Python on 3.11+ (3.10 also installs `tomli`).
 - G4. Every warning cites real evidence (commit SHA, and PR or issue when available). Nothing is made up.
 
 **Non-goals (v0.1)**
@@ -130,7 +130,7 @@ The user either reads the linked issue and adjusts the change, or commits anyway
 - NFR2. **Quiet:** false-alarm rate on the bench's quiet cases at most 10%.
 - NFR3. **Safety:** never exit non-zero unless `--strict`. Any internal error prints one line and exits 0.
 - NFR4. **Privacy:** no network access except `index --github`. Nothing leaves the machine.
-- NFR5. **Portability:** Python 3.10+, stdlib only. Windows, macOS and Linux tested in CI.
+- NFR5. **Portability:** Python 3.10+. No runtime dependencies on 3.11+; on 3.10, `tomli` reads config files (stdlib `tomllib` arrived in 3.11). Windows, macOS and Linux tested in CI.
 
 ## 8. Architecture
 
