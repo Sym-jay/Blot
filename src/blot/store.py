@@ -45,8 +45,9 @@ class CommitRow:
 
 
 class Store:
-    def __init__(self, conn: sqlite3.Connection):
+    def __init__(self, conn: sqlite3.Connection, repo: str = "."):
         self.conn = conn
+        self.repo = repo  # checks run git here
 
     @staticmethod
     def db_path(repo: str) -> str:
@@ -59,7 +60,7 @@ class Store:
         path = cls.db_path(repo)
         if not os.path.exists(path):
             return None
-        store = cls(sqlite3.connect(path))
+        store = cls(sqlite3.connect(path), repo)
         if store.get_meta("schema_version") != str(SCHEMA_VERSION):
             store.close()
             return None
@@ -70,11 +71,11 @@ class Store:
         path = cls.db_path(repo)
         if fresh and os.path.exists(path):
             os.remove(path)
-        store = cls(sqlite3.connect(path))
+        store = cls(sqlite3.connect(path), repo)
         if store._table_exists("meta") and store.get_meta("schema_version") != str(SCHEMA_VERSION):
             store.close()
             os.remove(path)
-            store = cls(sqlite3.connect(path))
+            store = cls(sqlite3.connect(path), repo)
         store.conn.executescript(_SCHEMA)
         store.set_meta("schema_version", str(SCHEMA_VERSION))
         return store

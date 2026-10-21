@@ -26,7 +26,7 @@ blot: 1 warning
     8efea0cc "Break reference cycle created by default in Flask instances" (fixes #3761)
 ```
 
-> **Status:** pre-alpha. Milestone M1 is done: `blot index` builds the history index (Flask's 3,800 commits in ~2 s) and `blot install-hook` wires up git. The three checks land in M2, so `blot check` doesn't warn yet. See the [roadmap in the PRD](docs/PRD.md#12-milestones-4-weeks-part-time).
+> **Status:** pre-alpha. Milestones M1 and M2 are done: `blot index` builds the history index (Flask's 3,800 commits in ~2 s), `blot install-hook` wires up git, and `blot check` runs the three checks. On Flask it traces an edit to `self_ref = weakref.ref(self)` past the 2023 file split to the 2020 fix, in under 500 ms. See the [roadmap in the PRD](docs/PRD.md#12-milestones-4-weeks-part-time).
 
 ## Meet Sora
 

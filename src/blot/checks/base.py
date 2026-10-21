@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from blot.config import Config
     from blot.diff import FileChange
-    from blot.store import Store
+    from blot.store import CommitRow, Store
 
 
 @dataclass
@@ -29,3 +29,11 @@ class Check(ABC):
     @abstractmethod
     def run(self, changes: list[FileChange], store: Store, config: Config) -> list[Finding]:
         """Return findings for the staged changes. Must not call the network; target < 100 ms."""
+
+
+def describe_commit(row: CommitRow) -> str:
+    """Evidence line: 'abc1234 "subject" (2020-10-03, fixes #3761)'."""
+    details = [row.date[:10]]
+    if row.issues:
+        details.append("fixes " + ", ".join(row.issues))
+    return f'{row.sha[:7]} "{row.subject}" ({", ".join(details)})'
