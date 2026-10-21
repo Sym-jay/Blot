@@ -14,7 +14,7 @@ import os
 import sqlite3
 from dataclasses import dataclass
 
-from blot.git import run_git
+from blot.git import git_dir
 
 SCHEMA_VERSION = 1
 
@@ -51,8 +51,7 @@ class Store:
 
     @staticmethod
     def db_path(repo: str) -> str:
-        git_dir = run_git(repo, "rev-parse", "--absolute-git-dir").strip()
-        return os.path.join(git_dir, "blot.db")
+        return os.path.join(git_dir(repo), "blot.db")
 
     @classmethod
     def open(cls, repo: str) -> Store | None:

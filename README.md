@@ -18,13 +18,9 @@ Blot warns you *before you commit* when your change:
 
 It runs locally, needs no account or AI, and stays quiet unless the history gives it a real reason to speak.
 
-```
-$ git commit -m "simplify static route"
-blot: 1 warning
-  ! removed-fix  src/flask/app.py:355
-    You're changing a line added by a bug fix:
-    8efea0cc "Break reference cycle created by default in Flask instances" (fixes #3761)
-```
+<img src="assets/demo/demo.gif" width="760" alt="Blot catching a real Flask regression: simplifying self_ref = weakref.ref(self) triggers a removed-fix warning that traces past a 2023 refactor to the 2020 reference-cycle fix">
+
+*A real run on Flask. Plain `git blame` points to a 2023 commit that only moved this line; Blot traces past it to the 2020 fix that explains it. (Regenerate with `python assets/demo/make_demo.py`.)*
 
 > **Status:** pre-alpha. Milestones M1 and M2 are done: `blot index` builds the history index (Flask's 3,800 commits in ~2 s), `blot install-hook` wires up git, and `blot check` runs the three checks. On Flask it traces an edit to `self_ref = weakref.ref(self)` past the 2023 file split to the 2020 fix, in under 500 ms. See the [roadmap in the PRD](docs/PRD.md#12-milestones-4-weeks-part-time).
 

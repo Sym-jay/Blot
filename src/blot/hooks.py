@@ -19,7 +19,7 @@ BEGIN, END = "# >>> blot >>>", "# <<< blot <<<"
 
 def hook_path(repo: str, name: str = "pre-commit") -> str:
     path = run_git(repo, "rev-parse", "--git-path", f"hooks/{name}").strip()
-    return path if os.path.isabs(path) else os.path.join(repo, path)
+    return os.path.normpath(path if os.path.isabs(path) else os.path.join(repo, path))
 
 
 def _block(python: str) -> str:
