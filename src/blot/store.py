@@ -45,18 +45,19 @@ class CommitRow:
 
 
 class Store:
-    def __init__(self, conn: sqlite3.Connection, repo: str = "."):
+    def __init__(self, conn: sqlite3.Connection, repo: str = ".", rev: str = "HEAD"):
         self.conn = conn
         self.repo = repo  # checks run git here
+        self.rev = rev  # the commit staged changes are compared against (bench replays use older ones)
 
     @staticmethod
     def db_path(repo: str) -> str:
         return os.path.join(git_dir(repo), "blot.db")
 
     @classmethod
-    def open(cls, repo: str) -> Store | None:
+    def open(cls, repo: str, path: str | None = None) -> Store | None:
         """Return the index, or None if `blot index` has never been run (or it is outdated)."""
-        path = cls.db_path(repo)
+        path = path or cls.db_path(repo)
         if not os.path.exists(path):
             return None
         store = cls(sqlite3.connect(path), repo)
@@ -66,8 +67,8 @@ class Store:
         return store
 
     @classmethod
-    def create(cls, repo: str, fresh: bool = False) -> Store:
-        path = cls.db_path(repo)
+    def create(cls, repo: str, fresh: bool = False, path: str | None = None) -> Store:
+        path = path or cls.db_path(repo)
         if fresh and os.path.exists(path):
             os.remove(path)
         store = cls(sqlite3.connect(path), repo)
@@ -139,17 +140,27 @@ class Store:
         return self.conn.execute("SELECT path, sha FROM fix_removed_lines WHERE line_hash=?", (line_hash,)).fetchall()
 
     def partners(self, path: str, min_support: int, min_confidence: float) -> list[tuple[str, int, float]]:
-        """Files that usually change with `path`: (partner, support, confidence path→partner)."""
+        """Files that change with `path`, and vice versa: (partner, support, confidence path→partner).
+
+        The link must hold both ways. One-way links point at hub files that change with almost
+        everything (React's feature-flag forks, Django's translation catalogs); in replays those
+        produced most co-change warnings and few useful ones.
+        """
         row = self.conn.execute("SELECT count FROM file_commits WHERE path=?", (path,)).fetchone()
         if not row or row[0] == 0:
             return []
         total = row[0]
         rows = self.conn.execute(
-            "SELECT CASE WHEN path_a=? THEN path_b ELSE path_a END, support FROM cochange "
-            "WHERE (path_a=? OR path_b=?) AND support >= ?",
+            "SELECT p.partner, p.support, f.count FROM ("
+            "  SELECT CASE WHEN path_a=? THEN path_b ELSE path_a END AS partner, support FROM cochange"
+            "  WHERE (path_a=? OR path_b=?) AND support >= ?"
+            ") p JOIN file_commits f ON f.path = p.partner",
             (path, path, path, min_support),
         ).fetchall()
-        result = [(p, s, s / total) for p, s in rows if s / total >= min_confidence]
+        result = [
+            (p, s, s / total) for p, s, partner_total in rows
+            if s / total >= min_confidence and s / partner_total >= min_confidence
+        ]
         return sorted(result, key=lambda r: (-r[2], -r[1], r[0]))
 
     def stats(self) -> dict[str, int]:

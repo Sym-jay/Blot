@@ -12,9 +12,7 @@ Commits touching more than config.cochange_max_files_per_commit files are ignore
 
 from __future__ import annotations
 
-from fnmatch import fnmatch
-
-from blot.checks.base import Check, Finding
+from blot.checks.base import Check, Finding, is_skipped
 from blot.git import tracked_files
 
 
@@ -23,7 +21,7 @@ class ForgotRelatedFile(Check):
     description = "Changed a file without the file that usually changes with it"
 
     def run(self, changes, store, config) -> list[Finding]:
-        ignored = lambda p: any(fnmatch(p, pattern) for pattern in config.ignore_paths)  # noqa: E731
+        ignored = lambda p: is_skipped(p, config)  # noqa: E731
         staged = {p for c in changes for p in (c.path, c.old_path) if p}
         head_files: set[str] | None = None
         findings: list[Finding] = []
@@ -34,7 +32,7 @@ class ForgotRelatedFile(Check):
             if not partners and change.old_path and change.old_path != change.path:
                 partners = store.partners(change.old_path, config.cochange_min_support, config.cochange_min_confidence)
             if partners and head_files is None:
-                head_files = tracked_files(store.repo)
+                head_files = tracked_files(store.repo, store.rev)
             for partner, support, confidence in partners:  # strongest first
                 if partner in staged or partner not in head_files or ignored(partner):
                     continue

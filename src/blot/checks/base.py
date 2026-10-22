@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
+from fnmatch import fnmatch
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -29,6 +30,27 @@ class Check(ABC):
     @abstractmethod
     def run(self, changes: list[FileChange], store: Store, config: Config) -> list[Finding]:
         """Return findings for the staged changes. Must not call the network; target < 100 ms."""
+
+
+TEST_PATTERNS = ("test/*", "tests/*", "*/test/*", "*/tests/*", "*/__tests__/*", "__tests__/*",
+                 "test_*", "*/test_*", "*_test.*", "*.test.*", "*.spec.*", "*/testing/*", "conftest.py", "*/conftest.py")
+DOC_PATTERNS = ("doc/*", "docs/*", "*/docs/*", "*.md", "*.rst", "*.txt", "*.adoc", "*.markdown")
+
+
+# generated files: their lines come from tools, not from the fix's author
+GENERATED_PATTERNS = ("*.lock", "*package-lock.json", "*pnpm-lock.yaml", "*npm-shrinkwrap.json", "*go.sum",
+                      "*.min.js", "*.min.css", "*.map", "*.mo", "*.po", "*/locale/*",  # translations
+                      ".github/*", ".circleci/*", ".gitlab-ci.yml")  # CI configuration
+
+
+def is_skipped(path: str, config: Config) -> bool:
+    """Paths the checks ignore: generated files, config.ignore_paths, and tests and docs unless opted in."""
+    patterns = [*GENERATED_PATTERNS, *config.ignore_paths]
+    if not config.check_tests:
+        patterns += TEST_PATTERNS
+    if not config.check_docs:
+        patterns += DOC_PATTERNS
+    return any(fnmatch(path, p) for p in patterns)
 
 
 def describe_commit(row: CommitRow) -> str:

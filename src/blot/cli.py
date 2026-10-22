@@ -5,7 +5,7 @@ Commands:
     check         run all checks against staged changes (pre-commit) or a commit range
     why           show the history behind a line: fix commits, PR, linked issues
     install-hook  add blot to .git/hooks/pre-commit
-    bench         score the checks against bench/cases.json
+    bench         measure accuracy: bench cases, or replay recent commits (--replay N)
 """
 
 from __future__ import annotations
@@ -68,7 +68,29 @@ def _cmd_install_hook(args: argparse.Namespace) -> int:
 
 
 def _cmd_bench(args: argparse.Namespace) -> int:
-    raise NotImplementedError("TODO(M4): run bench/cases.json and print precision/recall per check")
+    import dataclasses
+    import json
+
+    from blot import bench
+
+    config = load_config(args.repo)
+    if args.replay:
+        def progress(i: int, total: int) -> None:
+            if not args.quiet and (i % 50 == 0 or i == total):
+                print(f"blot bench: replayed {i}/{total} commits", file=sys.stderr)
+
+        result = bench.replay(args.repo, args.replay, config, max_files=args.max_files, progress=progress)
+        print(bench.format_replay(result), end="")
+        if args.json:
+            with open(args.json, "w", encoding="utf-8") as f:
+                json.dump(dataclasses.asdict(result), f, indent=2)
+        return 0
+    results = bench.run_cases(args.cases, args.workdir or bench.DEFAULT_WORKDIR, config)
+    print(bench.format_cases(results), end="")
+    if args.json:
+        with open(args.json, "w", encoding="utf-8") as f:
+            json.dump([dataclasses.asdict(r) for r in results], f, indent=2)
+    return 0 if all(r.correct for r in results) else 1
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -98,7 +120,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--uninstall", action="store_true", help="remove blot's lines from the hook")
     p.set_defaults(func=_cmd_install_hook)
 
-    p = sub.add_parser("bench", help="score checks against bench/cases.json")
+    p = sub.add_parser("bench", help="measure accuracy: bench cases, or replay recent commits")
+    p.add_argument("--cases", default="bench/cases.json", help="cases file (default: bench/cases.json)")
+    p.add_argument("--workdir", default=None, help="where case repos are cloned (default: ~/.cache/blot-bench)")
+    p.add_argument("--replay", type=int, metavar="N", help="instead: re-check the last N commits of --repo")
+    p.add_argument("--max-files", type=int, default=50, help="replay: skip commits touching more files")
+    p.add_argument("--json", metavar="FILE", help="also write full results as JSON")
+    p.add_argument("--quiet", action="store_true", help="no progress output")
     p.set_defaults(func=_cmd_bench)
     return parser
 

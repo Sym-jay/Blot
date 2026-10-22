@@ -6,7 +6,9 @@
     min-severity = 2
     cochange-min-confidence = 0.8
     disabled-checks = ["forgot-related-file"]
-    ignore-paths = ["docs/*", "*.lock"]
+    ignore-paths = ["vendor/*"]
+    check-tests = false   # tests and docs are skipped unless you opt in
+    check-docs = false
 
 TOML is read with the stdlib `tomllib` on Python 3.11+ and with `tomli` on 3.10 (a dependency there only).
 """
@@ -29,6 +31,10 @@ class Config:
     cochange_max_files_per_commit: int = 30
     disabled_checks: list[str] = field(default_factory=list)
     ignore_paths: list[str] = field(default_factory=list)
+    # test and docs files are skipped by default: replays on real repos showed most warnings
+    # there were noise (fix commits that also touched tests or docs)
+    check_tests: bool = False
+    check_docs: bool = False
 
 
 def _read_toml(path: str) -> dict:

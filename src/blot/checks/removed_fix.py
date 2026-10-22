@@ -15,8 +15,8 @@ from __future__ import annotations
 
 import subprocess
 
-from blot.checks.base import Check, Finding, describe_commit
-from blot.diff import normalize_line, parse_unified_diff
+from blot.checks.base import Check, Finding, describe_commit, is_skipped
+from blot.diff import KeptLines, is_meaningful_line, normalize_line, parse_unified_diff
 from blot.git import run_git
 
 MAX_HOPS = 3
@@ -88,16 +88,22 @@ class RemovedFix(Check):
         repo = store.repo
         origins = _RefactorOrigins(repo)
         findings: list[Finding] = []
+        # a line that reappears anywhere in the change was moved, not removed
+        moved = {normalize_line(text) for c in changes for _, text in c.added}
         for change in changes:
-            if change.old_path is None or not change.removed:
+            if change.old_path is None or not change.removed or is_skipped(change.old_path, config):
                 continue
-            kept = {normalize_line(text) for _, text in change.added}
-            # whitespace-only edits and blank lines say nothing about the fix
-            texts = {n: t for n, t in change.removed if normalize_line(t) and normalize_line(t) not in kept}
+            # reformatted or extended in place (quotes, wrapping, type hints): not removed either
+            kept = KeptLines([text for _, text in change.added])
+            # blank, generic (imports, `return`) and prose lines say nothing about the fix
+            texts = {
+                n: t for n, t in change.removed
+                if is_meaningful_line(normalize_line(t)) and normalize_line(t) not in moved and not kept.keeps(t)
+            }
             if not texts:
                 continue
 
-            blamed = blame(repo, "HEAD", change.old_path, list(texts))
+            blamed = blame(repo, store.rev, change.old_path, list(texts))
             # line -> (sha, path, line in that commit, refactors traced past)
             trail = {n: (sha, p, o, []) for n, (sha, p, o) in blamed.items() if n in texts}
             for _ in range(MAX_HOPS):

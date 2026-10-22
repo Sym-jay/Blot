@@ -23,6 +23,85 @@ def is_trivial_line(normalized: str) -> bool:
     return len(normalized) < 12 or bool(_TRIVIAL.match(normalized))
 
 
+_COMMENT_START = ("#", "//", "/*", "*", "--", ":param", ":return", ":raises", "@param", "@return", '"""', "'''")
+_CODE_HINT = re.compile(
+    r"[=()\[\]{};<>_]|\w\.\w|^(?:if|elif|else|for|while|return|def|class|with|assert|raise|try|except|"
+    r"const|let|var|function|import|export|switch|case|throw)\b"
+)
+
+
+def is_prose_line(normalized: str) -> bool:
+    """Comments and docstring text: a fix that reworded them is not what Blot guards."""
+    if normalized.startswith(_COMMENT_START):
+        return True
+    return len(normalized.split()) >= 5 and not _CODE_HINT.search(normalized)
+
+
+_TOKEN = re.compile(r"\w+|[^\w\s]")
+
+
+def tokens(normalized: str) -> list[str]:
+    """Code tokens with quote style unified, so 'x' and "x" compare equal."""
+    return _TOKEN.findall(normalized.replace("'", '"'))
+
+
+# Tokens that change what code does. Inserting one of these is an edit, not a reformat:
+# `x is None` -> `x is not None` must still count as removing the old line.
+# Literals like None are left out on purpose: type hints insert them (`data=None` ->
+# `data: dict | None = None`), and `not` already catches `is None` -> `is not None`.
+_LOGIC = frozenset({"not", "and", "or", "is", "in", "=", "!", "<", "+", "*", "/", "%", "&", "^", "~", "?"})
+
+
+def _cosmetic_match(needle: list[str], hay: list[str]) -> bool:
+    """`needle` appears in `hay` in order, and nothing inserted between its tokens changes logic."""
+    matched, pos = [], 0
+    for tok in needle:
+        try:
+            pos = hay.index(tok, pos)
+        except ValueError:
+            return False
+        matched.append(pos)
+        pos += 1
+    inserted = set(range(matched[0], matched[-1] + 1)) - set(matched)
+    return not any(hay[i] in _LOGIC for i in inserted)
+
+
+class KeptLines:
+    """Answers "does this removed line survive among the added lines?"
+
+    A removed line counts as kept when a run of up to `window` consecutive added lines contains all
+    of its tokens in order, with no logic-changing token inserted between them. That covers
+    reformatting (quotes, re-wrapping) and type hints (`def f(self):` -> `def f(self) -> int:`),
+    while removals and logic edits (`is None` -> `is not None`) still count.
+    """
+
+    def __init__(self, added: list[str], window: int = 5):
+        self.lines = [tokens(normalize_line(text)) for text in added]
+        self.window = window
+        self.where: dict[str, list[int]] = {}
+        for i, toks in enumerate(self.lines):
+            for tok in set(toks):
+                self.where.setdefault(tok, []).append(i)
+
+    def keeps(self, removed: str) -> bool:
+        needle = tokens(normalize_line(removed))
+        if not needle:
+            return True
+        # start from the lines holding the needle's rarest token
+        rare = min(needle, key=lambda t: len(self.where.get(t, ())))
+        for i in self.where.get(rare, ()):
+            for start in range(max(0, i - self.window + 1), i + 1):
+                hay = [t for line in self.lines[start:start + self.window] for t in line]
+                if _cosmetic_match(needle, hay):
+                    return True
+        return False
+
+
+def is_meaningful_line(normalized: str) -> bool:
+    """Worth checking against history: real code, not blank, generic or prose."""
+    return bool(normalized) and not is_trivial_line(normalized) and not is_prose_line(normalized)
+
+
 def line_hash(normalized: str) -> str:
     return hashlib.blake2b(normalized.encode("utf-8"), digest_size=8).hexdigest()
 

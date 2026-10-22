@@ -3,15 +3,81 @@
     "id": "flask-weakref-static-route",
     "repo": "https://github.com/pallets/flask",
     "at": "d086db85",
-    "change": "remove weakref in static route: replace lines 353-355 of src/flask/app.py with a direct self reference",
     "file": "src/flask/app.py",
-    "lines": [353, 355],
-    "expect": {
-      "check": "removed-fix",
-      "warn": true,
-      "commit": "8efea0cc",
-      "trap": "0ec7f713 (Split the App and Blueprint into Sansio and IO parts: a refactor, not the reason)"
-    },
-    "notes": "Every tool tested on 2026-10-19 stopped at the refactor commit. See docs/competitors.md."
+    "replace": ["self_ref = weakref.ref(self)", "self_ref = self"],
+    "expect": {"check": "removed-fix", "warn": true, "commit": "8efea0cc"},
+    "notes": "The weakref breaks an app <-> view function reference cycle (#3761). Every git blame variant stops at the refactor 0ec7f713 (Split the App and Blueprint into Sansio and IO parts); the cited commit must be the 2020 fix."
+  },
+  {
+    "id": "flask-readd-bound-send-static-file",
+    "repo": "https://github.com/pallets/flask",
+    "at": "d086db85",
+    "file": "src/flask/app.py",
+    "replace": ["view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore", "view_func=self.send_static_file,"],
+    "expect": {"check": "readded-bug", "warn": true, "commit": "8efea0cc"},
+    "notes": "Restores the exact line 8efea0cc removed; the bound method is what created the reference cycle."
+  },
+  {
+    "id": "flask-quiet-feature-line",
+    "repo": "https://github.com/pallets/flask",
+    "at": "d086db85",
+    "file": "src/flask/app.py",
+    "replace": ["setattr(Flask, method.__name__, add_ctx(base_method))", "setattr(Flask, method.__name__, base_method)"],
+    "expect": {"check": "removed-fix", "warn": false},
+    "notes": "Line comes from 6a649690 (pass context through dispatch methods), a feature commit. Must stay quiet."
+  },
+  {
+    "id": "flask-quiet-cochange-app",
+    "repo": "https://github.com/pallets/flask",
+    "at": "d086db85",
+    "file": "src/flask/app.py",
+    "replace": ["self_ref = weakref.ref(self)", "self_ref = self"],
+    "expect": {"check": "forgot-related-file", "warn": false},
+    "notes": "app.py's strongest co-change partner is CHANGES.rst at ~45%, below the 80% threshold. Must stay quiet."
+  },
+  {
+    "id": "flask-subdomain-logic-edit",
+    "repo": "https://github.com/pallets/flask",
+    "at": "d7b6c1f6703df405c69da45e7e0ba3d1aed512ce",
+    "file": "src/flask/blueprints.py",
+    "replace": ["if state.subdomain is not None and bp_subdomain is None:", "if state.subdomain is not None and bp_subdomain is not None:"],
+    "expect": {"check": "removed-fix", "warn": true, "commit": "d7b6c1f"},
+    "notes": "Real history: cabda59 changed this line right after fix d7b6c1f (#4834); a later commit had to fix subdomain_matching=False behavior. Same tokens plus `not` is a logic edit, not a reformat."
+  },
+  {
+    "id": "express-cve-2024-51999-revert-removed",
+    "repo": "https://github.com/expressjs/express",
+    "at": "2f64f68c37c64ae333e41ff38032d21860f22255",
+    "file": "lib/utils.js",
+    "replace": ["plainObjects: true", "allowPrototypes: true"],
+    "expect": {"check": "removed-fix", "warn": true, "commit": "2f64f68c"},
+    "notes": "Real history: 697547cd reverted the CVE-2024-51999 patch the same day. Found by blot bench --replay."
+  },
+  {
+    "id": "express-cve-2024-51999-revert-readded",
+    "repo": "https://github.com/expressjs/express",
+    "at": "2f64f68c37c64ae333e41ff38032d21860f22255",
+    "file": "lib/utils.js",
+    "replace": ["plainObjects: true", "allowPrototypes: true"],
+    "expect": {"check": "readded-bug", "warn": true, "commit": "2f64f68c"},
+    "notes": "Same revert: `allowPrototypes: true` is the exact line the security patch removed."
+  },
+  {
+    "id": "requests-quiet-black-quotes",
+    "repo": "https://github.com/psf/requests",
+    "at": "2d5517682b3b38547634d153cea43d48fbc8cdb5",
+    "file": "requests/auth.py",
+    "replace": ["if _algorithm == 'MD5' or _algorithm == 'MD5-SESS':", "if _algorithm == \"MD5\" or _algorithm == \"MD5-SESS\":"],
+    "expect": {"check": "removed-fix", "warn": false},
+    "notes": "Black's quote change from 2a6f290b on a line added by fix 6931bd6. Formatting only: must stay quiet."
+  },
+  {
+    "id": "requests-quiet-type-hint",
+    "repo": "https://github.com/psf/requests",
+    "at": "8f6cda9969f4a98c45ea2922f6bcbefc02256202",
+    "file": "src/requests/models.py",
+    "replace": ["    def links(self):", "    def links(self) -> dict[str, dict[str, str]]:"],
+    "expect": {"check": "removed-fix", "warn": false},
+    "notes": "Adding a type hint (561e4b68) to a method added by fix d8dcd35 (#711). Must stay quiet."
   }
 ]

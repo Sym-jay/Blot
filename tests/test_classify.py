@@ -29,6 +29,13 @@ def commit(subject, body="", files=1, added=5, removed=5, renames=0):
         ("Added note on send_file security.", "", 0),
         ("fixed possible security problem in module branch", "", 2),
         ("Fix broken link to Flask-WTF", "", 1),
+        # Django's "Fixed #N -- <description>": the description decides
+        ("Fixed #12090 -- Added admin actions to the admin change form.", "", 1),
+        ("Fixed #37114 -- Dropped support for PostgreSQL 15 and PostGIS 3.2.", "", 1),
+        ("Fixed #36560 -- Prevented UpdateCacheMiddleware from caching private responses.", "", 2),
+        ("Fixed #30000 -- Fixed crash when saving a model with a NULL primary key.", "", 2),
+        ("Fixed CVE-2026-15830 -- Mitigated potential DoS via nested geometry collections.", "", 2),
+        ("Fix #2935: Copy current session object in copy_current_request_context", "", 2),
     ],
 )
 def test_fix_severity(subject, body, expected):
@@ -51,6 +58,10 @@ def test_bug_label_is_always_load_bearing():
 )
 def test_is_refactor(info, expected):
     assert is_refactor(info) is expected
+
+
+def test_linked_issues_keeps_full_cve_ids():
+    assert linked_issues(commit("sec: security patch for CVE-2024-51999")) == ["CVE-2024-51999"]
 
 
 def test_linked_issues_dedupes_in_order():

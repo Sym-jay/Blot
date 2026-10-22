@@ -78,9 +78,9 @@ def _is_ancestor(repo: str, older: str, newer: str) -> bool:
         return False
 
 
-def _head(repo: str) -> str | None:
+def _head(repo: str, rev: str = "HEAD") -> str | None:
     try:
-        return run_git(repo, "rev-parse", "--verify", "-q", "HEAD").strip() or None
+        return run_git(repo, "rev-parse", "--verify", "-q", f"{rev}^{{commit}}").strip() or None
     except subprocess.CalledProcessError:
         return None
 
@@ -102,17 +102,25 @@ def _removed_lines(repo: str, shas: list[str]) -> list[tuple[str, str, str]]:
     return rows
 
 
-def build_index(repo: str, full: bool = False, github: bool = False, config: Config | None = None) -> IndexResult:
+def build_index(
+    repo: str,
+    full: bool = False,
+    github: bool = False,
+    config: Config | None = None,
+    upto: str = "HEAD",
+    db_path: str | None = None,
+) -> IndexResult:
+    """Index history up to `upto` into `db_path` (default .git/blot.db). Bench replays use both."""
     start = time.perf_counter()
     config = config or load_config(repo)
-    head = _head(repo)
+    head = _head(repo, upto)
 
-    store = Store.open(repo)
+    store = Store.open(repo, db_path)
     last = store.get_meta("last_sha") if store else None
     if store:
         store.close()
     rebuild = full or not last or (head is not None and not _is_ancestor(repo, last, head))
-    store = Store.create(repo, fresh=rebuild)
+    store = Store.create(repo, fresh=rebuild, path=db_path)
 
     if head is None or (not rebuild and last == head):
         store.set_meta("last_sha", head or "")

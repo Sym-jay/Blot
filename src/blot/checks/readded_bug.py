@@ -13,14 +13,14 @@ from __future__ import annotations
 
 import subprocess
 
-from blot.checks.base import Check, Finding, describe_commit
-from blot.diff import is_trivial_line, line_hash, normalize_line
-from blot.git import run_git, tracked_files
+from blot.checks.base import Check, Finding, describe_commit, is_skipped
+from blot.diff import is_meaningful_line, line_hash, normalize_line
+from blot.git import run_git
 
 
-def _head_lines(repo: str, path: str) -> set[str]:
+def _head_lines(repo: str, path: str, rev: str = "HEAD") -> set[str]:
     try:
-        text = run_git(repo, "show", f"HEAD:{path}")
+        text = run_git(repo, "show", f"{rev}:{path}")
     except subprocess.CalledProcessError:
         return set()
     return {normalize_line(line) for line in text.splitlines()}
@@ -32,27 +32,25 @@ class ReaddedBug(Check):
 
     def run(self, changes, store, config) -> list[Finding]:
         findings: list[Finding] = []
-        head_files: set[str] | None = None
+        # a line removed elsewhere in the same change was moved, not re-added
+        moved = {normalize_line(text) for c in changes for _, text in c.removed}
         for change in changes:
+            if is_skipped(change.path, config):
+                continue
+            # only fixes to this same file count: matches in other files were mostly coincidence
             paths = {change.path, change.old_path} - {None}
             head_lines: set[str] | None = None
             reported: set[str] = set()
             for number, text in change.added:
                 norm = normalize_line(text)
-                if is_trivial_line(norm):
+                if not is_meaningful_line(norm) or norm in moved:
                     continue
-                hits = store.fixes_that_removed(line_hash(norm))
-                if not hits:
-                    continue
-                if any(p not in paths for p, _ in hits) and head_files is None:
-                    head_files = tracked_files(store.repo)
-                # a fix on another path only counts if that path is gone (renamed or moved since)
-                shas = [sha for p, sha in hits if p in paths or p not in head_files]
+                shas = [sha for p, sha in store.fixes_that_removed(line_hash(norm)) if p in paths]
                 rows = [r for r in map(store.get_commit, shas) if r and r.severity >= config.min_severity]
                 if not rows:
                     continue
                 if head_lines is None:
-                    head_lines = _head_lines(store.repo, change.old_path) if change.old_path else set()
+                    head_lines = _head_lines(store.repo, change.old_path, store.rev) if change.old_path else set()
                 if norm in head_lines:
                     continue
                 row = max(rows, key=lambda r: r.date)  # the most recent fix that removed it
