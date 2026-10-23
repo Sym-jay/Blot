@@ -53,9 +53,13 @@ def is_skipped(path: str, config: Config) -> bool:
     return any(fnmatch(path, p) for p in patterns)
 
 
-def describe_commit(row: CommitRow) -> str:
-    """Evidence line: 'abc1234 "subject" (2020-10-03, fixes #3761)'."""
+def describe_commit(row: CommitRow, store: Store | None = None) -> str:
+    """Evidence line: '8efea0c "subject" (2020-10-03, fixes #3761 "Memory leak in app")'.
+
+    Issue titles appear once `blot index --github` has fetched them.
+    """
     details = [row.date[:10]]
     if row.issues:
-        details.append("fixes " + ", ".join(row.issues))
+        refs = [store.describe_issue(ref) for ref in row.issues] if store else row.issues
+        details.append("fixes " + ", ".join(refs))
     return f'{row.sha[:7]} "{row.subject}" ({", ".join(details)})'

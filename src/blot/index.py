@@ -105,7 +105,6 @@ def _removed_lines(repo: str, shas: list[str]) -> list[tuple[str, str, str]]:
 def build_index(
     repo: str,
     full: bool = False,
-    github: bool = False,
     config: Config | None = None,
     upto: str = "HEAD",
     db_path: str | None = None,
@@ -147,6 +146,4 @@ def build_index(
     store.set_meta("last_sha", head)
     store.commit()
     store.close()
-    if github:
-        print("blot: --github enrichment arrives in milestone M3; indexed git history only.")
     return IndexResult(len(parsed), len(fix_shas), time.perf_counter() - start, rebuild)

@@ -22,11 +22,23 @@ from blot.report import render
 def _cmd_index(args: argparse.Namespace) -> int:
     from blot.index import build_index
 
-    result = build_index(args.repo, full=args.full, github=args.github)
+    result = build_index(args.repo, full=args.full)
     if not args.quiet:
         kind = "full" if result.full else "incremental"
         print(f"blot: indexed {result.commits} commits ({result.fixes} load-bearing fixes), "
               f"{kind}, in {result.seconds:.1f}s")
+    if args.github:
+        from blot.github import enrich
+        from blot.store import Store
+
+        store = Store.open(args.repo)
+        got = enrich(args.repo, store)
+        store.close()
+        if got.status != "ok":
+            print(f"blot: --github skipped: {got.status}", file=sys.stderr)
+        elif not args.quiet:
+            print(f"blot: GitHub: {got.fetched} issues/PRs fetched ({got.missing} not found); "
+                  f"{got.upgraded} commits upgraded to bug fix, {got.demoted} demoted by their labels")
     return 0
 
 
@@ -51,7 +63,22 @@ def _cmd_check(args: argparse.Namespace) -> int:
 
 
 def _cmd_why(args: argparse.Namespace) -> int:
-    raise NotImplementedError("TODO(M3): trace a line to its explaining commits")
+    from blot.store import Store
+    from blot.why import WhyError, explain, render
+
+    store = Store.open(args.repo)
+    if store is None:
+        print("blot: no index yet, run `blot index` first", file=sys.stderr)
+        return 1
+    try:
+        path, explained = explain(store, args.location, args.rev)
+    except WhyError as exc:
+        print(f"blot: {exc}", file=sys.stderr)
+        return 1
+    text = render(store, path, explained)
+    store.close()
+    print(text, end="")
+    return 0
 
 
 def _cmd_install_hook(args: argparse.Namespace) -> int:
@@ -101,7 +128,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("index", help="build or refresh the local history index")
     p.add_argument("--full", action="store_true", help="rebuild from scratch instead of incrementally")
-    p.add_argument("--github", action="store_true", help="add PR/issue data via the gh CLI (milestone M3)")
+    p.add_argument("--github", action="store_true", help="also fetch issue/PR titles and labels with the gh CLI")
     p.add_argument("--quiet", action="store_true", help="print nothing on success (for git hooks)")
     p.set_defaults(func=_cmd_index)
 
@@ -112,8 +139,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--format", choices=["text", "json"], default="text")
     p.set_defaults(func=_cmd_check)
 
-    p = sub.add_parser("why", help="show the history behind a line")
-    p.add_argument("location", metavar="FILE:LINE")
+    p = sub.add_parser("why", help="show the commit that explains a line, past refactors")
+    p.add_argument("location", metavar="FILE:LINE", help="e.g. src/app.py:42 or src/app.py:40-48")
+    p.add_argument("--rev", default="HEAD", help="explain the file as of this commit (default: HEAD)")
     p.set_defaults(func=_cmd_why)
 
     p = sub.add_parser("install-hook", help="add blot to .git/hooks/pre-commit")

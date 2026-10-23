@@ -61,6 +61,6 @@ class ReaddedBug(Check):
                     self.id, change.path, number,
                     "You're adding back a line that a bug fix removed.\n"
                     "Check that this doesn't bring the bug back.",
-                    [describe_commit(row)], row.severity,
+                    [describe_commit(row, store)], row.severity,
                 ))
         return findings

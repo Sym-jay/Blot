@@ -16,7 +16,7 @@ from dataclasses import dataclass
 
 from blot.git import git_dir
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2  # 2: issues table (blot index --github)
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, value TEXT);
@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS file_commits (path TEXT PRIMARY KEY, count INTEGER);
 CREATE TABLE IF NOT EXISTS cochange (
     path_a TEXT, path_b TEXT, support INTEGER, PRIMARY KEY (path_a, path_b)
 );
+CREATE TABLE IF NOT EXISTS issues (ref TEXT PRIMARY KEY, title TEXT, labels TEXT, kind TEXT);
 """
 
 
@@ -162,6 +163,38 @@ class Store:
             if s / total >= min_confidence and s / partner_total >= min_confidence
         ]
         return sorted(result, key=lambda r: (-r[2], -r[1], r[0]))
+
+    # --- issues and PRs (blot index --github) ----------------------------------------------
+
+    def add_issues(self, rows: list[tuple[str, str, list[str], str]]) -> None:
+        """(ref like "#3761", title, labels, kind "issue"/"pr"/"missing")."""
+        self.conn.executemany(
+            "INSERT OR REPLACE INTO issues VALUES (?, ?, ?, ?)",
+            [(ref, title, ",".join(labels), kind) for ref, title, labels, kind in rows],
+        )
+
+    def known_issue_refs(self) -> set[str]:
+        return {r[0] for r in self.conn.execute("SELECT ref FROM issues")}
+
+    def issue(self, ref: str) -> tuple[str, list[str]] | None:
+        row = self.conn.execute("SELECT title, labels, kind FROM issues WHERE ref=?", (ref,)).fetchone()
+        if row is None or row[2] == "missing":
+            return None
+        return row[0], [label for label in row[1].split(",") if label]
+
+    def describe_issue(self, ref: str) -> str:
+        """'#3761 "Memory leak in app"' when the title is known, else just '#3761'."""
+        found = self.issue(ref)
+        return f'{ref} "{found[0]}"' if found else ref
+
+    def set_severity(self, sha: str, severity: int) -> None:
+        self.conn.execute("UPDATE commits SET severity=? WHERE sha=?", (severity, sha))
+
+    def commits_with_issues(self, min_severity: int = 0) -> list[CommitRow]:
+        rows = self.conn.execute(
+            "SELECT sha FROM commits WHERE issues != '' AND severity >= ?", (min_severity,)
+        ).fetchall()
+        return [r for r in (self.get_commit(sha) for (sha,) in rows) if r is not None]
 
     def stats(self) -> dict[str, int]:
         q = lambda sql: self.conn.execute(sql).fetchone()[0]  # noqa: E731

@@ -59,6 +59,34 @@ Remove it any time with `blot install-hook --uninstall`. Settings go in `[tool.b
 
 Or with the [pre-commit](https://pre-commit.com) framework, see `.pre-commit-hooks.yaml`.
 
+## Ask why a line exists
+
+```
+$ blot why src/flask/app.py:355
+src/flask/app.py:355
+  | self_ref = weakref.ref(self)
+  explained by  8efea0cc  2020-10-03  Break reference cycle created by default in Flask instances.  [bug fix]
+  traced past   0ec7f713  2023-06-11  Split the App and Blueprint into Sansio and IO parts  [refactor]
+```
+
+`blot why FILE:LINE` (or `FILE:START-END`) finds the commit that explains a line, skipping commits that only moved it. Plain `git blame` stops at the refactor.
+
+## Issue and PR titles (optional)
+
+```bash
+blot index --github
+```
+
+With the [GitHub CLI](https://cli.github.com) logged in, Blot fetches the titles and labels of the issues and PRs your fix commits mention, so warnings read `fixes #2935 "copy_current_request_context copies old session object"` (a real Flask issue) instead of a bare number. A `bug` label makes a commit count as a load-bearing fix; a fix-looking commit whose issues are only labelled `enhancement` or `documentation` is demoted. Refreshes only fetch what's new. Repos with GitHub Issues turned off (they track bugs elsewhere) are skipped.
+
+## Measure it on your repo
+
+```bash
+blot bench --replay 500
+```
+
+Re-checks your last 500 commits as if each were being committed, and lists every warning Blot would have shown. See [bench/README.md](bench/README.md).
+
 ## Docs
 
 - [What is this? (simple explanation)](docs/EXPLAINER.md)

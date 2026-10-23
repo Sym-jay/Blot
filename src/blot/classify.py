@@ -122,6 +122,29 @@ def is_refactor(commit: CommitInfo) -> bool:
     return big and balanced
 
 
+_BUG_LABEL = re.compile(r"\b(?:bug|regression|security|crash|defect|vulnerability|cve)\b", re.IGNORECASE)
+_NOT_BUG_LABEL = re.compile(
+    r"\b(?:enhancement|feature|feature request|documentation|docs|question|chore|refactor\w*|"
+    r"dependencies|ci|tests?|cleanup|performance)\b",
+    re.IGNORECASE,
+)
+
+
+def adjust_for_labels(subject: str, severity: int, labels: list[str]) -> int:
+    """Re-judge a commit using its issues' labels (from `blot index --github`).
+
+    A bug-type label makes it load-bearing. Only "not a bug" labels (enhancement, docs, ...) demote
+    a fix-looking commit to routine, unless its subject names a real defect (crash, leak, CVE...).
+    """
+    if not labels:
+        return severity
+    if any(_BUG_LABEL.search(label) for label in labels):
+        return max(severity, 2)
+    if severity >= 2 and all(_NOT_BUG_LABEL.search(label) for label in labels) and not _DEFECT.search(subject):
+        return 1
+    return severity
+
+
 def linked_issues(commit: CommitInfo) -> list[str]:
     """Issue references in the message, in order, without duplicates."""
     seen: dict[str, None] = {}

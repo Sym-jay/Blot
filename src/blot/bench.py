@@ -50,6 +50,9 @@ class _ReplayStore:
     def get_commit(self, sha: str) -> CommitRow | None:
         return self._full.get_commit(sha)
 
+    def describe_issue(self, ref: str) -> str:
+        return self._full.describe_issue(ref)
+
     def fixes_that_removed(self, line_hash: str) -> list[tuple[str, str]]:
         return [(p, s) for p, s in self._full.fixes_that_removed(line_hash) if self._is_ancestor(s)]
 
