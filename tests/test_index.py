@@ -66,6 +66,20 @@ def test_index_db_lives_in_git_dir(make_repo):
     assert os.path.exists(repo / ".git" / "blot.db")
 
 
+def test_parallel_history_read_matches_serial(make_repo, tmp_path, monkeypatch):
+    import blot.index as ix
+
+    repo = make_repo(history())
+    build_index(str(repo), db_path=str(tmp_path / "s.db"))
+    monkeypatch.setattr(ix, "_PARALLEL_FROM", 1)  # force slicing even for 3 commits
+    monkeypatch.setattr(ix, "_workers", lambda: 3)  # 6 slices for 3 commits: some would be empty
+    build_index(str(repo), db_path=str(tmp_path / "p.db"))
+    a, b = Store.open(str(repo), str(tmp_path / "s.db")), Store.open(str(repo), str(tmp_path / "p.db"))
+    for table in ("commits", "fix_removed_lines", "file_commits", "cochange"):
+        rows = lambda s: sorted(s.conn.execute(f"SELECT * FROM {table}").fetchall())  # noqa: E731
+        assert rows(a) == rows(b), table
+
+
 def test_empty_repo(tmp_path):
     subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
     assert build_index(str(tmp_path)).commits == 0

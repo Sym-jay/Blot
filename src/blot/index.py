@@ -10,9 +10,11 @@ Targets: under 60 s for 50k commits on a laptop; incremental refresh under 1 s.
 
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 import time
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass
 
 from blot.classify import CommitInfo, fix_severity, is_refactor, linked_issues
@@ -85,12 +87,43 @@ def _head(repo: str, rev: str = "HEAD") -> str | None:
         return None
 
 
+_FORMAT = f"--format={_RECORD}%H{_FIELD}%aI{_FIELD}%s{_FIELD}%b{_FIELD}"
+# Most of indexing is git computing --numstat line counts, one commit after another. Big histories
+# are split into slices that separate git processes read in parallel (Django: 34k commits, ~170 s
+# serially). The result is the same set of commits; order doesn't matter to the index.
+_PARALLEL_FROM = 2000
+
+
+def _workers() -> int:
+    return max(1, min(8, (os.cpu_count() or 2) - 1))
+
+
+def _git_stdin(repo: str, args: list[str], revs: list[str]) -> str:
+    done = subprocess.run(["git", "-C", repo, *args], input="\n".join(revs) + "\n", capture_output=True,
+                          text=True, encoding="utf-8", errors="replace", check=True)
+    return done.stdout
+
+
+def _read_history(repo: str, rev: str) -> list[tuple[CommitInfo, str, list[str]]]:
+    args = ["log", "--no-walk=unsorted", "--stdin", "-M", "--numstat", _FORMAT]
+    shas = run_git(repo, "rev-list", "--no-merges", rev).split()
+    if len(shas) < _PARALLEL_FROM:
+        return _parse_log(_git_stdin(repo, args, shas)) if shas else []
+    # interleaved slices have similar sizes; never pass an empty one (git log would fall back to HEAD)
+    slices = [part for i in range(_workers() * 2) if (part := shas[i::_workers() * 2])]
+    with ThreadPoolExecutor(_workers()) as pool:
+        outs = pool.map(lambda part: _git_stdin(repo, args, part), slices)
+        return [commit for out in outs for commit in _parse_log(out)]
+
+
 def _removed_lines(repo: str, shas: list[str]) -> list[tuple[str, str, str]]:
     """(line_hash, path, sha) for every meaningful line the given commits deleted."""
+    batches = [shas[i : i + _SHOW_BATCH] for i in range(0, len(shas), _SHOW_BATCH)]
+    show = ["show", f"--format={_RECORD}%H", "-U0", "--no-color", "--no-ext-diff", "-M"]
+    with ThreadPoolExecutor(_workers()) as pool:
+        outs = list(pool.map(lambda batch: run_git(repo, *show, *batch), batches))
     rows: list[tuple[str, str, str]] = []
-    for i in range(0, len(shas), _SHOW_BATCH):
-        batch = shas[i : i + _SHOW_BATCH]
-        out = run_git(repo, "show", f"--format={_RECORD}%H", "-U0", "--no-color", "--no-ext-diff", "-M", *batch)
+    for out in outs:
         for chunk in out.split(_RECORD)[1:]:
             sha, _, diff_text = chunk.partition("\n")
             for change in parse_unified_diff(diff_text):
@@ -128,9 +161,7 @@ def build_index(
         return IndexResult(0, 0, time.perf_counter() - start, rebuild)
 
     rev = head if rebuild else f"{last}..{head}"
-    fmt = f"--format={_RECORD}%H{_FIELD}%aI{_FIELD}%s{_FIELD}%b{_FIELD}"
-    log = run_git(repo, "log", "--no-merges", "-M", "--numstat", fmt, rev)
-    parsed = _parse_log(log)
+    parsed = _read_history(repo, rev)
 
     fix_shas = []
     for info, date, paths in parsed:
