@@ -49,7 +49,7 @@ Sora comes in four warm palettes:
 ```bash
 pip install blot-git  # the PyPI name is blot-git; the command is just `blot`
 cd your-repo
-blot index            # one-time, builds .git/blot.db (refreshes incrementally after that)
+blot index            # optional: the first check builds .git/blot.db itself and keeps it current
 blot install-hook     # adds Blot to .git/hooks/pre-commit without touching existing hooks
 ```
 

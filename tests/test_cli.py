@@ -11,10 +11,26 @@ def test_registry_has_three_checks():
     assert [c.id for c in REGISTRY] == ["removed-fix", "readded-bug", "forgot-related-file"]
 
 
-def test_check_without_index_never_blocks(make_repo, capsys):
+def test_check_builds_the_index_on_first_run_then_refreshes_it(make_repo, capsys):
+    import subprocess
+
+    from test_checks import AFTER, BEFORE, GUARD
+
     repo = make_repo([("feat: init", {"a.py": "x = 1\n"})])
     assert main(["--repo", str(repo), "check"]) == 0
-    assert "run `blot index`" in capsys.readouterr().err
+    assert "first run, indexing" in capsys.readouterr().err
+    assert main(["--repo", str(repo), "check"]) == 0
+    assert capsys.readouterr().err == ""  # already indexed: silent
+
+    # a fix committed after the first check must be known to the next one (incremental refresh)
+    for message, content in (("Add app", BEFORE), ("Break reference cycle in App (fixes #3761)", AFTER)):
+        (repo / "app.py").write_text(content, encoding="utf-8")
+        subprocess.run(["git", "-C", str(repo), "add", "-A"], check=True)
+        subprocess.run(["git", "-C", str(repo), "commit", "-q", "-m", message], check=True)
+    (repo / "app.py").write_text(AFTER.replace(GUARD, "self_ref = self"), encoding="utf-8")
+    subprocess.run(["git", "-C", str(repo), "add", "-A"], check=True)
+    assert main(["--repo", str(repo), "check"]) == 0
+    assert "removed-fix" in capsys.readouterr().out
 
 
 def test_render_text():

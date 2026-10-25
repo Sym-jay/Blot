@@ -15,7 +15,7 @@ It runs locally, needs no account or AI, and stays quiet unless the history give
 ```bash
 pip install blot-git
 cd your-repo
-blot index           # one-time, builds .git/blot.db
+blot index           # optional: the first check indexes history itself
 blot install-hook    # adds Blot to your pre-commit hook
 blot why src/app.py:42   # which commit explains this line, skipping refactors
 blot index --github  # optional: issue/PR titles and labels via the gh CLI

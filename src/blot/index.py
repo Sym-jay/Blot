@@ -20,7 +20,7 @@ from dataclasses import dataclass
 from blot.classify import CommitInfo, fix_severity, is_refactor, linked_issues
 from blot.config import Config, load_config
 from blot.diff import is_trivial_line, line_hash, normalize_line, parse_unified_diff
-from blot.git import run_git
+from blot.git import head_sha, run_git
 from blot.store import CommitRow, Store
 
 _RECORD, _FIELD = "\x1e", "\x1f"
@@ -144,13 +144,15 @@ def build_index(
 ) -> IndexResult:
     """Index history up to `upto` into `db_path` (default .git/blot.db). Bench replays use both."""
     start = time.perf_counter()
-    config = config or load_config(repo)
-    head = _head(repo, upto)
+    head = head_sha(repo) if upto == "HEAD" else _head(repo, upto)
 
     store = Store.open(repo, db_path)
     last = store.get_meta("last_sha") if store else None
     if store:
         store.close()
+    if not full and head is not None and last == head:  # already current: `blot check` hits this on every commit
+        return IndexResult(0, 0, time.perf_counter() - start, False)
+    config = config or load_config(repo)
     rebuild = full or not last or (head is not None and not _is_ancestor(repo, last, head))
     store = Store.create(repo, fresh=rebuild, path=db_path)
 

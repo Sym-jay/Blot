@@ -11,6 +11,7 @@ Commands:
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 
 from blot import __version__
@@ -42,17 +43,28 @@ def _cmd_index(args: argparse.Namespace) -> int:
     return 0
 
 
+def _open_index(repo: str):
+    """Open the index, building or refreshing it first.
+
+    The pre-commit framework installs Blot where users can't easily run `blot index`, so the hook
+    must look after the index itself: one full build on first use, then cheap incremental refreshes.
+    """
+    from blot.index import build_index
+    from blot.store import Store
+
+    if not os.path.exists(Store.db_path(repo)):
+        print("blot: first run, indexing this repo's history once (big repos can take a minute)...",
+              file=sys.stderr)
+    build_index(repo)
+    return Store.open(repo)
+
+
 def _cmd_check(args: argparse.Namespace) -> int:
     from blot.diff import read_changes
-    from blot.store import Store
 
     try:
         config = load_config(args.repo)
-        store = Store.open(args.repo)
-        if store is None:
-            # Never break a commit because the index is missing; just say how to fix it.
-            print("blot: no index yet, run `blot index` (commit allowed)", file=sys.stderr)
-            return 0
+        store = _open_index(args.repo)
         changes = read_changes(args.repo, rev_range=args.range)
         findings = [f for check in all_checks(config) for f in check.run(changes, store, config)]
     except Exception as exc:  # Blot's own failures must never block a commit
@@ -63,13 +75,9 @@ def _cmd_check(args: argparse.Namespace) -> int:
 
 
 def _cmd_why(args: argparse.Namespace) -> int:
-    from blot.store import Store
     from blot.why import WhyError, explain, render
 
-    store = Store.open(args.repo)
-    if store is None:
-        print("blot: no index yet, run `blot index` first", file=sys.stderr)
-        return 1
+    store = _open_index(args.repo)
     try:
         path, explained = explain(store, args.location, args.rev)
     except WhyError as exc:
@@ -90,7 +98,7 @@ def _cmd_install_hook(args: argparse.Namespace) -> int:
     status = hooks.install(args.repo)
     print(f"blot: pre-commit hook {status} ({hooks.hook_path(args.repo)})")
     if status != "already installed":
-        print("blot: run `blot index` once so the checks have history to work with")
+        print("blot: the first commit indexes this repo's history (or run `blot index` now)")
     return 0
 
 

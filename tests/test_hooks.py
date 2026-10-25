@@ -43,7 +43,7 @@ def test_real_commit_runs_hook_and_is_not_blocked(make_repo):
     subprocess.run(["git", "-C", str(repo), "add", "a.py"], check=True)
     done = subprocess.run(["git", "-C", str(repo), "commit", "-m", "change"], capture_output=True, text=True)
     assert done.returncode == 0
-    assert "no index yet" in done.stderr  # the hook really ran
+    assert "first run, indexing" in done.stderr  # the hook really ran, and indexed the repo
 
 
 def test_uninstall_deletes_hook_blot_created(make_repo):

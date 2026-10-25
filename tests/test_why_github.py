@@ -46,9 +46,8 @@ def test_why_traces_past_a_refactor(make_repo):
 
 def test_why_cli_and_errors(make_repo, capsys):
     repo = make_repo(history())
-    assert main(["--repo", str(repo), "why", "core.py:1"]) == 1  # no index yet
-    assert "run `blot index`" in capsys.readouterr().err
-    main(["--repo", str(repo), "index", "--quiet"])
+    assert main(["--repo", str(repo), "why", "core.py:1"]) == 0  # builds the index itself
+    assert "first run, indexing" in capsys.readouterr().err
     assert main(["--repo", str(repo), "why", "missing.py:1"]) == 1
     assert "not tracked" in capsys.readouterr().err
     assert main(["--repo", str(repo), "why", "core.py:999"]) == 1

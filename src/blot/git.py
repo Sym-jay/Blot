@@ -34,6 +34,46 @@ def git_dir(repo: str) -> str:
     return run_git(repo, "rev-parse", "--absolute-git-dir").strip()
 
 
+def head_sha(repo: str) -> str | None:
+    """The commit HEAD points at, read from .git files (the hook calls this on every commit).
+
+    Handles loose and packed refs, detached HEAD and worktrees (`commondir`). Anything else, such as
+    the reftable format, falls back to `git rev-parse`.
+    """
+    gd = git_dir(repo)
+    try:
+        with open(os.path.join(gd, "HEAD"), encoding="utf-8") as f:
+            head = f.read().strip()
+        if not head.startswith("ref: "):
+            return head if len(head) == 40 else None
+        ref = head[5:]
+        bases = [gd]
+        common = os.path.join(gd, "commondir")
+        if os.path.isfile(common):
+            with open(common, encoding="utf-8") as f:
+                bases.append(os.path.normpath(os.path.join(gd, f.read().strip())))
+        for base in bases:
+            loose = os.path.join(base, *ref.split("/"))
+            if os.path.isfile(loose):
+                with open(loose, encoding="utf-8") as f:
+                    return f.read().strip()
+            packed = os.path.join(base, "packed-refs")
+            if os.path.isfile(packed):
+                with open(packed, encoding="utf-8") as f:
+                    for line in f:
+                        sha, _, name = line.strip().partition(" ")
+                        if name == ref:
+                            return sha
+        if not os.path.isdir(os.path.join(gd, "reftable")):
+            return None  # unborn branch: no commits yet
+    except OSError:
+        pass
+    try:
+        return run_git(repo, "rev-parse", "--verify", "-q", "HEAD").strip() or None
+    except subprocess.CalledProcessError:
+        return None
+
+
 def run_git(repo: str, *args: str) -> str:
     result = subprocess.run(
         ["git", "-C", repo, *args],
