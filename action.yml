@@ -1,6 +1,6 @@
 # Run Blot on a pull request and show its findings as warning annotations.
 # Usage (in a workflow triggered by pull_request):
-#   - uses: Sym-jay/Blot@main
+#   - uses: Sym-jay/Blot@v0.4.0
 # See "Use in CI" in README.md.
 name: Blot
 description: History-aware checks on the commits of a pull request, shown as warning annotations
@@ -18,7 +18,7 @@ inputs:
     default: "3.13"
   blot-package:
     description: What to pip install (a pip requirement, e.g. blot-git==0.3.2)
-    default: git+https://github.com/Sym-jay/Blot
+    default: blot-git  # the latest release on PyPI
 
 runs:
   using: composite

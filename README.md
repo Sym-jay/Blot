@@ -91,13 +91,13 @@ jobs:
   blot:
     runs-on: ubuntu-latest
     steps:
-      - uses: Sym-jay/Blot@main
+      - uses: Sym-jay/Blot@v0.4.0
 ```
 
 The action checks out the pull request with its full history, installs Blot, runs `blot index` and
 `blot check --range origin/<base>..HEAD --format json`, and turns each finding into a warning annotation.
 It never fails the job because of findings. Inputs: `blot-package` (what to `pip install`; default
-`git+https://github.com/Sym-jay/Blot`, the latest code), `python-version` (default `3.13`) and `base-ref`
+`blot-git`, the latest PyPI release), `python-version` (default `3.13`) and `base-ref`
 (default: the pull request's base branch).
 
 ## Measure it on your repo
