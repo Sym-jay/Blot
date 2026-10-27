@@ -60,12 +60,14 @@ def _open_index(repo: str):
 
 
 def _cmd_check(args: argparse.Namespace) -> int:
-    from blot.diff import read_changes
+    from blot.diff import range_base, read_changes
 
     try:
         config = load_config(args.repo)
         store = _open_index(args.repo)
         changes = read_changes(args.repo, rev_range=args.range)
+        if args.range:  # removed lines are numbered as in the range's base, not as in HEAD
+            store.rev = range_base(args.repo, args.range)
         findings = [f for check in all_checks(config) for f in check.run(changes, store, config)]
     except Exception as exc:  # Blot's own failures must never block a commit
         print(f"blot: internal error, skipping checks ({exc.__class__.__name__}: {exc})", file=sys.stderr)

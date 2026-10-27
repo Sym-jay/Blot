@@ -145,3 +145,13 @@ def read_changes(repo: str, rev_range: str | None = None) -> list[FileChange]:
     args = ["diff", "-U0", "--no-color", "--no-ext-diff", "-M"]
     args.append(rev_range if rev_range else "--cached")
     return parse_unified_diff(run_git(repo, *args))
+
+
+def range_base(repo: str, rev_range: str) -> str:
+    """The commit `git diff <rev_range>` compares against: A for `A..B`, the merge base for `A...B`."""
+    if "..." in rev_range:
+        left, right = rev_range.split("...", 1)
+        return run_git(repo, "merge-base", left or "HEAD", right or "HEAD").strip()
+    if ".." in rev_range:
+        return rev_range.split("..", 1)[0] or "HEAD"
+    return rev_range

@@ -78,3 +78,25 @@ def test_removed_fix_traces_past_refactor(make_repo, capsys):
     # plain blame stops at the split; blot must cite the fix behind it
     assert finding["evidence"][0].startswith(sha("HEAD~1")[:7] + ' "Break reference cycle in App (fixes #3761)"')
     assert finding["evidence"][1].startswith("traced past refactor " + sha("HEAD")[:7])
+
+
+def test_check_range_reads_removed_lines_at_the_base(make_repo, capsys):
+    """In CI the PR's commits are already in the index and HEAD no longer has the removed line."""
+    from test_checks import AFTER, BEFORE, GUARD
+
+    repo = make_repo([("Add app", {"app.py": BEFORE}),
+                      ("Break reference cycle in App (fixes #3761)", {"app.py": AFTER})])
+    git = lambda *args: subprocess.run(["git", "-C", str(repo), *args], check=True, capture_output=True)  # noqa: E731
+    git("switch", "-q", "-c", "pr")
+    (repo / "app.py").write_text(AFTER.replace(GUARD, "self_ref = self"), encoding="utf-8")
+    git("commit", "-q", "-am", "Simplify App")
+    git("switch", "-q", "main")
+    (repo / "README.md").write_text("app\n", encoding="utf-8")
+    git("add", "README.md")
+    git("commit", "-q", "-m", "docs: readme")  # main moves on, so A..B and A...B differ
+    git("switch", "-q", "pr")
+
+    for rev_range in ("HEAD~1..HEAD", "main...pr"):
+        assert main(["--repo", str(repo), "check", "--range", rev_range, "--format", "json"]) == 0
+        found = [(f["check"], f["path"], f["line"]) for f in json.loads(capsys.readouterr().out)]
+        assert ("removed-fix", "app.py", 3) in found, rev_range

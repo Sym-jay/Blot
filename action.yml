@@ -1,0 +1,73 @@
+# Run Blot on a pull request and show its findings as warning annotations.
+# Usage (in a workflow triggered by pull_request):
+#   - uses: Sym-jay/Blot@main
+# See "Use in CI" in README.md.
+name: Blot
+description: History-aware checks on the commits of a pull request, shown as warning annotations
+author: Sym-jay
+branding:
+  icon: alert-triangle
+  color: orange
+
+inputs:
+  base-ref:
+    description: Branch the pull request merges into; the action checks origin/<base-ref>..HEAD
+    default: ${{ github.base_ref }}
+  python-version:
+    description: Python version used to run Blot
+    default: "3.13"
+  blot-package:
+    description: What to pip install (a pip requirement, e.g. blot-git==0.3.2)
+    default: git+https://github.com/Sym-jay/Blot
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Blot reads the whole history
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install Blot
+      shell: bash
+      env:
+        BLOT_PACKAGE: ${{ inputs.blot-package }}
+      run: python -m pip install --disable-pip-version-check "$BLOT_PACKAGE"
+
+    - name: Run Blot
+      shell: bash
+      env:
+        BASE_REF: ${{ inputs.base-ref }}
+        BLOT_FINDINGS: ${{ runner.temp }}/blot-findings.json
+        PYTHONUTF8: "1"  # commit subjects in findings may not be ASCII
+      run: |
+        if [[ -z "$BASE_REF" ]]; then
+          echo "::error title=blot::No base branch: run this action on pull_request, or set base-ref"
+          exit 1
+        fi
+        blot index
+        blot check --range "origin/${BASE_REF}..HEAD" --format json > "$BLOT_FINDINGS"
+        python - <<'PY'
+        # Turn blot's JSON findings into workflow annotations (::warning file=...,line=...::message).
+        import json, os
+
+        def esc(text, prop=False):
+            text = text.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+            return text.replace(":", "%3A").replace(",", "%2C") if prop else text
+
+        with open(os.environ["BLOT_FINDINGS"], encoding="utf-8") as f:
+            raw = f.read()
+        # blot check prints nothing on stdout when it hits an internal error (the reason is in the log above)
+        findings = json.loads(raw) if raw.strip() else []
+        for f in findings:
+            props = f"file={esc(f['path'], True)}"
+            if f.get("line"):
+                props += f",line={f['line']}"
+            props += f",title={esc('blot: ' + f['check'], True)}"
+            message = "\n".join([f["message"], *f.get("evidence", [])])
+            print(f"::warning {props}::{esc(message)}")
+        print(f"blot: {len(findings)} finding{'' if len(findings) == 1 else 's'}")
+        PY

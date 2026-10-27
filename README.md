@@ -79,6 +79,27 @@ blot index --github
 
 With the [GitHub CLI](https://cli.github.com) logged in, Blot fetches the titles and labels of the issues and PRs your fix commits mention, so warnings read `fixes #2935 "copy_current_request_context copies old session object"` (a real Flask issue) instead of a bare number. A `bug` label makes a commit count as a load-bearing fix; a fix-looking commit whose issues are only labelled `enhancement` or `documentation` is demoted. Refreshes only fetch what's new. Repos with GitHub Issues turned off (they track bugs elsewhere) are skipped.
 
+## Use in CI
+
+Run Blot on every pull request and see its findings as warnings on the changed lines:
+
+```yaml
+# .github/workflows/blot.yml
+name: Blot
+on: pull_request
+jobs:
+  blot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Sym-jay/Blot@main
+```
+
+The action checks out the pull request with its full history, installs Blot, runs `blot index` and
+`blot check --range origin/<base>..HEAD --format json`, and turns each finding into a warning annotation.
+It never fails the job because of findings. Inputs: `blot-package` (what to `pip install`; default
+`git+https://github.com/Sym-jay/Blot`, the latest code), `python-version` (default `3.13`) and `base-ref`
+(default: the pull request's base branch).
+
 ## Measure it on your repo
 
 ```bash
