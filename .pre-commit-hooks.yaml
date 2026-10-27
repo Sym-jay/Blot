@@ -1,6 +1,6 @@
 # Lets users of the pre-commit framework add blot with:
 #   - repo: https://github.com/Sym-jay/Blot
-#     rev: v0.3.2
+#     rev: v0.4.0
 #     hooks: [{id: blot}]
 # The first commit indexes the repo's history; later commits refresh the index incrementally.
 - id: blot

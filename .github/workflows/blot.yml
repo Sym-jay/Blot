@@ -1,0 +1,14 @@
+name: Blot on Blot
+
+# Runs this repo's own action (action.yml) on every pull request, installing Blot from the
+# pull request's code: it tests the action end to end and reviews Blot's history with Blot.
+on: pull_request
+
+jobs:
+  blot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          blot-package: .
