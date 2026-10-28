@@ -37,9 +37,11 @@ Labeled by hand: every warning for Flask, requests and Express; a sample for Dja
 - **Flask, 5 warnings, 3 useful.** The best: commit `cabda59` changed
   `bp_subdomain is None` to `is not None` on a line from fix `d7b6c1f` (#4834); a later commit had to
   fix `subdomain_matching=False` behavior. Noise: a line from a feature commit, a docstring.
-- **Express, 9 warnings, about 7 useful.** The best: commit `697547cd` **reverted the CVE-2024-51999
-  security patch**. Both `removed-fix` and `readded-bug` fired. Others: changes to code from fixes for
-  proxy handling (#2252), redirect encoding and charset handling.
+- **Express, 9 warnings, about 7 useful.** Commit `697547cd` reverted the CVE-2024-51999 patch the
+  same day, and both `removed-fix` and `readded-bug` fired on it. That revert was deliberate: the
+  advisory (GHSA-pj86-cfqh-vqx6) was later withdrawn, so this shows Blot pointing at a security fix
+  being undone, not a caught regression. Others: changes to code from fixes for proxy handling
+  (#2252), redirect encoding and charset handling.
 - **requests, 8 warnings, 1 useful** (dropping `chardet` from code added by fix #4102). The rest come
   from one mass reformat and one typing commit, which still slip through in a few lines.
 - **Django, 64 warnings.** Mostly fixes and CVE follow-ups that touch code from earlier fixes, e.g.

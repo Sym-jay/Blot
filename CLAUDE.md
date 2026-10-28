@@ -50,6 +50,5 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 - Released 0.4.0: checks, `why`, `--github`, bench/replay, parallel indexing, pre-commit framework
   support (`rev: v0.4.0`), GitHub Action (`uses: Sym-jay/Blot@v0.4.0`).
 - Launch: dev.to post published 2026-10-24; the CVE sentence there should mention the withdrawn advisory.
-  `bench/RESULTS.md` and the v0.2.0 notes still overstate that CVE example.
 - Open issues: #2–#6 (bench cases for Django, Express, React, requests, Flask).
 - Next: LinkedIn/Show HN, gather false-alarm reports, Django/React noise (~1.3 / 10 commits).

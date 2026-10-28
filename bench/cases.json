@@ -51,7 +51,7 @@
     "file": "lib/utils.js",
     "replace": ["plainObjects: true", "allowPrototypes: true"],
     "expect": {"check": "removed-fix", "warn": true, "commit": "2f64f68c"},
-    "notes": "Real history: 697547cd reverted the CVE-2024-51999 patch the same day. Found by blot bench --replay."
+    "notes": "Real history: 697547cd reverted the CVE-2024-51999 patch the same day (deliberately: the advisory was later withdrawn). Blot should still flag a security fix being undone. Found by blot bench --replay."
   },
   {
     "id": "express-cve-2024-51999-revert-readded",
