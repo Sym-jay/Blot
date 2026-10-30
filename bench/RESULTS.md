@@ -1,75 +1,82 @@
 # Bench results
 
-Measured 2026-10-22 with `blot bench`, on Windows 11, Python 3.12.
+Measured 2026-10-30 with `blot bench`, on Windows 11, Python 3.12.
 
-## Cases: 9/9 correct
+## Cases: 30/30 correct
 
 | Check | Cases | Precision | Recall |
 |---|---|---|---|
-| removed-fix | 6 (3 warn, 3 quiet) | 100% | 100% |
-| readded-bug | 2 (2 warn) | 100% | 100% |
-| forgot-related-file | 1 (1 quiet) | n/a | n/a |
+| removed-fix | 24 (16 warn, 8 quiet) | 100% | 100% |
+| readded-bug | 3 (3 warn) | 100% | 100% |
+| forgot-related-file | 3 (3 quiet) | n/a | n/a |
 
-Nine cases is a start, not a verdict. Each new case is a good first issue (see [README.md](README.md)).
+A quiet case now fails if its scripted edit can't be applied (it used to pass without running).
 
-## Replay: last 500 non-merge commits of 5 repos
+The 21 cases added in this round are real commits from the labelled replays below: each one replays
+that commit's own hunk on its parent. Quiet cases pin the noise patterns fixed here so they stay fixed.
+
+## Replay: last 500 non-merge commits of 5 repos, every warning labelled
 
 Each commit is checked as if it were being committed at that moment, using only the history before
-it. "Before" is Blot 0.1.0's rules; "after" is this release.
+it. Every warning was then labelled by hand as **useful** or **noise** (rules in
+[README.md](README.md#labels-precision-you-can-re-measure)); the labels live in [`labels/`](labels/),
+so these numbers can be re-measured after any rule change. "Before" is Blot 0.4.0; "after" is this
+release.
 
-| Repo | Commits | Before: warnings / 10 commits | After | Commits with a warning (after) | Avg check time |
-|---|---|---|---|---|---|
-| pallets/flask | 500 | 1.96 | **0.10** | 5 (1.0%) | 106 ms |
-| psf/requests | 500 | 1.12 | **0.16** | 3 (0.6%) | 52 ms |
-| expressjs/express | 498 | 1.00 | **0.18** | 7 (1.4%) | 49 ms |
-| django/django | 497 | 26.30 | **1.29** | 50 (10.1%) | 479 ms |
-| facebook/react | 483 | 10.00 | **1.30** | 39 (8.1%) | 821 ms |
+| Repo | Labelled at | Commits | Warnings / 10 commits, before → after | Precision, before → after |
+|---|---|---|---|---|
+| pallets/flask | `d086db856` | 500 | 0.10 → **0.08** | 3/5 (60%) → **3/4 (75%)** |
+| psf/requests | `611c6162c` | 500 | 0.16 → **0.16** | 2/8 (25%) → **2/8 (25%)** |
+| expressjs/express | `0dee2c52c` | 498 | 0.18 → **0.18** | 5/9 (56%) → **5/9 (56%)** |
+| django/django | `79502d084` | 497 | 1.29 → **1.19** | 40/64 (63%) → **40/59 (68%)** |
+| facebook/react | `9ffcb463b` | 483 | 1.26 → **0.60** | 7/61 (11%) → **7/29 (24%)** |
+| **All** | | 2,478 | 0.59 → **0.44** | 57/147 (39%) → **57/109 (52%)** |
 
-Target from the PRD: at most 1 warning per 10 commits. Three repos are well under; Django and React are
-slightly over. Check times are in-process (no Python startup) and grow with the size of the change.
-The last rule change (type hints that insert `None`) was re-measured only on requests; it can only
-remove warnings, so the other four numbers are upper bounds.
+The rule changes removed 38 warnings, all of them labelled noise; no useful warning was lost.
 
-## Were the warnings worth reading?
+**Against the PRD targets:** at most 1 warning per 10 commits is met everywhere except Django (1.19).
+Precision of 80% is **not** met: 52% overall, 68% on Django, where most warnings are fixes touching
+code from earlier fixes and CVEs.
 
-Labeled by hand: every warning for Flask, requests and Express; a sample for Django and React.
+### What a useful warning looks like
 
-- **Flask, 5 warnings, 3 useful.** The best: commit `cabda59` changed
-  `bp_subdomain is None` to `is not None` on a line from fix `d7b6c1f` (#4834); a later commit had to
-  fix `subdomain_matching=False` behavior. Noise: a line from a feature commit, a docstring.
-- **Express, 9 warnings, about 7 useful.** Commit `697547cd` reverted the CVE-2024-51999 patch the
-  same day, and both `removed-fix` and `readded-bug` fired on it. That revert was deliberate: the
-  advisory (GHSA-pj86-cfqh-vqx6) was later withdrawn, so this shows Blot pointing at a security fix
-  being undone, not a caught regression. Others: changes to code from fixes for proxy handling
-  (#2252), redirect encoding and charset handling.
-- **requests, 8 warnings, 1 useful** (dropping `chardet` from code added by fix #4102). The rest come
-  from one mass reformat and one typing commit, which still slip through in a few lines.
-- **Django, 64 warnings.** Mostly fixes and CVE follow-ups that touch code from earlier fixes, e.g.
-  `Fixed #37403 -- Fixed JSONField __in crash on SQLite` flagged for changing code from
-  `#37377 -- Fixed JSONField __in crash`. Useful context for a reviewer, though Django's maintainers
-  know their history well.
-- **React, 63 warnings.** About half are co-change warnings. Useful when a fix lands in one bundler
-  variant (`react-server-dom-webpack`) but not its mirrors (turbopack, parcel); noise for feature-flag
-  fork files, which are often edited separately on purpose.
+- Django `8fd29079e` relaxed the POST permission check that the CVE-2019-19118 fix added.
+- Django `7ff7fcc05` redid the `parse_header_parameters` simplification that an earlier commit had
+  reverted as a bug (#36520). Both `removed-fix` and `readded-bug` fired.
+- Flask `cabda59` changed `bp_subdomain is None` to `is not None` on a line from fix #4834; a later
+  commit had to fix the behaviour.
+- Express `697547cd` reverted the CVE-2024-51999 patch. That revert was deliberate (the advisory,
+  GHSA-pj86-cfqh-vqx6, was later withdrawn), so it is useful as "a security fix is being undone",
+  not as a caught regression.
 
-## What the replays changed
+### Noise this release removed
 
-Every noise pattern became a rule and, where possible, a bench case:
-
-| Noise | Fix |
+| Noise (warnings) | Fix |
 |---|---|
-| "This fixes #N" on features, refactors, docs (old Flask) | feature/refactor/docs subjects count as routine |
-| `Fixed #N -- Added ...` (Django's ticket-first style) | judge the text after `--` |
-| tests, docs, lock files, translations, CI config | skipped by default (`check-tests` / `check-docs` to opt in) |
-| code moved between files | not a removal or a re-add |
-| reformatting and type hints | a line whose tokens survive in order, with nothing logic-changing inserted, is kept |
-| imports, bare keywords, comments, docstrings | ignored |
-| co-change with hub files | the link must hold both ways (≥ 80% each direction) |
-| re-added lines matching fixes in other files | only fixes to the same file count |
+| React feature-flag forks, per-bundler and per-platform copies of one file (27) | co-change skips variants: same name stem and extension (`ReactFeatureFlags.native-fb.js` ↔ `ReactFeatureFlags.js`); `foo.c` ↔ `foo.h` still pair |
+| deleting a whole file (4) | `removed-fix` skips deleted files |
+| commits cited as fixes that weren't: `Fixed #21189: Cleaned up ...`, `Fixed #12882 - Moved ...`, `[DevTools] upgrade to Manifest V3`, `Change Flask.__init__ to accept ...`, error-message wording (6) | `Fixed #N:` / `Fixed #N -` ticket styles judged by their description; cleanups count as refactors; `[Tag]` prefixes and "change" subjects count as features; error messages are routine |
+| docstrings with `backticks` or (asides) (1) | they count as prose |
+
+### Noise still there (52 warnings)
+
+| Pattern | Warnings | Why there's no rule yet |
+|---|---|---|
+| co-change partner not needed (React) | 9 | **0 of 45 co-change warnings across all five repos were useful.** See below. |
+| renames, equivalent API swaps (`substr` → `slice`, `req.connection` → `req.socket`) | 11 | a rename and a switch to a different variable look the same on one line |
+| new argument or keyword argument on a fix's call | 3 | adding an argument can change behaviour |
+| formatter reflows with f-strings or joined lines (requests' Black commit) | 4 | dropping parentheses can change precedence |
+| deleting a legacy module or feature in pieces (React) | 6 | intentional, but only the commit message says so |
+| docstring lines that still read as code | 3 | needs to know it's inside a docstring, not just how the line looks |
+| other: code moved to another file, fix behaviour kept while restructuring, generic re-added lines | 16 | case by case |
+
+**`forgot-related-file` has shown no useful warning yet**: 0/45 before this release, 0/9 after. It
+stays on, because the remaining warnings are rare (React only), but it is the first candidate to
+become opt-in if real-world reports agree.
 
 ## Reproduce
 
 ```bash
-git clone https://github.com/pallets/flask && cd flask
-blot bench --replay 500 --json replay.json
+git clone https://github.com/pallets/flask && cd flask && git checkout d086db856
+blot bench --replay 500 --labels path/to/Blot/bench/labels/pallets-flask.json
 ```

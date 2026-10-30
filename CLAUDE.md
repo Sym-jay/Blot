@@ -12,7 +12,8 @@ always changes with another (`forgot-related-file`). Mascot: Sora the slime. Own
   - `classify.py` fix severity 0/1/2 + refactor detection: most precision lives here
   - `checks/` one file per check; `trace.py` blame that follows lines past refactor commits
   - `why.py`, `github.py` (`index --github` via `gh api graphql`), `bench.py` (cases + `--replay N`)
-- `bench/cases.json` scripted real-world cases (9/9); `bench/RESULTS.md` replay numbers
+- `bench/cases.json` scripted real-world cases (30/30); `bench/labels/` hand verdicts for every replay
+  warning on the 5 reference repos; `bench/RESULTS.md` replay numbers and precision
 - `action.yml` GitHub Action; `.github/workflows/blot.yml` runs it on Blot's own PRs
 - `assets/sora/build_sprites.py` and `assets/demo/make_demo.py` regenerate the mascot and demo GIF
 - `docs/PRD.md` roadmap; `docs/PYPI.md` is the PyPI page (no relative images there)
@@ -21,10 +22,13 @@ always changes with another (`forgot-related-file`). Mascot: Sora the slime. Own
 ```bash
 python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 .venv/Scripts/python -m pytest -q
-.venv/Scripts/blot bench --workdir <short path>     # must stay 9/9
+.venv/Scripts/blot bench --workdir <short path>     # must stay 30/30
 ```
-- Any change to `classify.py` or a check: run `blot bench --replay 500` on Flask/Express/Django
-  clones, read the warnings, add a bench case for each new noise pattern. Target ≤ 1 warning / 10 commits.
+- Any change to `classify.py` or a check: on each of the 5 clones, checked out at the `head` in its
+  labels file, run `blot bench --replay 500 --labels bench/labels/<repo>.json --update-labels`. Keep a
+  rule only if precision rises and no `useful` warning disappears; label any new `null` verdicts
+  (rules in bench/README.md). Targets: ≤ 1 warning / 10 commits, precision ≥ 80%.
+- Clones live in `%LOCALAPPDATA%\Temp\wl\replay\` (labelled heads) and `...\wl\bench\` (case runs).
 - `blot check` must stay under ~500 ms and never fail a commit because of Blot's own errors.
 
 ## Release (each release so far followed this)
@@ -51,4 +55,6 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
   support (`rev: v0.4.0`), GitHub Action (`uses: Sym-jay/Blot@v0.4.0`).
 - Launch: dev.to post published 2026-10-24; the CVE sentence there should mention the withdrawn advisory.
 - Open issues: #2–#6 (bench cases for Django, Express, React, requests, Flask).
-- Next: LinkedIn/Show HN, gather false-alarm reports, Django/React noise (~1.3 / 10 commits).
+- Precision (2026-10-30, unreleased): 57/109 useful (52%); Django 1.19 / 10 commits, others ≤ 0.6.
+  `forgot-related-file` has 0 useful warnings in 45 labelled; candidate to become opt-in.
+- Next: remaining noise (renames, API swaps, added arguments, docstrings) in bench/RESULTS.md.

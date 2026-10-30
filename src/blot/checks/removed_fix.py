@@ -27,7 +27,8 @@ class RemovedFix(Check):
         # a line that reappears anywhere in the change was moved, not removed
         moved = {normalize_line(text) for c in changes for _, text in c.added}
         for change in changes:
-            if change.old_path is None or not change.removed or is_skipped(change.old_path, config):
+            # deleting a whole file is a decision nobody makes by accident
+            if change.old_path is None or change.deleted or not change.removed or is_skipped(change.old_path, config):
                 continue
             # reformatted or extended in place (quotes, wrapping, type hints): not removed either
             kept = KeptLines([text for _, text in change.added])

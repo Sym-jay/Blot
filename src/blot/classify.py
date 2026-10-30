@@ -44,19 +44,20 @@ _WEAK_DEFECT = re.compile(r"\b(?:hang(?:s|ing)?|timeout|broken|incorrect(?:ly)?|
 _ROUTINE = re.compile(
     r"\b(?:typo|typos|lint|linter|flake8|pylint|mypy|ruff|eslint|format(?:ting)?|style|"
     r"whitespace|spelling|docs?|document\w*|docstrings?|comments?|readme|changelog|warning|ci|build|"
-    r"examples?|tutorial|tests?|testing|translations?|workflows?|note|mention\w*|advice|wording|sentence|links?|gramma\w*)\b",
+    r"examples?|tutorial|tests?|testing|translations?|workflows?|note|mention\w*|advice|wording|sentence|links?|gramma\w*|"
+    r"error messages?)\b",
     re.IGNORECASE,
 )
 # Subjects that describe new or changed behaviour. Old projects often wrote "This fixes #N" on
 # feature requests too ("Added template_global, fixes #657"), so these only count as routine.
 _FEATURE_START = re.compile(
-    r"^\s*(?:add(?:ed|s|ing)?|implement\w*|introduc\w*|support\w*|convert\w*|updat\w*|upgrad\w*|"
+    r"^\s*(?:\[[^\]]+\]\s*)?(?:add(?:ed|s|ing)?|implement\w*|introduc\w*|support\w*|convert\w*|updat\w*|upgrad\w*|chang\w*|"
     r"new|allow\w*|enabl\w*|expos\w*|deprecat\w*|remov\w*|drop\w*|bump\w*|releas\w*|merg\w*)\b",
     re.IGNORECASE,
 )
 _STARTS_WITH_FIX = re.compile(r"^\s*(?:\[\w+\]\s*)?(?:fix(?:e[sd]|ing)?|bug(?:fix)?|hotfix)\b", re.IGNORECASE)
 _REFACTOR = re.compile(
-    r"\b(?:move[sd]?|moving|split|splits|splitting|rename[sd]?|renaming|reorganiz\w*|"
+    r"\b(?:move[sd]?|moving|split|splits|splitting|rename[sd]?|renaming|reorganiz\w*|clean(?:s|ed|ing)? up|cleanup|"
     r"restructur\w*|refactor\w*|reformat\w*|extract(?:ed)?|black|prettier|isort|clang-format)\b",
     re.IGNORECASE,
 )
@@ -65,7 +66,7 @@ _REFACTOR = re.compile(
 # Ticket-first conventions put the issue before the real description: Django writes
 # "Fixed #12090 -- Added admin actions..." even for features, so judge the description instead.
 _TICKET_PREFIX = re.compile(
-    rf"^\s*(?:fix(?:e[sd])?|refs?|closes?|resolves?)\s+{_ISSUE}(?:\s*,\s*{_ISSUE})*\s*--\s+(?P<desc>.+)$",
+    rf"^\s*(?:fix(?:e[sd])?|refs?|closes?|resolves?)\s+{_ISSUE}(?:\s*,\s*{_ISSUE})*\s*(?P<sep>--?|:)\s+(?P<desc>.+)$",
     re.IGNORECASE,
 )
 _REPAIR_START = re.compile(
@@ -74,14 +75,15 @@ _REPAIR_START = re.compile(
 )
 
 
-def _ticket_severity(subject: str, desc: str) -> int:
+def _ticket_severity(subject: str, desc: str, sep: str) -> int:
     if _DEFECT.search(subject):  # includes CVE IDs in the ticket part
         return 2
     if _ROUTINE.search(desc) or _FEATURE_START.search(desc) or _REFACTOR.search(desc):
         return 1
     if _STARTS_WITH_FIX.search(desc) or _REPAIR_START.search(desc) or _WEAK_DEFECT.search(desc) or _FIX_WORD.search(desc):
         return 2
-    return 1  # closes a ticket, but nothing says it repaired a bug
+    # Django's "--" prefixes every ticket, fixes or not; "Fix #2935: Copy session..." is a fix
+    return 1 if sep == "--" else 2
 
 
 def fix_severity(commit: CommitInfo, issue_labels: list[str] | None = None) -> int:
@@ -90,7 +92,7 @@ def fix_severity(commit: CommitInfo, issue_labels: list[str] | None = None) -> i
         return 2
     ticket = _TICKET_PREFIX.match(subject)
     if ticket:
-        return _ticket_severity(subject, ticket.group("desc"))
+        return _ticket_severity(subject, ticket.group("desc"), ticket.group("sep"))
     fixish = bool(_FIX_WORD.search(subject) or _FIX_ISSUE.search(text))
     if _ROUTINE.search(subject):  # docs/tests/style work, even when it mentions a defect word
         return 1 if fixish else 0

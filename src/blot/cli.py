@@ -117,6 +117,14 @@ def _cmd_bench(args: argparse.Namespace) -> int:
                 print(f"blot bench: replayed {i}/{total} commits", file=sys.stderr)
 
         result = bench.replay(args.repo, args.replay, config, max_files=args.max_files, progress=progress)
+        if args.labels:
+            labels = bench.load_labels(args.labels)
+            if labels["head"] and not result.head.startswith(labels["head"]):
+                print(f"blot bench: labels were made at {labels['head'][:9]}, this replay is at "
+                      f"{result.head[:9]}; check out that commit to compare like with like", file=sys.stderr)
+            new = bench.apply_labels(result, labels)
+            if args.update_labels:
+                bench.save_labels(args.labels, labels, result, new)
         print(bench.format_replay(result), end="")
         if args.json:
             with open(args.json, "w", encoding="utf-8") as f:
@@ -163,6 +171,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--workdir", default=None, help="where case repos are cloned (default: ~/.cache/blot-bench)")
     p.add_argument("--replay", type=int, metavar="N", help="instead: re-check the last N commits of --repo")
     p.add_argument("--max-files", type=int, default=50, help="replay: skip commits touching more files")
+    p.add_argument("--labels", metavar="FILE", help="replay: hand labels (useful/noise) to report precision")
+    p.add_argument("--update-labels", action="store_true", help="replay: add unlabelled warnings to --labels FILE")
     p.add_argument("--json", metavar="FILE", help="also write full results as JSON")
     p.add_argument("--quiet", action="store_true", help="no progress output")
     p.set_defaults(func=_cmd_bench)

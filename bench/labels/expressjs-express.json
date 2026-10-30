@@ -1,0 +1,96 @@
+{
+ "repo": "C:\\Users\\N Jayasankar\\AppData\\Local/Temp/wl/replay/express",
+ "head": "0dee2c52c7c873498f8ed7d8ee4ddd0a04d3ada8",
+ "labels": [
+  {
+   "sha": "a0276c6c9",
+   "subject": "Use mime-types for file to content type mapping",
+   "check": "removed-fix",
+   "path": "lib/response.js",
+   "line": 642,
+   "cited": "ae0b630",
+   "verdict": "useful",
+   "reason": "replaces the charset logic from fix #3303 with mime.contentType"
+  },
+  {
+   "sha": "490f1a173",
+   "subject": "lint: remove deprecated String.prototype.substr",
+   "check": "removed-fix",
+   "path": "lib/router/index.js",
+   "line": 291,
+   "cited": "99a369f",
+   "verdict": "noise",
+   "reason": "equivalent API swap (substr -> slice)"
+  },
+  {
+   "sha": "0def9bb65",
+   "subject": "Add \"root\" option to res.download",
+   "check": "removed-fix",
+   "path": "lib/response.js",
+   "line": 585,
+   "cited": "1150ca7",
+   "verdict": "useful",
+   "reason": "changes the path resolution that fix #2284 relied on"
+  },
+  {
+   "sha": "0867302dd",
+   "subject": "Prevent open redirect allow list bypass due to encodeurl",
+   "check": "removed-fix",
+   "path": "lib/response.js",
+   "line": 915,
+   "cited": "76eaa32",
+   "verdict": "useful",
+   "reason": "changes the URL encoding from fix #2897 (security follow-up)"
+  },
+  {
+   "sha": "89f198c6a",
+   "subject": "lib: use req.socket over deprecated req.connection (#6705)",
+   "check": "removed-fix",
+   "path": "lib/request.js",
+   "line": 285,
+   "cited": "11c74d7",
+   "verdict": "noise",
+   "reason": "equivalent API swap (req.connection -> req.socket)"
+  },
+  {
+   "sha": "89f198c6a",
+   "subject": "lib: use req.socket over deprecated req.connection (#6705)",
+   "check": "removed-fix",
+   "path": "lib/request.js",
+   "line": 290,
+   "cited": "20aa126",
+   "verdict": "noise",
+   "reason": "equivalent API swap (req.connection -> req.socket)"
+  },
+  {
+   "sha": "697547cde",
+   "subject": "Revert \"sec: security patch for CVE-2024-51999\"",
+   "check": "removed-fix",
+   "path": "lib/utils.js",
+   "line": 269,
+   "cited": "2f64f68",
+   "verdict": "useful",
+   "reason": "reverts the CVE-2024-51999 patch (deliberate; advisory later withdrawn)"
+  },
+  {
+   "sha": "697547cde",
+   "subject": "Revert \"sec: security patch for CVE-2024-51999\"",
+   "check": "readded-bug",
+   "path": "lib/utils.js",
+   "line": 269,
+   "cited": "2f64f68",
+   "verdict": "useful",
+   "reason": "reverts the CVE-2024-51999 patch (deliberate; advisory later withdrawn)"
+  },
+  {
+   "sha": "a08da78e6",
+   "subject": "deps: bump qs minimum to 6.15.2 (#7305)",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 55,
+   "cited": "925a1df",
+   "verdict": "noise",
+   "reason": "raises the dependency floor past the fix's version, keeping the fix"
+  }
+ ]
+}

@@ -191,7 +191,7 @@ The user either reads the linked issue and adjusts the change, or commits anyway
 | 1 | **M1: index + config + hook installer** | `blot index` builds the DB on Flask in under 10 s; `install-hook` is safe with existing hooks |
 | 2 | **M2: three checks** | All unit tests pass, including the "trace past refactor" test (currently skipped) |
 | 3 | **M3: `why` + `--github` + output polish** ✅ | The Flask case prints the 2020 fix, traced past the 2023 refactor; `--github` adds issue titles and labels |
-| 4 | **M4: bench + launch** (bench ✅, launch pending) | 30 bench cases, precision ≥ 80%, PyPI release, README GIF, Show HN / r/Python post |
+| 4 | **M4: bench + launch** (30 cases ✅, replay precision 52% of the 80% target, launch pending) | 30 bench cases, precision ≥ 80%, PyPI release, README GIF, Show HN / r/Python post |
 
 ## 13. Open questions
 

@@ -36,6 +36,14 @@ def commit(subject, body="", files=1, added=5, removed=5, renames=0):
         ("Fixed #30000 -- Fixed crash when saving a model with a NULL primary key.", "", 2),
         ("Fixed CVE-2026-15830 -- Mitigated potential DoS via nested geometry collections.", "", 2),
         ("Fix #2935: Copy current session object in copy_current_request_context", "", 2),
+        # older ticket separators, judged by the description too
+        ("Fixed #21189: Cleaned up usage of bare except clauses.", "", 1),
+        ("Fixed #12882 - Moved the admin's jQuery into our own namespace to lower the risk of a clash", "", 1),
+        ("Refs #18823 -- Corrected field name in an m2m manager error message.", "", 1),
+        # tagged and "change" subjects that add behaviour
+        ("[DevTools] upgrade to Manifest V3 (#25145)", "fixes #24522", 1),
+        ("Change Flask.__init__ to accept two new keyword arguments (#1560)", "fixes #1559", 1),
+        ("[Fizz] Fix crash when capturing the callsite of a stalled use()", "", 2),
     ],
 )
 def test_fix_severity(subject, body, expected):

@@ -1,0 +1,56 @@
+{
+ "repo": "C:\\Users\\N Jayasankar\\AppData\\Local/Temp/wl/replay/flask",
+ "head": "d086db856be187255b8ec61ef409357393020f32",
+ "labels": [
+  {
+   "sha": "0b2f809f9",
+   "subject": "access names as proxies directly",
+   "check": "removed-fix",
+   "path": "src/flask/globals.py",
+   "line": 31,
+   "cited": "faa1c71",
+   "verdict": "useful",
+   "reason": "removes the no-context RuntimeError lookup helpers added by fix #105"
+  },
+  {
+   "sha": "cabda5935",
+   "subject": "Ensure that blueprint subdomains suffix-chain",
+   "check": "removed-fix",
+   "path": "src/flask/blueprints.py",
+   "line": 461,
+   "cited": "d7b6c1f",
+   "verdict": "useful",
+   "reason": "logic edit (is None -> is not None) of the nested-subdomain fix #4834; a follow-up fix was needed"
+  },
+  {
+   "sha": "0ec7f713d",
+   "subject": "Split the App and Blueprint into Sansio and IO parts",
+   "check": "removed-fix",
+   "path": "src/flask/sansio/app.py",
+   "line": 479,
+   "cited": "00d6e33",
+   "verdict": "noise",
+   "reason": "cited commit is a feature (new __init__ kwargs), line only moved by the sansio split"
+  },
+  {
+   "sha": "2c3160304",
+   "subject": "update env file precedence",
+   "check": "removed-fix",
+   "path": "src/flask/cli.py",
+   "line": 729,
+   "cited": "db8cb31",
+   "verdict": "useful",
+   "reason": "changes load_dotenv's return behaviour that fix #2937 made consistent"
+  },
+  {
+   "sha": "c2705ffd9",
+   "subject": "merge app and request context",
+   "check": "removed-fix",
+   "path": "src/flask/ctx.py",
+   "line": 348,
+   "cited": "e08bcf9",
+   "verdict": "noise",
+   "reason": "docstring rewording"
+  }
+ ]
+}

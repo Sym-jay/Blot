@@ -151,13 +151,66 @@ def format_replay(result: ReplayResult) -> str:
         f"  warnings per 10 commits: {per10:.2f}",
         "  by check: " + ", ".join(f"{k} {v}" for k, v in result.by_check().items()),
     ]
+    findings = [f for c in result.commits for f in c.findings]
+    if any("verdict" in f for f in findings):
+        useful = sum(f["verdict"] == "useful" for f in findings)
+        noise = sum(f["verdict"] == "noise" for f in findings)
+        lines.append(f"  precision: {useful} useful / {useful + noise} labelled "
+                     f"({100 * useful / max(useful + noise, 1):.0f}%), unlabelled: {len(findings) - useful - noise}")
     for c in result.warned:
         lines.append(f"\n  {c.sha[:9]} {c.subject}")
         for f in c.findings:
             where = f"{f['path']}:{f['line']}" if f["line"] else f["path"]
-            lines.append(f"    ! {f['check']}  {where}")
+            mark = f"  [{f['verdict'] or '?'}]" if "verdict" in f else ""
+            lines.append(f"    ! {f['check']}  {where}{mark}")
             lines.extend(f"      {e}" for e in f["evidence"])
     return "\n".join(lines) + "\n"
+
+
+# --- replay labels ------------------------------------------------------------------------
+# bench/labels/<owner>-<repo>.json stores a hand verdict ("useful" / "noise") per replay warning,
+# so precision can be re-measured after every rule change. A label matches on (commit, check,
+# path, what the warning cites), not the line number, so it survives small line drift.
+
+
+def _cited(finding: dict) -> str:
+    """The commit a warning cites, or for co-change the partner file it names."""
+    first = finding["evidence"][0] if finding["evidence"] else finding["message"]
+    return first.split()[0]
+
+
+def _key(sha: str, check: str, path: str, cited: str) -> tuple[str, str, str, str]:
+    return sha[:9], check, path, cited[:7]
+
+
+def load_labels(path: str) -> dict:
+    if not os.path.exists(path):
+        return {"repo": "", "head": "", "labels": []}
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def apply_labels(result: ReplayResult, labels: dict) -> list[dict]:
+    """Set each finding's "verdict" (None when unlabelled); return entries for the unlabelled ones."""
+    known = {_key(lb["sha"], lb["check"], lb["path"], lb["cited"]): lb["verdict"] for lb in labels["labels"]}
+    new = []
+    for c in result.commits:
+        for f in c.findings:
+            key = _key(c.sha, f["check"], f["path"], _cited(f))
+            f["verdict"] = known.get(key)
+            if key not in known:
+                new.append({"sha": c.sha[:9], "subject": c.subject, "check": f["check"], "path": f["path"],
+                            "line": f["line"], "cited": _cited(f), "verdict": None, "reason": ""})
+    return new
+
+
+def save_labels(path: str, labels: dict, result: ReplayResult, new: list[dict]) -> None:
+    labels = {**labels, "repo": labels["repo"] or result.repo, "head": labels["head"] or result.head,
+              "labels": labels["labels"] + new}
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(labels, f, indent=1)
+        f.write("\n")
 
 
 # --- cases ------------------------------------------------------------------------------
@@ -171,9 +224,12 @@ class CaseResult:
     warned: bool
     cited_right_commit: bool
     detail: str = ""
+    applied: bool = True  # the scripted edit could be made; a quiet case that never ran proves nothing
 
     @property
     def correct(self) -> bool:
+        if not self.applied:
+            return False
         return self.cited_right_commit if self.expected_warn else not self.warned
 
 
@@ -202,9 +258,11 @@ def run_case(case: dict, workdir: str, config: Config) -> CaseResult:
     file = os.path.join(repo, path)
     with open(file, encoding="utf-8", newline="") as f:
         text = f.read()
+    if "\r\n" in text:  # checked out with CRLF (git on Windows); cases are written with LF
+        old, new = old.replace("\n", "\r\n"), new.replace("\n", "\r\n")
     if text.count(old) != 1:
         return CaseResult(case["id"], expect["check"], expect["warn"], False, False,
-                          f"edit text found {text.count(old)} times in {path} (needs exactly 1)")
+                          f"edit text found {text.count(old)} times in {path} (needs exactly 1)", applied=False)
     try:
         with open(file, "w", encoding="utf-8", newline="") as f:
             f.write(text.replace(old, new))
@@ -219,7 +277,8 @@ def run_case(case: dict, workdir: str, config: Config) -> CaseResult:
 
     want = expect.get("commit", "")
     cited = bool(findings) and any(e.startswith(want[:7]) for f in findings for e in f.evidence) if want else bool(findings)
-    detail = "; ".join(e for f in findings for e in f.evidence[:1]) or "no warning"
+    # co-change findings carry no evidence, so fall back to the message's first line
+    detail = "; ".join((f.evidence or [f.message])[0].split("\n")[0] for f in findings) or "no warning"
     return CaseResult(case["id"], expect["check"], expect["warn"], bool(findings), cited, detail)
 
 
