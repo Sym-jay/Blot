@@ -1,6 +1,6 @@
 # Run Blot on a pull request and show its findings as warning annotations.
 # Usage (in a workflow triggered by pull_request):
-#   - uses: Sym-jay/Blot@v0.4.0
+#   - uses: Sym-jay/Blot@v0.5.0
 # See "Use in CI" in README.md.
 name: Blot
 description: History-aware checks on the commits of a pull request, shown as warning annotations
