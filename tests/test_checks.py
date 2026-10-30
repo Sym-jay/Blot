@@ -122,3 +122,19 @@ def test_cochange_quiet_when_partner_deleted(make_repo):
     subprocess.run(["git", "-C", str(repo), "commit", "-q", "-m", "Drop migrations"], check=True)
     stage(repo, {"model.py": "m = 99\n"})
     assert run_check(ForgotRelatedFile(), repo) == []
+
+
+def test_cochange_skips_variants_of_the_same_file():
+    from blot.checks.cochange import is_variant
+
+    assert is_variant("shared/ReactFeatureFlags.js", "shared/forks/ReactFeatureFlags.native-fb.js")
+    assert is_variant("dom-esm/server/Node.js", "dom-webpack/server/Node.js")
+    assert is_variant("validate/eslintrc.rn.js", "validate/eslintrc.fb.js")
+    assert not is_variant("src/foo.c", "include/foo.h")  # source and header still pair
+    assert not is_variant("model.py", "migration.py")
+
+
+def test_removed_fix_quiet_when_the_whole_file_is_deleted(make_repo):
+    repo = make_repo(FIXED)
+    subprocess.run(["git", "-C", str(repo), "rm", "-q", "app.py"], check=True)
+    assert run_check(RemovedFix(), repo) == []

@@ -1,0 +1,616 @@
+{
+ "repo": "C:\\Users\\N Jayasankar\\AppData\\Local/Temp/wl/replay/react",
+ "head": "9ffcb463b0ab01a42e781d4dc2e00f3a1b97a188",
+ "labels": [
+  {
+   "sha": "583e20033",
+   "subject": "[DevTools] Enable minimal support in pages with `sandbox` Content-Security-Policy (#35208)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-extensions/src/main/reactPolling.js",
+   "line": 30,
+   "cited": "6f952ed",
+   "verdict": "noise",
+   "reason": "equivalent API swap (inspectedWindow.eval -> helper)"
+  },
+  {
+   "sha": "41b3e9a67",
+   "subject": "[Fizz] Push a stalled use() to the ownerStack/debugTask (#35226)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server/src/ReactFizzThenable.js",
+   "line": null,
+   "cited": "packages/react-server/src/ReactFlightThenable.js",
+   "verdict": "noise",
+   "reason": "partner not changed afterwards for this reason"
+  },
+  {
+   "sha": "a49952b30",
+   "subject": "Properly clean up gesture Animations (#35559)",
+   "check": "removed-fix",
+   "path": "packages/react-dom-bindings/src/client/ReactFiberConfigDOM.js",
+   "line": 2558,
+   "cited": "61331f3",
+   "verdict": "useful",
+   "reason": "logic edit of the condition from the Mobile Safari crash fix #35337"
+  },
+  {
+   "sha": "03613cd68",
+   "subject": "[compiler] Improve snap usability (#35537)",
+   "check": "removed-fix",
+   "path": "compiler/packages/snap/src/runner-watch.ts",
+   "line": 210,
+   "cited": "70194be",
+   "verdict": "noise",
+   "reason": "test-runner key bindings reworked"
+  },
+  {
+   "sha": "699abc89c",
+   "subject": "[flags] make enableComponentPerformanceTrack static everywhere (#35629)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "e32c12612",
+   "subject": "[flags] Turn on `enableAsyncDebugInfo` everywhere (#35683)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+   "line": null,
+   "cited": "packages/shared/ReactFeatureFlags.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "e32c12612",
+   "subject": "[flags] Turn on `enableAsyncDebugInfo` everywhere (#35683)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+   "line": null,
+   "cited": "packages/shared/ReactFeatureFlags.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "e32c12612",
+   "subject": "[flags] Turn on `enableAsyncDebugInfo` everywhere (#35683)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+   "line": null,
+   "cited": "packages/shared/ReactFeatureFlags.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "e32c12612",
+   "subject": "[flags] Turn on `enableAsyncDebugInfo` everywhere (#35683)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+   "line": null,
+   "cited": "packages/shared/ReactFeatureFlags.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "f84ce5a45",
+   "subject": "[flags] Turn on `enableViewTransition` in OSS `react-test-renderer` (#35684)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+   "line": null,
+   "cited": "packages/shared/ReactFeatureFlags.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "95ffd6cd9",
+   "subject": "Disable parallel transitions in canary (#35709)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/ReactFeatureFlags.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "2dd9b7cf7",
+   "subject": "[Flight] Fix debug channel flag in Node.js server renderToPipeableStream (#35724)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server-dom-esm/src/server/ReactFlightDOMServerNode.js",
+   "line": null,
+   "cited": "packages/react-server-dom-webpack/src/server/ReactFlightDOMServerNode.js",
+   "verdict": "noise",
+   "reason": "same file for another bundler, not changed with it afterwards"
+  },
+  {
+   "sha": "2dd9b7cf7",
+   "subject": "[Flight] Fix debug channel flag in Node.js server renderToPipeableStream (#35724)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server-dom-turbopack/src/server/ReactFlightDOMServerNode.js",
+   "line": null,
+   "cited": "packages/react-server-dom-webpack/src/server/ReactFlightDOMServerNode.js",
+   "verdict": "noise",
+   "reason": "same file for another bundler, not changed with it afterwards"
+  },
+  {
+   "sha": "61db53c17",
+   "subject": "[Native] Add RCTSelectableText as a recognized Text component (#35780)",
+   "check": "forgot-related-file",
+   "path": "packages/react-native-renderer/src/ReactFiberConfigNative.js",
+   "line": null,
+   "cited": "packages/react-test-renderer/src/ReactFiberConfigTestHost.js",
+   "verdict": "noise",
+   "reason": "partner not changed afterwards for this reason"
+  },
+  {
+   "sha": "2e0927dc7",
+   "subject": "[compiler] Remove local CompilerError accumulators, emit directly to env.recordError() (#35882)",
+   "check": "removed-fix",
+   "path": "compiler/packages/babel-plugin-react-compiler/src/HIR/BuildHIR.ts",
+   "line": 3671,
+   "cited": "4633972",
+   "verdict": "noise",
+   "reason": "error reporting refactor, same error raised"
+  },
+  {
+   "sha": "c0060cf2a",
+   "subject": "[DevTools] Enable support for the React DevTools Client to connect to different host/port/path  (#35886)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools/preload.js",
+   "line": 39,
+   "cited": "aef9303",
+   "verdict": "noise",
+   "reason": "cited commit is an upgrade commit; return value extended"
+  },
+  {
+   "sha": "aac12ce59",
+   "subject": "[DevTools] chore: extract pure functions from fiber/renderer.js (#35924)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-shared/src/backend/fiber/renderer.js",
+   "line": 2102,
+   "cited": "3dc9a8a",
+   "verdict": "noise",
+   "reason": "code moved to another file"
+  },
+  {
+   "sha": "7b5b561bd",
+   "subject": "[DevTools] Ignore new production renderers if we already use \"worse\" versions of React on a page (#35994)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-extensions/src/contentScripts/installHook.js",
+   "line": 71,
+   "cited": "6dbccb9",
+   "verdict": "noise",
+   "reason": "cited commit is a platform upgrade, not a bug fix"
+  },
+  {
+   "sha": "1e3152365",
+   "subject": "Enable Fragment Ref flags across builds (#36026)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/ReactFeatureFlags.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "1e3152365",
+   "subject": "Enable Fragment Ref flags across builds (#36026)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "1e3152365",
+   "subject": "Enable Fragment Ref flags across builds (#36026)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "1e3152365",
+   "subject": "Enable Fragment Ref flags across builds (#36026)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "d594643e5",
+   "subject": "Turn on enableViewTransition for RN FB build (#36106)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "d594643e5",
+   "subject": "Turn on enableViewTransition for RN FB build (#36106)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "8b2e903a7",
+   "subject": "[DevTools] chore: extract getInternalReactConstants (#35986)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-shared/src/backend/fiber/renderer.js",
+   "line": 288,
+   "cited": "a9d63f3",
+   "verdict": "noise",
+   "reason": "code moved to another file"
+  },
+  {
+   "sha": "568244232",
+   "subject": "[react-native-renderer] EventTarget-based event dispatching (#36253)",
+   "check": "forgot-related-file",
+   "path": "scripts/rollup/validate/eslintrc.rn.js",
+   "line": null,
+   "cited": "scripts/rollup/validate/eslintrc.fb.js",
+   "verdict": "noise",
+   "reason": "per-platform lint config, set per platform on purpose"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "removed-fix",
+   "path": "packages/react-native-renderer/src/ReactFiberConfigFabric.js",
+   "line": 69,
+   "cited": "146df7c",
+   "verdict": "noise",
+   "reason": "deleting a whole legacy renderer (deliberate removal)"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "removed-fix",
+   "path": "packages/react-native-renderer/src/ReactFiberConfigFabric.js",
+   "line": 324,
+   "cited": "b72ed69",
+   "verdict": "noise",
+   "reason": "deleting a whole legacy renderer (deliberate removal)"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "removed-fix",
+   "path": "packages/react-native-renderer/src/ReactFiberConfigNative.js",
+   "line": 27,
+   "cited": "146df7c",
+   "verdict": "noise",
+   "reason": "file deleted (legacy renderer removal)"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "removed-fix",
+   "path": "packages/react-native-renderer/src/ReactFiberConfigNative.js",
+   "line": 244,
+   "cited": "ab757e9",
+   "verdict": "noise",
+   "reason": "file deleted (legacy renderer removal)"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "removed-fix",
+   "path": "packages/react-native-renderer/src/ReactNativeFiberInspector.js",
+   "line": 26,
+   "cited": "146df7c",
+   "verdict": "noise",
+   "reason": "deleting a whole legacy renderer (deliberate removal)"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "removed-fix",
+   "path": "packages/react-native-renderer/src/ReactNativePublicCompat.js",
+   "line": 236,
+   "cited": "6639ed3",
+   "verdict": "noise",
+   "reason": "deleting a whole legacy renderer (deliberate removal)"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "removed-fix",
+   "path": "packages/react-native-renderer/src/ReactNativeRenderer.js",
+   "line": 223,
+   "cited": "146df7c",
+   "verdict": "noise",
+   "reason": "file deleted (legacy renderer removal)"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "removed-fix",
+   "path": "scripts/flow/react-native-host-hooks.js",
+   "line": 175,
+   "cited": "b72ed69",
+   "verdict": "noise",
+   "reason": "deleting a whole legacy renderer (deliberate removal)"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "forgot-related-file",
+   "path": "packages/react-native-renderer/src/ReactFiberConfigNative.js",
+   "line": null,
+   "cited": "packages/react-test-renderer/src/ReactFiberConfigTestHost.js",
+   "verdict": "noise",
+   "reason": "partner not changed afterwards for this reason"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "forgot-related-file",
+   "path": "packages/react-native-renderer/src/ReactNativeRenderer.js",
+   "line": null,
+   "cited": "packages/react-native-renderer/src/ReactFabric.js",
+   "verdict": "noise",
+   "reason": "partner not changed afterwards for this reason"
+  },
+  {
+   "sha": "37fa36ced",
+   "subject": "[Fizz] Fix crash when capturing the callsite of a stalled use() of a Flight chunk that was rejected in the meantime (#36544)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server/src/ReactFizzThenable.js",
+   "line": null,
+   "cited": "packages/react-server/src/ReactFlightThenable.js",
+   "verdict": "noise",
+   "reason": "partner not changed afterwards for this reason"
+  },
+  {
+   "sha": "5123b063a",
+   "subject": "[Fast Refresh] Find and remount wrapper edits behind lazy() (#36965)",
+   "check": "removed-fix",
+   "path": "packages/react-reconciler/src/ReactFiberBeginWork.js",
+   "line": 137,
+   "cited": "eb343c7",
+   "verdict": "useful",
+   "reason": "replaces the remount logic from fix #36950"
+  },
+  {
+   "sha": "5123b063a",
+   "subject": "[Fast Refresh] Find and remount wrapper edits behind lazy() (#36965)",
+   "check": "removed-fix",
+   "path": "packages/react-reconciler/src/ReactFiberHotReloading.js",
+   "line": 81,
+   "cited": "eb343c7",
+   "verdict": "useful",
+   "reason": "removes the remount helper from fix #36950"
+  },
+  {
+   "sha": "b740af251",
+   "subject": "Clean up flag to enable microtasks in RN (#37021)",
+   "check": "forgot-related-file",
+   "path": "scripts/rollup/validate/eslintrc.rn.js",
+   "line": null,
+   "cited": "scripts/rollup/validate/eslintrc.fb.js",
+   "verdict": "noise",
+   "reason": "per-platform lint config, set per platform on purpose"
+  },
+  {
+   "sha": "81e442eaf",
+   "subject": "[FlightReply] Performance improvements when decoding (#37090)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server-dom-turbopack/src/server/ReactFlightDOMServerNode.js",
+   "line": null,
+   "cited": "packages/react-server-dom-esm/src/server/ReactFlightDOMServerNode.js",
+   "verdict": "noise",
+   "reason": "same file for another bundler, not changed with it afterwards"
+  },
+  {
+   "sha": "81e442eaf",
+   "subject": "[FlightReply] Performance improvements when decoding (#37090)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server-dom-webpack/src/server/ReactFlightDOMServerNode.js",
+   "line": null,
+   "cited": "packages/react-server-dom-esm/src/server/ReactFlightDOMServerNode.js",
+   "verdict": "noise",
+   "reason": "same file for another bundler, not changed with it afterwards"
+  },
+  {
+   "sha": "0f42eac25",
+   "subject": "[DevTools] Reset extension backend on pagehide (#37155)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-extensions/src/contentScripts/proxy.js",
+   "line": 34,
+   "cited": "bdfaeed",
+   "verdict": "noise",
+   "reason": "equivalent refactor (clearInterval -> helper)"
+  },
+  {
+   "sha": "cbb046ab9",
+   "subject": "[Fiber] Warn for Conditional Use of use() Based on Cache (#37104)",
+   "check": "removed-fix",
+   "path": "packages/react-reconciler/src/ReactFiberHooks.js",
+   "line": 1103,
+   "cited": "a8f971b",
+   "verdict": "noise",
+   "reason": "adds an argument, fix behaviour kept"
+  },
+  {
+   "sha": "c7cab6664",
+   "subject": "[DevTools] Remove Timeline profiler tab, suggest React Performance tracks (#37186)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-shared/src/devtools/views/Profiler/Profiler.js",
+   "line": 158,
+   "cited": "2e1c884",
+   "verdict": "noise",
+   "reason": "removing a whole feature (Timeline tab)"
+  },
+  {
+   "sha": "1d4758e0f",
+   "subject": "[flags] Enable conditional use warning for experimental release channel (#37203)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/ReactFeatureFlags.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "1d4758e0f",
+   "subject": "[flags] Enable conditional use warning for experimental release channel (#37203)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "77ed3f545",
+   "subject": "[Flight/Fizz] Stop the caller's signal from retaining a finished render (#37315)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server-dom-parcel/src/client/ReactFlightDOMClientEdge.js",
+   "line": null,
+   "cited": "packages/react-server-dom-parcel/src/client/ReactFlightDOMClientNode.js",
+   "verdict": "noise",
+   "reason": "partner not changed afterwards for this reason"
+  },
+  {
+   "sha": "77ed3f545",
+   "subject": "[Flight/Fizz] Stop the caller's signal from retaining a finished render (#37315)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server-dom-turbopack/src/client/ReactFlightDOMClientEdge.js",
+   "line": null,
+   "cited": "packages/react-server-dom-turbopack/src/client/ReactFlightDOMClientNode.js",
+   "verdict": "noise",
+   "reason": "partner not changed afterwards for this reason"
+  },
+  {
+   "sha": "77ed3f545",
+   "subject": "[Flight/Fizz] Stop the caller's signal from retaining a finished render (#37315)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server-dom-webpack/src/client/ReactFlightDOMClientEdge.js",
+   "line": null,
+   "cited": "packages/react-server-dom-turbopack/src/client/ReactFlightDOMClientNode.js",
+   "verdict": "noise",
+   "reason": "partner not changed afterwards for this reason"
+  },
+  {
+   "sha": "ff7445e63",
+   "subject": "[DOM] Update HTML parser rules for new select parser (#34804)",
+   "check": "removed-fix",
+   "path": "packages/react-dom-bindings/src/client/validateDOMNesting.js",
+   "line": 312,
+   "cited": "ca16c26",
+   "verdict": "useful",
+   "reason": "changes the select nesting rules from fix #27632"
+  },
+  {
+   "sha": "0d69e20fc",
+   "subject": "[flags] Enable conditional `use()` warning in React's Canary builds (#37491)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/ReactFeatureFlags.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "0d69e20fc",
+   "subject": "[flags] Enable conditional `use()` warning in React's Canary builds (#37491)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "6c0e1047e",
+   "subject": "[Flight] Keep an element pending while a referenced row is resolving (#37542)",
+   "check": "removed-fix",
+   "path": "packages/react-client/src/ReactFlightClient.js",
+   "line": 1177,
+   "cited": "8f00437",
+   "verdict": "useful",
+   "reason": "rewrites the debug-info release from fix #37481"
+  },
+  {
+   "sha": "1d34f91df",
+   "subject": "[RN] Move RN globals to RN private interface module (#37550)",
+   "check": "forgot-related-file",
+   "path": "scripts/rollup/validate/eslintrc.rn.js",
+   "line": null,
+   "cited": "scripts/rollup/validate/eslintrc.fb.js",
+   "verdict": "noise",
+   "reason": "per-platform lint config, set per platform on purpose"
+  },
+  {
+   "sha": "71f725593",
+   "subject": "[Flight] Server References for arbitrary object types (#37636)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server-dom-turbopack/src/server/ReactFlightDOMServerEdge.js",
+   "line": null,
+   "cited": "packages/react-server-dom-webpack/src/server/ReactFlightDOMServerEdge.js",
+   "verdict": "noise",
+   "reason": "same file for another bundler, not changed with it afterwards"
+  },
+  {
+   "sha": "71f725593",
+   "subject": "[Flight] Server References for arbitrary object types (#37636)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server-dom-turbopack/src/server/ReactFlightDOMServerNode.js",
+   "line": null,
+   "cited": "packages/react-server-dom-webpack/src/server/ReactFlightDOMServerNode.js",
+   "verdict": "noise",
+   "reason": "same file for another bundler, not changed with it afterwards"
+  },
+  {
+   "sha": "278794d7d",
+   "subject": "Fix: Infinite loop caused by uDV + error recovery (#37739)",
+   "check": "removed-fix",
+   "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+   "line": 1363,
+   "cited": "c3555f0",
+   "verdict": "useful",
+   "reason": "rewrites the recovery condition from fix #36911"
+  },
+  {
+   "sha": "3915aeb18",
+   "subject": "[flags] clean up enableAsyncDebugInfo (#37772)",
+   "check": "forgot-related-file",
+   "path": "packages/react-server/src/ReactFlightThenable.js",
+   "line": null,
+   "cited": "packages/react-server/src/ReactFizzThenable.js",
+   "verdict": "noise",
+   "reason": "partner not changed afterwards for this reason"
+  },
+  {
+   "sha": "791476cb6",
+   "subject": "[flags] turn on enableComponentPerformanceTrack in www tests (#37775)",
+   "check": "forgot-related-file",
+   "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+   "line": null,
+   "cited": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+   "verdict": "noise",
+   "reason": "feature-flag fork files are set per build on purpose"
+  },
+  {
+   "sha": "99c106c43",
+   "subject": "Revert sync abort replay restoration pending a complete fix (#37852)",
+   "check": "removed-fix",
+   "path": "packages/react-server/src/ReactFizzServer.js",
+   "line": 5370,
+   "cited": "07dde64",
+   "verdict": "useful",
+   "reason": "reverts fix #37710 pending a complete fix (deliberate)"
+  }
+ ]
+}

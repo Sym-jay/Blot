@@ -28,13 +28,16 @@ _CODE_HINT = re.compile(
     r"[=()\[\]{};<>_]|\w\.\w|^(?:if|elif|else|for|while|return|def|class|with|assert|raise|try|except|"
     r"const|let|var|function|import|export|switch|case|throw)\b"
 )
+_PROSE_ASIDE = re.compile(r"`[^`]+`|(?<=\s)\(\w[\w\s,]*\)")
 
 
 def is_prose_line(normalized: str) -> bool:
     """Comments and docstring text: a fix that reworded them is not what Blot guards."""
     if normalized.startswith(_COMMENT_START):
         return True
-    return len(normalized.split()) >= 5 and not _CODE_HINT.search(normalized)
+    # docstrings quote names in backticks and add asides in parentheses: "nested (WKT) or `x`"
+    text = _PROSE_ASIDE.sub(" ", normalized)
+    return len(text.split()) >= 5 and not _CODE_HINT.search(text)
 
 
 _TOKEN = re.compile(r"\w+|[^\w\s]")
@@ -112,6 +115,7 @@ class FileChange:
     old_path: str | None  # path before the change (None for new files)
     removed: list[tuple[int, str]] = field(default_factory=list)  # (old line number, text)
     added: list[tuple[int, str]] = field(default_factory=list)  # (new line number, text)
+    deleted: bool = False  # the whole file is removed
 
 
 def parse_unified_diff(text: str) -> list[FileChange]:
@@ -125,7 +129,7 @@ def parse_unified_diff(text: str) -> list[FileChange]:
             old_path = None if line == "--- /dev/null" else line[6:]  # strip "--- a/"
         elif line.startswith("+++ "):
             new_path = old_path if line == "+++ /dev/null" else line[6:]  # strip "+++ b/"
-            current = FileChange(path=new_path or "", old_path=old_path)
+            current = FileChange(path=new_path or "", old_path=old_path, deleted=line == "+++ /dev/null")
             changes.append(current)
         elif current is None:
             continue

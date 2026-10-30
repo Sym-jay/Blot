@@ -1,0 +1,646 @@
+{
+ "repo": "C:\\Users\\N Jayasankar\\AppData\\Local/Temp/wl/replay/django",
+ "head": "79502d08405dbf24efa39e8731320f31035b9e9c",
+ "labels": [
+  {
+   "sha": "c9b65e278",
+   "subject": "Fixed #35971 -- Added RemoteUserMiddleware.get_username() helper.",
+   "check": "removed-fix",
+   "path": "django/contrib/auth/middleware.py",
+   "line": 145,
+   "cited": "0147222",
+   "verdict": "noise",
+   "reason": "rename of the called helper (_get_username -> get_username)"
+  },
+  {
+   "sha": "57b23d152",
+   "subject": "Fixed #37053 -- Added validate=True to base64.b64decode() calls.",
+   "check": "removed-fix",
+   "path": "django/http/multipartparser.py",
+   "line": 234,
+   "cited": "20472aa",
+   "verdict": "noise",
+   "reason": "cited commit is a cleanup (bare except clauses), not a bug fix"
+  },
+  {
+   "sha": "1085e5e17",
+   "subject": "Fixed #36300 -- Restored the semantic where RemoteUserMiddleware.header corresponds to request.META under ASGI.",
+   "check": "removed-fix",
+   "path": "django/contrib/auth/middleware.py",
+   "line": 241,
+   "cited": "0147222",
+   "verdict": "useful",
+   "reason": "logic edit of the ASGI header condition from fix #37079"
+  },
+  {
+   "sha": "335c6d012",
+   "subject": "Fixed #37095 -- Checked maximum redirect lengths against percent-encoded URLs.",
+   "check": "removed-fix",
+   "path": "django/http/response.py",
+   "line": 645,
+   "cited": "c880530",
+   "verdict": "useful",
+   "reason": "changes the redirect length check from the CVE-2025-64458 fix"
+  },
+  {
+   "sha": "335c6d012",
+   "subject": "Fixed #37095 -- Checked maximum redirect lengths against percent-encoded URLs.",
+   "check": "readded-bug",
+   "path": "django/http/response.py",
+   "line": 649,
+   "cited": "c880530",
+   "verdict": "useful",
+   "reason": "re-adds the urlsplit(str(...)) call the CVE-2025-64458 fix removed"
+  },
+  {
+   "sha": "952f42e95",
+   "subject": "Refs CVE-2025-64460 -- Removed workaround for minidom document checks.",
+   "check": "removed-fix",
+   "path": "django/core/serializers/xml_serializer.py",
+   "line": 19,
+   "cited": "50efb71",
+   "verdict": "useful",
+   "reason": "removes the workaround added by the CVE-2025-64460 fix (deliberate)"
+  },
+  {
+   "sha": "f30acb184",
+   "subject": "Fixed #12090 -- Added admin actions to the admin change form.",
+   "check": "removed-fix",
+   "path": "django/contrib/admin/options.py",
+   "line": 1039,
+   "cited": "dfbd9ca",
+   "verdict": "noise",
+   "reason": "mechanical adaptation to a new Action type, fix behaviour kept"
+  },
+  {
+   "sha": "f30acb184",
+   "subject": "Fixed #12090 -- Added admin actions to the admin change form.",
+   "check": "removed-fix",
+   "path": "django/contrib/admin/options.py",
+   "line": 1046,
+   "cited": "bb15cee",
+   "verdict": "noise",
+   "reason": "cited commit is a broad improvement commit, not a bug fix"
+  },
+  {
+   "sha": "0f581cd29",
+   "subject": "Fixed #35514 -- Implemented dictionary-based MAILERS.",
+   "check": "removed-fix",
+   "path": "django/core/mail/backends/locmem.py",
+   "line": 31,
+   "cited": "64060d1",
+   "verdict": "noise",
+   "reason": "fix behaviour kept (still deep-copies), statement split up"
+  },
+  {
+   "sha": "0f581cd29",
+   "subject": "Fixed #35514 -- Implemented dictionary-based MAILERS.",
+   "check": "removed-fix",
+   "path": "django/utils/log.py",
+   "line": 143,
+   "cited": "c6e0ded",
+   "verdict": "useful",
+   "reason": "replaces the fail_silently connection from fix #19637 with a try/except"
+  },
+  {
+   "sha": "fbe902d4a",
+   "subject": "Refs #37097 -- Removed compilation-time order clearing on combined queries on Oracle.",
+   "check": "removed-fix",
+   "path": "django/db/models/sql/compiler.py",
+   "line": 650,
+   "cited": "14d026c",
+   "verdict": "useful",
+   "reason": "removes the ordering clearing that fix #30572 added"
+  },
+  {
+   "sha": "3e4e0db66",
+   "subject": "Fixed #36825 -- Extended admin templates so CSP nonce is included if available.",
+   "check": "removed-fix",
+   "path": "django/contrib/admin/templates/admin/base.html",
+   "line": 14,
+   "cited": "12385b4",
+   "verdict": "noise",
+   "reason": "adds a template attribute, fix untouched"
+  },
+  {
+   "sha": "3e4e0db66",
+   "subject": "Fixed #36825 -- Extended admin templates so CSP nonce is included if available.",
+   "check": "removed-fix",
+   "path": "django/contrib/admin/templates/admin/change_list.html",
+   "line": 14,
+   "cited": "1fcf747",
+   "verdict": "noise",
+   "reason": "cited commit is a namespace move, not a bug fix"
+  },
+  {
+   "sha": "8fd29079e",
+   "subject": "Refs #12090 -- Aligned admin change form and list minimum permission to run action.",
+   "check": "removed-fix",
+   "path": "django/contrib/admin/options.py",
+   "line": 2065,
+   "cited": "11c5e06",
+   "verdict": "useful",
+   "reason": "relaxes the POST permission check from the CVE-2019-19118 fix"
+  },
+  {
+   "sha": "8f84f2693",
+   "subject": "Fixed #37019 -- Updated login() and logout() to set request.auser.",
+   "check": "removed-fix",
+   "path": "django/contrib/auth/__init__.py",
+   "line": 252,
+   "cited": "a32c707",
+   "verdict": "useful",
+   "reason": "rewrites the user clearing from fix #37017"
+  },
+  {
+   "sha": "ba70e1bcd",
+   "subject": "Fixed #37103 -- Made HttpRequest.body handle malformed CONTENT_LENGTH.",
+   "check": "removed-fix",
+   "path": "django/http/request.py",
+   "line": 410,
+   "cited": "953c238",
+   "verdict": "useful",
+   "reason": "changes the size check input in the CVE-2026-33034 fix"
+  },
+  {
+   "sha": "d618d7ae4",
+   "subject": "Fixed CVE-2026-8404 -- Used Cache-Control directives case-insensitively in UpdateCacheMiddleware.",
+   "check": "removed-fix",
+   "path": "django/middleware/cache.py",
+   "line": 105,
+   "cited": "ed7c1a5",
+   "verdict": "useful",
+   "reason": "changes the Cache-Control check from fix #36560"
+  },
+  {
+   "sha": "3328078a0",
+   "subject": "Refs CVE-2026-6873 -- Defaulted SIGNED_COOKIE_LEGACY_SALT_FALLBACK transitional setting to False.",
+   "check": "removed-fix",
+   "path": "django/conf/global_settings.py",
+   "line": 564,
+   "cited": "70d3651",
+   "verdict": "useful",
+   "reason": "flips the transitional setting from the CVE-2026-6873 fix (deliberate)"
+  },
+  {
+   "sha": "57c8c8b10",
+   "subject": "Fixed #36984 -- Made inline formset error messages respect delete_confirmation_max_display.",
+   "check": "removed-fix",
+   "path": "django/contrib/admin/options.py",
+   "line": 2774,
+   "cited": "3ea0c7d",
+   "verdict": "noise",
+   "reason": "limits displayed items, fix behaviour untouched"
+  },
+  {
+   "sha": "526b1b414",
+   "subject": "Refs CVE-2026-48587 -- Added helper to properly split header values.",
+   "check": "removed-fix",
+   "path": "django/utils/cache.py",
+   "line": 335,
+   "cited": "42aa0b3",
+   "verdict": "useful",
+   "reason": "changes the Vary header parsing from the CVE-2026-48587 fix"
+  },
+  {
+   "sha": "142b881ce",
+   "subject": "Refs #36560, CVE-2026-35193 -- Replaced substring check on cache-control directives in UpdateCacheMiddleware.",
+   "check": "removed-fix",
+   "path": "django/middleware/cache.py",
+   "line": 110,
+   "cited": "ed7c1a5",
+   "verdict": "useful",
+   "reason": "changes the directive check from fix #36560"
+  },
+  {
+   "sha": "142b881ce",
+   "subject": "Refs #36560, CVE-2026-35193 -- Replaced substring check on cache-control directives in UpdateCacheMiddleware.",
+   "check": "removed-fix",
+   "path": "django/middleware/cache.py",
+   "line": 140,
+   "cited": "a2faa8e",
+   "verdict": "useful",
+   "reason": "changes the Authorization check from the CVE-2026-35193 fix"
+  },
+  {
+   "sha": "e8cff2921",
+   "subject": "Fixed #37102 -- Used **kwargs instead of *kwargs in CountsDict.__init__().",
+   "check": "removed-fix",
+   "path": "django/utils/html.py",
+   "line": 281,
+   "cited": "d666457",
+   "verdict": "useful",
+   "reason": "corrects a bug in code from the CVE-2024-38875 fix"
+  },
+  {
+   "sha": "c6f81b383",
+   "subject": "Fixed #33185 -- Fixed sqlmigrate crash for RenameModel with a self-referential foreign key.",
+   "check": "readded-bug",
+   "path": "django/db/backends/base/schema.py",
+   "line": 2036,
+   "cited": "69b7d4b",
+   "verdict": "noise",
+   "reason": "common line (table_name = model._meta.db_table) re-added in an unrelated function"
+  },
+  {
+   "sha": "f1440a752",
+   "subject": "Fixed #36969, #35371 -- Reduced false positives in strings during collectstatic.",
+   "check": "removed-fix",
+   "path": "django/contrib/staticfiles/storage.py",
+   "line": 63,
+   "cited": "6993c9d",
+   "verdict": "useful",
+   "reason": "changes the regex from fix #35553"
+  },
+  {
+   "sha": "094344863",
+   "subject": "Fixed #37152 -- Raised ValueError when Bcc is used in EmailMessage headers.",
+   "check": "removed-fix",
+   "path": "django/core/mail/message.py",
+   "line": 364,
+   "cited": "b909853",
+   "verdict": "noise",
+   "reason": "equivalent refactor (name.lower() -> precomputed header)"
+  },
+  {
+   "sha": "f3e66a32a",
+   "subject": "Refs #37139 -- Renamed helper inside _is_pk_set().",
+   "check": "removed-fix",
+   "path": "django/db/models/base.py",
+   "line": 713,
+   "cited": "a2348c8",
+   "verdict": "noise",
+   "reason": "rename of a local helper"
+  },
+  {
+   "sha": "b461519bf",
+   "subject": "Refs #36560, CVE-2026-35193 -- Recognized qualified cache-control directives.",
+   "check": "removed-fix",
+   "path": "django/middleware/cache.py",
+   "line": 59,
+   "cited": "142b881",
+   "verdict": "noise",
+   "reason": "import line"
+  },
+  {
+   "sha": "b461519bf",
+   "subject": "Refs #36560, CVE-2026-35193 -- Recognized qualified cache-control directives.",
+   "check": "removed-fix",
+   "path": "django/middleware/cache.py",
+   "line": 109,
+   "cited": "d618d7a",
+   "verdict": "useful",
+   "reason": "rewrites the cache-control logic from the CVE-2026-8404 fix"
+  },
+  {
+   "sha": "b461519bf",
+   "subject": "Refs #36560, CVE-2026-35193 -- Recognized qualified cache-control directives.",
+   "check": "removed-fix",
+   "path": "django/middleware/cache.py",
+   "line": 113,
+   "cited": "ed7c1a5",
+   "verdict": "useful",
+   "reason": "rewrites the cache-control logic from fix #36560"
+  },
+  {
+   "sha": "56050acb9",
+   "subject": "Fixed #37170 -- Applied the no-argument form of sensitive_post_parameters to MultiValueDict.",
+   "check": "removed-fix",
+   "path": "django/views/debug.py",
+   "line": 214,
+   "cited": "45e55b9",
+   "verdict": "useful",
+   "reason": "rewrites the sensitive POST filtering from fix #14614"
+  },
+  {
+   "sha": "e28c2a9a0",
+   "subject": "Fixed #36621 -- Fixed arrow buttons position in admin filter_vertical widget.",
+   "check": "removed-fix",
+   "path": "django/contrib/admin/static/admin/css/widgets.css",
+   "line": 244,
+   "cited": "8e84d9c",
+   "verdict": "useful",
+   "reason": "changes the CSS from the filter_vertical visual fix #25365"
+  },
+  {
+   "sha": "65a9f1419",
+   "subject": "Fixed #36864 -- Supported modules and submodules in import_string().",
+   "check": "removed-fix",
+   "path": "django/db/backends/base/creation.py",
+   "line": 386,
+   "cited": "6a59637",
+   "verdict": "useful",
+   "reason": "removes the ImportError handling that fix #35402 added"
+  },
+  {
+   "sha": "d8cedcab5",
+   "subject": "Refs #37203 -- Escaped introspection error comments in inspectdb.",
+   "check": "removed-fix",
+   "path": "django/core/management/commands/inspectdb.py",
+   "line": 126,
+   "cited": "4c18a8a",
+   "verdict": "useful",
+   "reason": "changes the escaping of error output from fix #14098"
+  },
+  {
+   "sha": "c2517faff",
+   "subject": "Fixed #37198 -- Fixed content_disposition_header() quoting of filenames ending with newlines.",
+   "check": "removed-fix",
+   "path": "django/utils/http.py",
+   "line": 423,
+   "cited": "8914b57",
+   "verdict": "useful",
+   "reason": "changes the regex anchor from fix #36023"
+  },
+  {
+   "sha": "ca14173f9",
+   "subject": "Fixed #37240 -- Fixed simplify_regex() with multiple unnamed groups.",
+   "check": "removed-fix",
+   "path": "django/urls/utils.py",
+   "line": 142,
+   "cited": "f0ef0c4",
+   "verdict": "useful",
+   "reason": "logic edit of simplify_regex from fix #26621"
+  },
+  {
+   "sha": "ea303dee4",
+   "subject": "Fixed #37236 -- Allowed altering spatial indexes on RasterField.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/db/backends/postgis/schema.py",
+   "line": 85,
+   "cited": "f8cc928",
+   "verdict": "useful",
+   "reason": "widens the type check from fix #35074"
+  },
+  {
+   "sha": "f1949c1f9",
+   "subject": "Fixed CVE-2026-15307 -- Blocked raster strings and dicts in spatial lookups.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/db/models/fields.py",
+   "line": 176,
+   "cited": "9bb1b4b",
+   "verdict": "noise",
+   "reason": "structural edit (elif -> if) next to an unrelated check"
+  },
+  {
+   "sha": "d2e59b77f",
+   "subject": "Fixed CVE-2026-15830 -- Mitigated potential DoS via nested geometry collections.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/forms/fields.py",
+   "line": 46,
+   "cited": "dd65607",
+   "verdict": "noise",
+   "reason": "adds a keyword argument, fix behaviour (SRID) kept"
+  },
+  {
+   "sha": "d2e59b77f",
+   "subject": "Fixed CVE-2026-15830 -- Mitigated potential DoS via nested geometry collections.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/geos/geometry.py",
+   "line": 117,
+   "cited": "a413ef2",
+   "verdict": "noise",
+   "reason": "adds a parameter, fix untouched"
+  },
+  {
+   "sha": "d2e59b77f",
+   "subject": "Fixed CVE-2026-15830 -- Mitigated potential DoS via nested geometry collections.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/geos/prototypes/io.py",
+   "line": 157,
+   "cited": "32e0117",
+   "verdict": "noise",
+   "reason": "diff alignment: a new method inserted above the cited line"
+  },
+  {
+   "sha": "d2e59b77f",
+   "subject": "Fixed CVE-2026-15830 -- Mitigated potential DoS via nested geometry collections.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/geos/prototypes/io.py",
+   "line": 173,
+   "cited": "f3822d4",
+   "verdict": "useful",
+   "reason": "rewrites the str/bytes handling from fix #34026"
+  },
+  {
+   "sha": "cef2346ab",
+   "subject": "Fixed #37239 -- Cleared stale db_default when pk comes from related object.",
+   "check": "removed-fix",
+   "path": "django/db/models/base.py",
+   "line": 1298,
+   "cited": "7cba92e",
+   "verdict": "useful",
+   "reason": "changes the empty-pk check from fix #32332"
+  },
+  {
+   "sha": "464a5e184",
+   "subject": "Fixed #37154, #37149 -- Switched from Selenium to Playwright for integration testing.",
+   "check": "removed-fix",
+   "path": "django/contrib/admin/tests.py",
+   "line": 57,
+   "cited": "f18b087",
+   "verdict": "noise",
+   "reason": "test infrastructure swap (Selenium -> Playwright)"
+  },
+  {
+   "sha": "8d1c67346",
+   "subject": "Fixed #37309 -- Used _is_pk_set() in Model.__eq__.",
+   "check": "removed-fix",
+   "path": "django/db/models/base.py",
+   "line": 651,
+   "cited": "6af05e7",
+   "verdict": "useful",
+   "reason": "changes the no-pk check in __eq__ from the 2013 fix"
+  },
+  {
+   "sha": "0751d5fed",
+   "subject": "Fixed #37311 -- Prevented consumption of rhs iterators in annotation lookups.",
+   "check": "removed-fix",
+   "path": "django/db/models/lookups.py",
+   "line": 309,
+   "cited": "4f138fe",
+   "verdict": "useful",
+   "reason": "changes what the loop from fix #22288 iterates"
+  },
+  {
+   "sha": "026b005f3",
+   "subject": "Refs #37293 -- Updated deprecation docs for calendar-based warning names.",
+   "check": "removed-fix",
+   "path": "django/utils/deprecation.py",
+   "line": 264,
+   "cited": "f42b89f",
+   "verdict": "noise",
+   "reason": "docstring example"
+  },
+  {
+   "sha": "0398417c5",
+   "subject": "Fixed #36523 -- Added django.utils.module_loading.qualname() helper.",
+   "check": "removed-fix",
+   "path": "django/urls/resolvers.py",
+   "line": 498,
+   "cited": "974942a",
+   "verdict": "useful",
+   "reason": "replaces the callback naming that fix #33955 restored"
+  },
+  {
+   "sha": "abb9c04bd",
+   "subject": "Fixed #36629 -- Added missing \"Choose all\" and \"Remove all\" buttons in admin m2m filter_vertical widget.",
+   "check": "removed-fix",
+   "path": "django/contrib/admin/static/admin/css/widgets.css",
+   "line": 244,
+   "cited": "e28c2a9",
+   "verdict": "useful",
+   "reason": "changes the CSS from fix #36621 again"
+  },
+  {
+   "sha": "97c38590a",
+   "subject": "Fixed false positive in func_supports_parameter() for non-keyword args.",
+   "check": "removed-fix",
+   "path": "django/utils/inspect.py",
+   "line": 90,
+   "cited": "5628980",
+   "verdict": "useful",
+   "reason": "changes func_supports_parameter from fix #31732"
+  },
+  {
+   "sha": "581deb940",
+   "subject": "Fixed #37339 -- Allowed ipaddress objects in GenericIPAddressField.",
+   "check": "removed-fix",
+   "path": "django/db/models/fields/__init__.py",
+   "line": 2374,
+   "cited": "dc2bfae",
+   "verdict": "noise",
+   "reason": "cited commit is a lint fix (undefined names), not a behaviour fix"
+  },
+  {
+   "sha": "80ea222c8",
+   "subject": "Fixed #37167 -- Allowed email.headerregistry.Address objects as email addresses.",
+   "check": "removed-fix",
+   "path": "django/core/mail/message.py",
+   "line": 569,
+   "cited": "b909853",
+   "verdict": "useful",
+   "reason": "changes the header joining from fix #35033"
+  },
+  {
+   "sha": "fabce9437",
+   "subject": "Fixed #37377 -- Fixed JSONField __in crash/wrong result for Value() primitives.",
+   "check": "readded-bug",
+   "path": "django/db/models/fields/json.py",
+   "line": 444,
+   "cited": "af84cfb",
+   "verdict": "noise",
+   "reason": "generic lines (compile/process) re-added in a new branch"
+  },
+  {
+   "sha": "c88b304cc",
+   "subject": "Fixed CVE-2026-77050 -- Prevented memory exhaustion in get_supported_language_variant().",
+   "check": "removed-fix",
+   "path": "django/utils/translation/trans_real.py",
+   "line": 524,
+   "cited": "9e97922",
+   "verdict": "useful",
+   "reason": "replaces the DoS truncation from the CVE-2024-39614 fix (deliberate)"
+  },
+  {
+   "sha": "7ff7fcc05",
+   "subject": "Fixed CVE-2026-84429 -- Simplified parse_header_parameters by leveraging stdlib's Message.",
+   "check": "removed-fix",
+   "path": "django/utils/http.py",
+   "line": 348,
+   "cited": "424e0d8",
+   "verdict": "useful",
+   "reason": "redoes the simplification that fix #36520 reverted"
+  },
+  {
+   "sha": "7ff7fcc05",
+   "subject": "Fixed CVE-2026-84429 -- Simplified parse_header_parameters by leveraging stdlib's Message.",
+   "check": "readded-bug",
+   "path": "django/utils/http.py",
+   "line": 367,
+   "cited": "424e0d8",
+   "verdict": "useful",
+   "reason": "re-adds the Message() code that fix #36520 removed"
+  },
+  {
+   "sha": "ebcb13b32",
+   "subject": "Fixed CVE-2026-87890 -- Blocked bytes in spatial lookups.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/db/models/fields.py",
+   "line": 224,
+   "cited": "f1949c1",
+   "verdict": "useful",
+   "reason": "extends the check from the CVE-2026-15307 fix"
+  },
+  {
+   "sha": "ebcb13b32",
+   "subject": "Fixed CVE-2026-87890 -- Blocked bytes in spatial lookups.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/gdal/raster/source.py",
+   "line": 37,
+   "cited": "f1949c1",
+   "verdict": "noise",
+   "reason": "docstring"
+  },
+  {
+   "sha": "62ef9d40c",
+   "subject": "Refs CVE-2026-15830 -- Fixed WKB geometry collection limit bypasses.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/geos/geometry.py",
+   "line": 766,
+   "cited": "d2e59b7",
+   "verdict": "noise",
+   "reason": "docstring"
+  },
+  {
+   "sha": "62ef9d40c",
+   "subject": "Refs CVE-2026-15830 -- Fixed WKB geometry collection limit bypasses.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/geos/prototypes/io.py",
+   "line": 178,
+   "cited": "d2e59b7",
+   "verdict": "useful",
+   "reason": "removes the regex builder from the CVE-2026-15830 fix"
+  },
+  {
+   "sha": "62ef9d40c",
+   "subject": "Refs CVE-2026-15830 -- Fixed WKB geometry collection limit bypasses.",
+   "check": "readded-bug",
+   "path": "django/contrib/gis/geos/prototypes/io.py",
+   "line": 356,
+   "cited": "f3822d4",
+   "verdict": "useful",
+   "reason": "re-adds hex decoding for str input that fix #34026 removed"
+  },
+  {
+   "sha": "1b4d021b6",
+   "subject": "Fixed #37403 -- Fixed JSONField __in crash on SQLite with Value(None) expressions.",
+   "check": "removed-fix",
+   "path": "django/db/models/fields/json.py",
+   "line": 435,
+   "cited": "fabce94",
+   "verdict": "noise",
+   "reason": "equivalent refactor (precomputed is_value)"
+  },
+  {
+   "sha": "bef1986b9",
+   "subject": "Fixed #37118 -- Added variable support to the {% now %} template tag.",
+   "check": "removed-fix",
+   "path": "django/template/defaulttags.py",
+   "line": 1200,
+   "cited": "6ae393d",
+   "verdict": "useful",
+   "reason": "rewrites the quoting handling from fix #15092"
+  },
+  {
+   "sha": "c07486b98",
+   "subject": "Fixed #32980 -- Optimized ManyRelatedManager.__init__().",
+   "check": "removed-fix",
+   "path": "django/db/models/fields/related_descriptors.py",
+   "line": 1111,
+   "cited": "b8741c0",
+   "verdict": "noise",
+   "reason": "cited commit is an error-message wording fix"
+  }
+ ]
+}

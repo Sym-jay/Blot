@@ -1,0 +1,86 @@
+{
+ "repo": "C:\\Users\\N Jayasankar\\AppData\\Local/Temp/wl/replay/requests",
+ "head": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+ "labels": [
+  {
+   "sha": "2ed84f55b",
+   "subject": "Switch LGPL'd chardet for MIT licensed charset_normalizer (#5797)",
+   "check": "removed-fix",
+   "path": "requests/packages.py",
+   "line": 6,
+   "cited": "588e8f7",
+   "verdict": "useful",
+   "reason": "drops chardet from the module aliasing that fix #4102 added"
+  },
+  {
+   "sha": "2a6f290bc",
+   "subject": "Add automatic code formatting to Requests (#6095)",
+   "check": "removed-fix",
+   "path": "requests/auth.py",
+   "line": 200,
+   "cited": "6931bd6",
+   "verdict": "noise",
+   "reason": "formatter reflow (quotes, parens, f-string)"
+  },
+  {
+   "sha": "2a6f290bc",
+   "subject": "Add automatic code formatting to Requests (#6095)",
+   "check": "removed-fix",
+   "path": "requests/models.py",
+   "line": 927,
+   "cited": "d8dcd35",
+   "verdict": "noise",
+   "reason": "formatter reflow plus rename of a local variable"
+  },
+  {
+   "sha": "2a6f290bc",
+   "subject": "Add automatic code formatting to Requests (#6095)",
+   "check": "removed-fix",
+   "path": "requests/packages.py",
+   "line": 19,
+   "cited": "588e8f7",
+   "verdict": "noise",
+   "reason": "formatter reflow (f-string)"
+  },
+  {
+   "sha": "2a6f290bc",
+   "subject": "Add automatic code formatting to Requests (#6095)",
+   "check": "removed-fix",
+   "path": "requests/utils.py",
+   "line": 236,
+   "cited": "eec44db",
+   "verdict": "noise",
+   "reason": "formatter reflow (quotes, joined lines)"
+  },
+  {
+   "sha": "561e4b688",
+   "subject": "Add inline types to Requests (#7272)",
+   "check": "removed-fix",
+   "path": "src/requests/auth.py",
+   "line": 293,
+   "cited": "3a9d9f2",
+   "verdict": "useful",
+   "reason": "typing commit rewrites the tell()/AttributeError logic from the streaming-upload hang fix"
+  },
+  {
+   "sha": "561e4b688",
+   "subject": "Add inline types to Requests (#7272)",
+   "check": "removed-fix",
+   "path": "src/requests/structures.py",
+   "line": 58,
+   "cited": "f7596c7",
+   "verdict": "noise",
+   "reason": "type hint plus rename of an unused loop variable"
+  },
+  {
+   "sha": "561e4b688",
+   "subject": "Add inline types to Requests (#7272)",
+   "check": "removed-fix",
+   "path": "src/requests/utils.py",
+   "line": 1057,
+   "cited": "6e1db21",
+   "verdict": "noise",
+   "reason": "rename of an unused variable (fragment -> _fragment)"
+  }
+ ]
+}

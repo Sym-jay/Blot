@@ -79,5 +79,334 @@
     "replace": ["    def links(self):", "    def links(self) -> dict[str, dict[str, str]]:"],
     "expect": {"check": "removed-fix", "warn": false},
     "notes": "Adding a type hint (561e4b68) to a method added by fix d8dcd35 (#711). Must stay quiet."
+  },
+  {
+    "id": "django-cve-2019-19118-permission",
+    "repo": "https://github.com/django/django",
+    "at": "7c125f6a6660a70a0568448b2e40db273a456479",
+    "file": "django/contrib/admin/options.py",
+    "replace": [
+      "            obj = self.get_object(request, unquote(object_id), to_field)\n\n            if request.method == \"POST\":\n                if not self.has_change_permission(request, obj):\n                    raise PermissionDenied\n            else:\n                if not self.has_view_or_change_permission(request, obj):\n                    raise PermissionDenied\n",
+      "            obj = self.get_object(request, unquote(object_id), to_field)\n            if not self.has_view_or_change_permission(request, obj):\n                raise PermissionDenied\n"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "11c5e06"
+    },
+    "notes": "Relaxes the POST permission check from the CVE-2019-19118 fix. Found by blot bench --replay."
+  },
+  {
+    "id": "django-cve-2025-64458-redirect-length",
+    "repo": "https://github.com/django/django",
+    "at": "ed13a58bf63df94508c8a0fe779da0b6a2bc26bb",
+    "file": "django/http/response.py",
+    "replace": [
+      "        self[\"Location\"] = iri_to_uri(redirect_to)\n        redirect_to_str = str(redirect_to)\n        if max_length is not None and len(redirect_to_str) > max_length:\n            raise DisallowedRedirect(",
+      "        self[\"Location\"] = iri_to_uri(redirect_to)\n        if max_length is not None and len(self[\"Location\"]) > max_length:\n            raise DisallowedRedirect("
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "c880530"
+    },
+    "notes": "Changes the redirect length check the CVE-2025-64458 fix added."
+  },
+  {
+    "id": "django-oracle-ordering-removed",
+    "repo": "https://github.com/django/django",
+    "at": "6bbe2656e1e89a03d1ae8f2cea7bdd2a027f0665",
+    "file": "django/db/models/sql/compiler.py",
+    "replace": [
+      "            compiler.query.set_values(selected)\n        if (\n            (\n                features.requires_compound_order_by_subquery\n                and not features.ignores_unnecessary_order_by_in_subqueries\n            )\n            or not features.supports_parentheses_in_compound\n        ) and compiler.get_order_by():\n            compiler.query = compiler.query.clone()\n            compiler.query.clear_ordering(force=False)\n        part_sql, part_args = compiler.as_sql(with_col_aliases=True)",
+      "            compiler.query.set_values(selected)\n        part_sql, part_args = compiler.as_sql(with_col_aliases=True)"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "14d026c"
+    },
+    "notes": "Removes the ordering clearing that fix #30572 added on combined queries."
+  },
+  {
+    "id": "django-redo-reverted-simplification",
+    "repo": "https://github.com/django/django",
+    "at": "c88b304cc2d90fc37d3bd1f5f3829706fa6c13bc",
+    "file": "django/utils/http.py",
+    "replace": [
+      "\ndef _parseparam(s):\n    while s[:1] == \";\":\n        s = s[1:]\n        end = s.find(\";\")\n        while end > 0 and (s.count('\"', 0, end) - s.count('\\\\\"', 0, end)) % 2:\n            end = s.find(\";\", end + 1)\n        if end < 0:\n            end = len(s)\n        f = s[:end]\n        yield f.strip()\n        s = s[end:]\n\n\ndef parse_header_parameters(line, max_length=MAX_HEADER_LENGTH):",
+      "\ndef parse_header_parameters(line, max_length=MAX_HEADER_LENGTH):"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "424e0d8"
+    },
+    "notes": "Redoes the parse_header_parameters simplification that fix #36520 reverted."
+  },
+  {
+    "id": "django-readd-reverted-message-parsing",
+    "repo": "https://github.com/django/django",
+    "at": "c88b304cc2d90fc37d3bd1f5f3829706fa6c13bc",
+    "file": "django/utils/http.py",
+    "replace": [
+      "\n    parts = _parseparam(\";\" + line)\n    key = parts.__next__().lower()\n    pdict = {}\n    for p in parts:\n        i = p.find(\"=\")\n        if i >= 0:\n            has_encoding = False\n            name = p[:i].strip().lower()\n            if name.endswith(\"*\"):\n                # Embedded lang/encoding, like \"filename*=UTF-8''file.ext\".\n                # https://tools.ietf.org/html/rfc2231#section-4\n                name = name[:-1]\n                if p.count(\"'\") == 2:\n                    has_encoding = True\n            value = p[i + 1 :].strip()\n            if len(value) >= 2 and value[0] == value[-1] == '\"':\n                value = value[1:-1]\n                value = value.replace(\"\\\\\\\\\", \"\\\\\").replace('\\\\\"', '\"')\n            if has_encoding:\n                encoding, lang, value = value.split(\"'\")\n                try:\n                    value = unquote(value, encoding=encoding)\n                except (LookupError, UnicodeDecodeError):\n                    msg = f\"Invalid encoding {encoding!r} for RFC 2231 param.\"\n                    raise ValueError(msg)\n            pdict[name] = value\n    return key, pdict",
+      "\n    m = Message()\n    m[\"content-type\"] = line\n    params = m.get_params()\n\n    pdict = {}\n    key = params.pop(0)[0].lower()\n    for name, value in params:\n        if not name:\n            continue\n        if isinstance(value, tuple):\n            # An RFC 2231 encoded value: (charset, language, value). Reject an\n            # unknown charset rather than let collapse_rfc2231_value() fallback\n            # to us-ascii and silently accept it.\n            if encoding := value[0]:\n                try:\n                    codecs.lookup(encoding)\n                except LookupError:\n                    msg = f\"Invalid encoding {encoding!r} for RFC 2231 param.\"\n                    raise ValueError(msg)\n            value = collapse_rfc2231_value(value)\n        pdict[name] = value\n    return key, pdict"
+    ],
+    "expect": {
+      "check": "readded-bug",
+      "warn": true,
+      "commit": "424e0d8"
+    },
+    "notes": "Re-adds the Message()-based parsing that fix #36520 removed."
+  },
+  {
+    "id": "django-sensitive-post-filtering",
+    "repo": "https://github.com/django/django",
+    "at": "61e078ecab9a9e8de9d283adf9fa554b6a145ce8",
+    "file": "django/views/debug.py",
+    "replace": [
+      "            return {}\n        else:\n            sensitive_post_parameters = getattr(\n                request, \"sensitive_post_parameters\", []\n            )\n            if self.is_active(request) and sensitive_post_parameters:\n                cleansed = request.POST.copy()\n                if sensitive_post_parameters == \"__ALL__\":\n                    # Cleanse all parameters.\n                    for k in cleansed:\n                        cleansed[k] = self.cleansed_substitute\n                    return cleansed\n                else:\n                    # Cleanse only the specified parameters.\n                    for param in sensitive_post_parameters:\n                        if param in cleansed:\n                            cleansed[param] = self.cleansed_substitute\n                    return cleansed\n            else:\n                return request.POST\n",
+      "            return {}\n        sensitive_post_parameters = getattr(request, \"sensitive_post_parameters\", [])\n        if self.is_active(request) and sensitive_post_parameters:\n            return self._cleanse_multivaluedict(request.POST, sensitive_post_parameters)\n        return request.POST\n"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "45e55b9"
+    },
+    "notes": "Rewrites the sensitive POST filtering from fix #14614."
+  },
+  {
+    "id": "django-quiet-cleanup-cited",
+    "repo": "https://github.com/django/django",
+    "at": "17b93fa0816e13878646200ca4e0c38871b52e78",
+    "file": "django/http/multipartparser.py",
+    "replace": [
+      "                        try:\n                            data = base64.b64decode(raw_data)\n                        except binascii.Error:",
+      "                        try:\n                            data = base64.b64decode(raw_data, validate=True)\n                        except binascii.Error:"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": false
+    },
+    "notes": "The line came from \"Fixed #21189: Cleaned up usage of bare except clauses\", a cleanup, not a bug fix."
+  },
+  {
+    "id": "django-quiet-error-message-cited",
+    "repo": "https://github.com/django/django",
+    "at": "9014ca519c1cc825709a8fce0934f9919861ffb9",
+    "file": "django/db/models/fields/related_descriptors.py",
+    "replace": [
+      "\n            self.instance = instance\n\n            if not reverse:\n                self.model = rel.model\n                self.query_field_name = rel.field.related_query_name()\n                self.prefetch_cache_name = rel.field.name\n                self.source_field_name = rel.field.m2m_field_name()\n                self.target_field_name = rel.field.m2m_reverse_field_name()\n                self.symmetrical = rel.symmetrical\n            else:\n                self.model = rel.related_model\n                self.query_field_name = rel.field.name\n                self.prefetch_cache_name = rel.field.related_query_name()\n                self.source_field_name = rel.field.m2m_reverse_field_name()\n                self.target_field_name = rel.field.m2m_field_name()\n                self.symmetrical = False\n\n            self.through = rel.through\n            self.reverse = reverse\n\n            self.source_field = self.through._meta.get_field(self.source_field_name)\n            self.target_field = self.through._meta.get_field(self.target_field_name)\n\n            self.core_filters = {}\n            self.pk_field_names = {}\n            for lh_field, rh_field in self.source_field.related_fields:\n                core_filter_key = \"%s__%s\" % (self.query_field_name, rh_field.name)\n                self.core_filters[core_filter_key] = getattr(instance, rh_field.attname)\n                self.pk_field_names[lh_field.name] = rh_field.name\n",
+      "\n            # BaseManager.__init__() sets the instance's model to None.\n            self.model = self.__class__.model\n            self.instance = instance\n            self.reverse = reverse\n\n            self.core_filters = {}\n            for rh_field in self.source_field.foreign_related_fields:\n                core_filter_key = \"%s__%s\" % (self.query_field_name, rh_field.name)\n                self.core_filters[core_filter_key] = getattr(instance, rh_field.attname)\n"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": false
+    },
+    "notes": "The cited commit only corrected an error message."
+  },
+  {
+    "id": "django-quiet-docstring-asides",
+    "repo": "https://github.com/django/django",
+    "at": "83cbd21be57483e6b3eb6e4688a561c841aff75e",
+    "file": "django/contrib/gis/geos/geometry.py",
+    "replace": [
+      "\n        The `max_geom_collections` keyword limits how many nested (WKT) or\n        total (WKB) geometry collections the input may contain before parsing\n        is refused, guarding against segfaults from deeply nested input.\n        \"\"\"",
+      "\n        The `max_geom_collections` keyword limits how many nested geometry\n        collections the input may contain before parsing is refused, guarding\n        against segfaults from deeply nested input.\n        \"\"\""
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": false
+    },
+    "notes": "Docstring rewording; the lines quote names in backticks and asides in parentheses."
+  },
+  {
+    "id": "react-recovery-condition",
+    "repo": "https://github.com/facebook/react",
+    "at": "7c6ac13e19fef500b7f669a16bbd01ecc95965ca",
+    "file": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+    "replace": [
+      "  const exitStatus = renderRootSync(root, errorRetryLanes, false);\n  // A status of RootSuspendedAtTheShell means the retry unwound to the root\n  // without completing (e.g. something suspended in the shell), so the tree is\n  // incomplete and must not be treated as recovered — committing it would\n  // corrupt the current tree. Fall through and return the status as-is so the\n  // root stays suspended.\n  if (exitStatus !== RootErrored && exitStatus !== RootSuspendedAtTheShell) {\n    // Successfully finished rendering on retry",
+      "  const exitStatus = renderRootSync(root, errorRetryLanes, false);\n  if (exitStatus === RootSuspendedAtTheShell) {\n    // The retry unwound to the root without completing (e.g. something\n    // suspended in the shell), so the tree is incomplete and must not be\n    // treated as recovered — committing it would corrupt the current tree.\n    // Return the status as-is so the root stays suspended.\n    //\n    // On a dehydrated root, the retry is the client render, not a check for\n    // data races, so we leave error recovery enabled.\n    // $FlowFixMe[constant-condition]\n    if (!wasRootDehydrated) {\n      // The retry couldn't finish, so it can't tell us whether the error was\n      // caused by a data race. Disable error recovery for these lanes so the\n      // next attempt commits the error boundary instead of retrying again.\n      // That includes any deferred lane the retry spawned, which would\n      // otherwise error and retry the same way.\n      root.errorRecoveryDisabledLanes = mergeLanes(\n        root.errorRecoveryDisabledLanes,\n        mergeLanes(originallyAttemptedLanes, workInProgressDeferredLane),\n      );\n    }\n  } else if (exitStatus !== RootErrored) {\n    // Successfully finished rendering on retry"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "c3555f0"
+    },
+    "notes": "Rewrites the recovery condition from fix #36911."
+  },
+  {
+    "id": "react-select-nesting-rules",
+    "repo": "https://github.com/facebook/react",
+    "at": "2dc7da790d6388b95b83198ca9b588b2ad5f5c0b",
+    "file": "packages/react-dom-bindings/src/client/validateDOMNesting.js",
+    "replace": [
+      "  switch (parentTag) {\n    // https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-inselect\n    case 'select':\n      return (\n        tag === 'hr' ||\n        tag === 'option' ||\n        tag === 'optgroup' ||\n        tag === 'script' ||\n        tag === 'template' ||\n        tag === '#text'\n      );\n    case 'optgroup':\n      return tag === 'option' || tag === '#text';\n    // Strictly speaking, seeing an <option> doesn't mean we're in a <select>\n    // but\n    case 'option':\n      return tag === '#text';\n    // https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-intd",
+      "  switch (parentTag) {\n    // https://html.spec.whatwg.org/multipage/syntax.html#parsing-main-intd"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "ca16c26"
+    },
+    "notes": "Changes the select nesting rules from fix #27632."
+  },
+  {
+    "id": "react-safari-view-transition",
+    "repo": "https://github.com/facebook/react",
+    "at": "4bcf67e74657086ff7d8f951d6365db06cf1f72c",
+    "file": "packages/react-dom-bindings/src/client/ReactFiberConfigDOM.js",
+    "replace": [
+      "        if (pseudoElement == null) {\n        } else if (pseudoElement.startsWith('::view-transition')) {\n          viewTransitionAnimations.push(animations[i]);\n          const timing = effect.getTiming();",
+      "        if (pseudoElement == null) {\n        } else if (\n          pseudoElement.startsWith('::view-transition') &&\n          effect.target === documentElement\n        ) {\n          const timing = effect.getTiming();"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "61331f3"
+    },
+    "notes": "Logic edit of the condition from the Mobile Safari crash fix #35337."
+  },
+  {
+    "id": "react-quiet-flag-fork",
+    "repo": "https://github.com/facebook/react",
+    "at": "3e00319b352092949ba146e70829310fe6362062",
+    "file": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+    "replace": [
+      "export const disableTextareaChildren: boolean = false;\nexport const enableAsyncDebugInfo: boolean = false;\nexport const enableAsyncIterableChildren: boolean = false;",
+      "export const disableTextareaChildren: boolean = false;\nexport const enableAsyncDebugInfo: boolean = true;\nexport const enableAsyncIterableChildren: boolean = false;"
+    ],
+    "expect": {
+      "check": "forgot-related-file",
+      "warn": false
+    },
+    "notes": "Feature-flag forks are set per build on purpose."
+  },
+  {
+    "id": "django-quiet-ticket-dash-move-cited",
+    "repo": "https://github.com/django/django",
+    "at": "fbe902d4a4b8b9dcb371509b25ba8feff3852e64",
+    "file": "django/contrib/admin/templates/admin/change_list.html",
+    "replace": [
+      "  {{ block.super }}\n  <link rel=\"stylesheet\" href=\"{% static \"admin/css/changelists.css\" %}\">\n  {% if cl.formset %}\n    <link rel=\"stylesheet\" href=\"{% static \"admin/css/forms.css\" %}\">\n  {% endif %}\n  {% if cl.formset or action_form %}\n    <script src=\"{% url 'admin:jsi18n' %}\"></script>\n  {% endif %}\n  {{ media.css }}\n  {% if not actions_on_top and not actions_on_bottom %}\n    <style>\n      #changelist table thead th:first-child {width: inherit}",
+      "  {{ block.super }}\n  <link rel=\"stylesheet\" href=\"{% static \"admin/css/changelists.css\" %}\" {% csp_nonce_attr %}>\n  {% if cl.formset %}\n    <link rel=\"stylesheet\" href=\"{% static \"admin/css/widgets.css\" %}\" {% csp_nonce_attr %}>\n    <link rel=\"stylesheet\" href=\"{% static \"admin/css/forms.css\" %}\" {% csp_nonce_attr %}>\n  {% endif %}\n  {% if cl.formset or action_form %}\n    <script src=\"{% url 'admin:jsi18n' %}\" {% csp_nonce_attr %}></script>\n  {% endif %}\n  {% csp_nonce_attr media.css %}\n  {% if not actions_on_top and not actions_on_bottom %}\n    <style {% csp_nonce_attr %}>\n      #changelist table thead th:first-child {width: inherit}"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": false
+    },
+    "notes": "The cited commit is \"Fixed #12882 - Moved the admin's jQuery into our own namespace\", a move, not a bug fix."
+  },
+  {
+    "id": "react-quiet-platform-lint-config",
+    "repo": "https://github.com/facebook/react",
+    "at": "78c2d377d79a7284339fc24b560dd503daf314cc",
+    "file": "scripts/rollup/validate/eslintrc.rn.js",
+    "replace": [
+      "    __DEV__: 'readonly',\n    // Fabric. See https://github.com/facebook/react/pull/15490\n    // for more information\n    nativeFabricUIManager: 'readonly',\n    RN$isNativeEventTargetEventDispatchingEnabled: 'readonly',\n    // Trusted Types",
+      "    __DEV__: 'readonly',\n    // Trusted Types"
+    ],
+    "expect": {
+      "check": "forgot-related-file",
+      "warn": false
+    },
+    "notes": "Per-platform lint configs are set per platform."
+  },
+  {
+    "id": "react-quiet-upgrade-cited",
+    "repo": "https://github.com/facebook/react",
+    "at": "014138df87869b174956f90a33fd6cf66e160114",
+    "file": "packages/react-devtools-extensions/src/contentScripts/installHook.js",
+    "replace": [
+      "    'renderer',\n    function ({reactBuildType}) {\n      window.postMessage(\n        {\n          source: 'react-devtools-hook',\n          payload: {\n            type: 'react-renderer-attached',\n            reactBuildType,\n          },\n        },\n        '*',\n      );\n    },\n  );",
+      "    'renderer',\n    createReactRendererListener(window),\n  );"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": false
+    },
+    "notes": "The cited commit is \"[DevTools] upgrade to Manifest V3\", not a bug fix."
+  },
+  {
+    "id": "express-charset-fix-replaced",
+    "repo": "https://github.com/expressjs/express",
+    "at": "3d05e85b0cfe76ed0c70f842dbdbf27d9a7c8d39",
+    "file": "lib/response.js",
+    "replace": [
+      "      }\n      if (!charsetRegExp.test(value)) {\n        var charset = mime.charsets.lookup(value.split(';')[0]);\n        if (charset) value += '; charset=' + charset.toLowerCase();\n      }\n    }",
+      "      }\n      value = mime.contentType(value)\n    }"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "ae0b630"
+    },
+    "notes": "Replaces the charset logic from fix #3303 with mime.contentType."
+  },
+  {
+    "id": "express-redirect-encoding",
+    "repo": "https://github.com/expressjs/express",
+    "at": "567c9c665d0de4c344b8e160146050770233783c",
+    "file": "lib/response.js",
+    "replace": [
+      "\n  // set location\n  return this.set('Location', encodeUrl(loc));\n};",
+      "\n  var lowerLoc = loc.toLowerCase();\n  var encodedUrl = encodeUrl(loc);\n  if (lowerLoc.indexOf('https://') === 0 || lowerLoc.indexOf('http://') === 0) {\n    try {\n      var parsedUrl = urlParse(loc);\n      var parsedEncodedUrl = urlParse(encodedUrl);\n      // Because this can encode the host, check that we did not change the host\n      if (parsedUrl.host !== parsedEncodedUrl.host) {\n        // If the host changes after encodeUrl, return the original url\n        return this.set('Location', loc);\n      }\n    } catch (e) {\n      // If parse fails, return the original url\n      return this.set('Location', loc);\n    }\n  }\n\n  // set location\n  return this.set('Location', encodedUrl);\n};"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "76eaa32"
+    },
+    "notes": "Changes the URL encoding from fix #2897 (an open-redirect follow-up)."
+  },
+  {
+    "id": "requests-digest-tell-rewrite",
+    "repo": "https://github.com/psf/requests",
+    "at": "8f6cda9969f4a98c45ea2922f6bcbefc02256202",
+    "file": "src/requests/auth.py",
+    "replace": [
+      "        if self._thread_local.last_nonce:\n            r.headers[\"Authorization\"] = self.build_digest_header(r.method, r.url)\n        try:\n            self._thread_local.pos = r.body.tell()\n        except AttributeError:\n            # In the case of HTTPDigestAuth being reused and the body of",
+      "        if self._thread_local.last_nonce:\n            _digest_auth = self.build_digest_header(\n                cast(str, r.method), cast(str, r.url)\n            )\n            if _digest_auth:\n                r.headers[\"Authorization\"] = _digest_auth\n        if (tell := getattr(r.body, \"tell\", None)) is not None:\n            self._thread_local.pos = tell()\n        else:\n            # In the case of HTTPDigestAuth being reused and the body of"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "3a9d9f2"
+    },
+    "notes": "A typing commit rewrites the tell()/AttributeError logic from the streaming-upload hang fix."
+  },
+  {
+    "id": "requests-drop-chardet-alias",
+    "repo": "https://github.com/psf/requests",
+    "at": "33d448eb21bbbf643cc1f61493b0b606d8352aea",
+    "file": "requests/packages.py",
+    "replace": [
+      "\nfor package in ('urllib3', 'idna', 'chardet'):\n    locals()[package] = __import__(package)",
+      "\nfor package in ('urllib3', 'idna'):\n    locals()[package] = __import__(package)"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "588e8f7"
+    },
+    "notes": "Drops chardet from the module aliasing that fix #4102 added."
+  },
+  {
+    "id": "flask-dotenv-return",
+    "repo": "https://github.com/pallets/flask",
+    "at": "ce08bc704e24c01582052f5c544fae181d08386f",
+    "file": "src/flask/cli.py",
+    "replace": [
+      "\n    # Always return after attempting to load a given path, don't load\n    # the default files.\n    if path is not None:\n        if os.path.isfile(path):\n            return dotenv.load_dotenv(path, encoding=\"utf-8\")\n\n        return False\n\n    loaded = False\n\n    for name in (\".env\", \".flaskenv\"):\n        path = dotenv.find_dotenv(name, usecwd=True)\n\n        if not path:\n            continue\n\n        dotenv.load_dotenv(path, encoding=\"utf-8\")\n        loaded = True\n\n    return loaded  # True if at least one file was located and loaded.\n",
+      "\n    data: dict[str, str | None] = {}\n\n    if load_defaults:\n        for default_name in (\".flaskenv\", \".env\"):\n            if not (default_path := dotenv.find_dotenv(default_name, usecwd=True)):\n                continue\n\n            data |= dotenv.dotenv_values(default_path, encoding=\"utf-8\")\n\n    if path is not None and os.path.isfile(path):\n        data |= dotenv.dotenv_values(path, encoding=\"utf-8\")\n\n    for key, value in data.items():\n        if key in os.environ or value is None:\n            continue\n\n        os.environ[key] = value\n\n    return bool(data)  # True if at least one env var was loaded.\n"
+    ],
+    "expect": {
+      "check": "removed-fix",
+      "warn": true,
+      "commit": "db8cb31"
+    },
+    "notes": "Changes load_dotenv's return behaviour that fix #2937 made consistent."
   }
 ]
