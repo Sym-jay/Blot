@@ -91,7 +91,7 @@ jobs:
   blot:
     runs-on: ubuntu-latest
     steps:
-      - uses: Sym-jay/Blot@v0.4.0
+      - uses: Sym-jay/Blot@v0.5.0
 ```
 
 The action checks out the pull request with its full history, installs Blot, runs `blot index` and

@@ -1,6 +1,6 @@
 [project]
 name = "blot-git"
-version = "0.4.0"
+version = "0.5.0"
 description = "A pre-commit check that has read your project's history: warns when a change removes a fix, re-adds a fixed bug, or forgets a file that always changes too."
 readme = "docs/PYPI.md"  # text-only; the GitHub README's relative Sora images break on PyPI
 license = { text = "MIT" }

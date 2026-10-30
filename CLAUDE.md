@@ -39,7 +39,7 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 
 ## Conventions
 - Work on a branch, open a PR, merge only when the owner says so. Squash-merge.
-- Commits end with `Co-Authored-By: Claude ...`; PR bodies end with the Claude Code line.
+- No `Co-Authored-By` trailer in commits or PRs (the owner's choice); PR bodies end with the Claude Code line.
 - Contributors (e.g. O1sumitkumar) should comment on the issue before starting a PR.
 - Never claim results that weren't run; label replay findings honestly (e.g. the Express
   CVE-2024-51999 advisory was later withdrawn, so its revert was deliberate).
@@ -51,10 +51,10 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 - `gh api` paths: no leading slash (Git Bash rewrites it).
 
 ## State (2026-10-28)
-- Released 0.4.0: checks, `why`, `--github`, bench/replay, parallel indexing, pre-commit framework
-  support (`rev: v0.4.0`), GitHub Action (`uses: Sym-jay/Blot@v0.4.0`).
+- Released 0.5.0: checks, `why`, `--github`, bench/replay with labels, parallel indexing, pre-commit
+  framework support (`rev: v0.5.0`), GitHub Action (`uses: Sym-jay/Blot@v0.5.0`).
 - Launch: dev.to post published 2026-10-24; the CVE sentence there should mention the withdrawn advisory.
 - Open issues: #2–#6 (bench cases for Django, Express, React, requests, Flask).
-- Precision (2026-10-30, unreleased): 57/109 useful (52%); Django 1.19 / 10 commits, others ≤ 0.6.
+- Precision (0.5.0, measured 2026-10-30): 57/109 useful (52%); Django 1.19 / 10 commits, others ≤ 0.6.
   `forgot-related-file` has 0 useful warnings in 45 labelled; candidate to become opt-in.
 - Next: remaining noise (renames, API swaps, added arguments, docstrings) in bench/RESULTS.md.
