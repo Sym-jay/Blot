@@ -711,6 +711,206 @@
    "cited": "ba0aee5",
    "verdict": "useful",
    "reason": "changes the message forwarding from the duplicate-message fix #24186; found only with --github"
+  },
+  {
+   "sha": "88ee1f595",
+   "subject": "Add reporting modes for react-hooks/exhaustive-effect-dependencies and temporarily enable (#35365)",
+   "check": "removed-fix",
+   "path": "compiler/packages/babel-plugin-react-compiler/src/Validation/ValidateExhaustiveDependencies.ts",
+   "line": 373,
+   "cited": "df75af4",
+   "verdict": "noise",
+   "reason": "cited commit is a feature (auto-fix for deps)"
+  },
+  {
+   "sha": "4028aaa50",
+   "subject": "Commit the Gesture lane if a gesture ends closer to the target state (#35486)",
+   "check": "readded-bug",
+   "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+   "line": 1590,
+   "cited": "989af12",
+   "verdict": "noise",
+   "reason": "generic line re-added"
+  },
+  {
+   "sha": "23e5edd05",
+   "subject": "[flags] clean up enableUseEffectEventHook (#35541)",
+   "check": "removed-fix",
+   "path": "packages/react-reconciler/src/ReactInternalTypes.js",
+   "line": 413,
+   "cited": "d12bdcd",
+   "verdict": "noise",
+   "reason": "flag cleanup makes a type non-optional"
+  },
+  {
+   "sha": "03613cd68",
+   "subject": "[compiler] Improve snap usability (#35537)",
+   "check": "removed-fix",
+   "path": "compiler/packages/snap/src/runner-watch.ts",
+   "line": 232,
+   "cited": "4082582",
+   "verdict": "noise",
+   "reason": "test-runner options reworked"
+  },
+  {
+   "sha": "3e319a943",
+   "subject": "[DevTools] Apply component filters on initial load (#35587)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-core/src/standalone.js",
+   "line": 359,
+   "cited": "cb3fb42",
+   "verdict": "noise",
+   "reason": "cited commit is a feature (console patching)"
+  },
+  {
+   "sha": "e66ef6480",
+   "subject": "[tests] remove withoutStack from assertConsole helpers (#35498)",
+   "check": "removed-fix",
+   "path": "packages/internal-test-utils/consoleMock.js",
+   "line": 541,
+   "cited": "5cc9f69",
+   "verdict": "noise",
+   "reason": "test utilities"
+  },
+  {
+   "sha": "3ce1316b0",
+   "subject": "[compiler][snap] Fixes to relative path resolution; compile subcommand (#35688)",
+   "check": "readded-bug",
+   "path": "compiler/packages/snap/src/runner.ts",
+   "line": 416,
+   "cited": "cd0c487",
+   "verdict": "noise",
+   "reason": "generic CLI code re-added"
+  },
+  {
+   "sha": "8b2e903a7",
+   "subject": "[DevTools] chore: extract getInternalReactConstants (#35986)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-shared/src/backend/fiber/renderer.js",
+   "line": 287,
+   "cited": "cb3fb42",
+   "verdict": "noise",
+   "reason": "code moved to another file"
+  },
+  {
+   "sha": "2c2fd9d12",
+   "subject": "[compiler][playground] parse compiler configs using json5 (#36159)",
+   "check": "removed-fix",
+   "path": "compiler/apps/playground/lib/compilation.ts",
+   "line": 166,
+   "cited": "0eebd37",
+   "verdict": "noise",
+   "reason": "playground tooling"
+  },
+  {
+   "sha": "568244232",
+   "subject": "[react-native-renderer] EventTarget-based event dispatching (#36253)",
+   "check": "removed-fix",
+   "path": "packages/react-native-renderer/src/legacy-events/PluginModuleType.js",
+   "line": 19,
+   "cited": "704c8b0",
+   "verdict": "noise",
+   "reason": "type-only change"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "removed-fix",
+   "path": "packages/react-native-renderer/src/ReactNativeTypes.js",
+   "line": 151,
+   "cited": "c29ca23",
+   "verdict": "noise",
+   "reason": "deleting a whole legacy renderer (deliberate removal)"
+  },
+  {
+   "sha": "56922cf75",
+   "subject": "[react-native-renderer] Delete Paper (legacy) renderer (#36285)",
+   "check": "removed-fix",
+   "path": "scripts/flow/react-native-host-hooks.js",
+   "line": 181,
+   "cited": "9328988",
+   "verdict": "noise",
+   "reason": "deleting a whole legacy renderer (deliberate removal)"
+  },
+  {
+   "sha": "8fc5763b8",
+   "subject": "fix[describeClassComponentFrame]: invoke constructor with new keyword (#36455)",
+   "check": "removed-fix",
+   "path": "packages/shared/ReactComponentStackFrame.js",
+   "line": 156,
+   "cited": "72d00ab",
+   "verdict": "useful",
+   "reason": "changes the constructor call from the component-stack fix #18575"
+  },
+  {
+   "sha": "e730b5e65",
+   "subject": "[flow] Update files synced to react-native to use modern flow syntax (#36759)",
+   "check": "removed-fix",
+   "path": "packages/react-native-renderer/src/ReactNativeTypes.js",
+   "line": 95,
+   "cited": "9ff738f",
+   "verdict": "noise",
+   "reason": "Flow syntax modernisation"
+  },
+  {
+   "sha": "fc08438ab",
+   "subject": "[DevTools] Harden Bridge and Wall lifecycle types (#37049)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-shared/src/bridge.js",
+   "line": 223,
+   "cited": "d2a1b88",
+   "verdict": "noise",
+   "reason": "type-only change"
+  },
+  {
+   "sha": "0f42eac25",
+   "subject": "[DevTools] Reset extension backend on pagehide (#37155)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-extensions/src/contentScripts/backendManager.js",
+   "line": 92,
+   "cited": "1d8d120",
+   "verdict": "useful",
+   "reason": "rewrites the shutdown-listener cleanup from fix #31151"
+  },
+  {
+   "sha": "33b455548",
+   "subject": "[DevTools] Use one commit for extension release inputs (#37307)",
+   "check": "removed-fix",
+   "path": "scripts/devtools/build-and-test.js",
+   "line": 53,
+   "cited": "b091ef7",
+   "verdict": "noise",
+   "reason": "release scripts"
+  },
+  {
+   "sha": "6c0e1047e",
+   "subject": "[Flight] Keep an element pending while a referenced row is resolving (#37542)",
+   "check": "removed-fix",
+   "path": "packages/react-client/src/ReactFlightClient.js",
+   "line": 1182,
+   "cited": "894bc73",
+   "verdict": "useful",
+   "reason": "rewrites the debug-info release from fix #35345"
+  },
+  {
+   "sha": "72fdf5cf0",
+   "subject": "[flags] clean up enableParallelTransitions (#37771)",
+   "check": "removed-fix",
+   "path": "packages/react-reconciler/src/ReactFiberLane.js",
+   "line": 215,
+   "cited": "3302d1f",
+   "verdict": "noise",
+   "reason": "flag cleanup keeps the enabled path"
+  },
+  {
+   "sha": "0c9913ae8",
+   "subject": "[Flight] Improve transport protocol (#37846)",
+   "check": "removed-fix",
+   "path": "packages/react-client/src/ReactFlightClient.js",
+   "line": 2103,
+   "cited": "65a56d0",
+   "verdict": "useful",
+   "reason": "changes the promise resolution from timing fix #31304"
   }
  ]
 }

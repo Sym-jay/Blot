@@ -91,6 +91,156 @@
    "cited": "925a1df",
    "verdict": "noise",
    "reason": "raises the dependency floor past the fix's version, keeping the fix"
+  },
+  {
+   "sha": "9482b82d0",
+   "subject": "Invoke default with same arguments as types in res.format",
+   "check": "removed-fix",
+   "path": "lib/response.js",
+   "line": 700,
+   "cited": "1311f2a",
+   "verdict": "useful",
+   "reason": "changes how res.format calls the default handler from fix 1311f2a"
+  },
+  {
+   "sha": "b3906cbdd",
+   "subject": "fix(deps): serve-static@^2.1.0",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 57,
+   "cited": "65b6206",
+   "verdict": "noise",
+   "reason": "dependency floor raised past the cited version"
+  },
+  {
+   "sha": "0c49926a9",
+   "subject": "fix(deps): send@^1.1.0",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 56,
+   "cited": "ecf762f",
+   "verdict": "noise",
+   "reason": "dependency floor raised past the cited version"
+  },
+  {
+   "sha": "9f8589e31",
+   "subject": "cleanup: remove unnecessary require for global Buffer",
+   "check": "removed-fix",
+   "path": "lib/response.js",
+   "line": 15,
+   "cited": "c70197a",
+   "verdict": "noise",
+   "reason": "removes a require made unnecessary by Node's global Buffer"
+  },
+  {
+   "sha": "9f8589e31",
+   "subject": "cleanup: remove unnecessary require for global Buffer",
+   "check": "removed-fix",
+   "path": "lib/utils.js",
+   "line": 15,
+   "cited": "c70197a",
+   "verdict": "noise",
+   "reason": "removes a require made unnecessary by Node's global Buffer"
+  },
+  {
+   "sha": "d2de128a3",
+   "subject": "fix (deps): update deps (#6337)",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 65,
+   "cited": "6a40af8",
+   "verdict": "noise",
+   "reason": "dependency range loosened, cited commit was a dev-deps bump"
+  },
+  {
+   "sha": "9e9714422",
+   "subject": "feat(deps): finalhandler@2.1.0 (#6373)",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 45,
+   "cited": "accafc6",
+   "verdict": "noise",
+   "reason": "dependency floor raised past the cited version"
+  },
+  {
+   "sha": "f1a2dc884",
+   "subject": "deps: type-is@^2.0.1 (#6420)",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 60,
+   "cited": "402e7f6",
+   "verdict": "noise",
+   "reason": "dependency floor raised past the cited version"
+  },
+  {
+   "sha": "00bb633ca",
+   "subject": "deps: qs@^6.14.1",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 55,
+   "cited": "1e359f5",
+   "verdict": "noise",
+   "reason": "dependency floor raised past the cited version"
+  },
+  {
+   "sha": "f5c159b11",
+   "subject": "ci: build express with node.js v26 (#7218)",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 75,
+   "cited": "d2de128",
+   "verdict": "noise",
+   "reason": "dev dependency bump; cited commit was a deps bump"
+  },
+  {
+   "sha": "cb19f0417",
+   "subject": "Upgrade `content-type` (#7234)",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 38,
+   "cited": "d2de128",
+   "verdict": "noise",
+   "reason": "dependency bump; cited commit was a deps bump"
+  },
+  {
+   "sha": "59e205a57",
+   "subject": "Upgrade `content-disposition` (#7233)",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 37,
+   "cited": "05f40f4",
+   "verdict": "noise",
+   "reason": "dependency bump past the cited version"
+  },
+  {
+   "sha": "9a34acf03",
+   "subject": "fix(res.send): preserve ETag generation with Transfer-Encoding (#7459)",
+   "check": "removed-fix",
+   "path": "lib/response.js",
+   "line": 168,
+   "cited": "18e5985",
+   "verdict": "useful",
+   "reason": "changes the Transfer-Encoding condition from fix #4893"
+  },
+  {
+   "sha": "9a34acf03",
+   "subject": "fix(res.send): preserve ETag generation with Transfer-Encoding (#7459)",
+   "check": "readded-bug",
+   "path": "lib/response.js",
+   "line": 166,
+   "cited": "18e5985",
+   "verdict": "useful",
+   "reason": "re-adds the condition that fix #4893 replaced"
+  },
+  {
+   "sha": "6d2df035a",
+   "subject": "build(deps-dev): bump supertest from 6.3.0 to 7.3.0 (#7494)",
+   "check": "removed-fix",
+   "path": "package.json",
+   "line": 79,
+   "cited": "d2de128",
+   "verdict": "noise",
+   "reason": "dev dependency bump; cited commit was a deps bump"
   }
  ]
 }
