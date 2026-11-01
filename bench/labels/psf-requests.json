@@ -81,6 +81,26 @@
    "cited": "6e1db21",
    "verdict": "noise",
    "reason": "rename of an unused variable (fragment -> _fragment)"
+  },
+  {
+   "sha": "b15056d1d",
+   "subject": "Revert \"#4965 fix: Accessing response.content twice removes forgets read error.\"",
+   "check": "removed-fix",
+   "path": "requests/models.py",
+   "line": 646,
+   "cited": "bd10047",
+   "verdict": "useful",
+   "reason": "reverts fix #4965 (saved read error); found only with --github"
+  },
+  {
+   "sha": "b15056d1d",
+   "subject": "Revert \"#4965 fix: Accessing response.content twice removes forgets read error.\"",
+   "check": "removed-fix",
+   "path": "requests/models.py",
+   "line": 845,
+   "cited": "d91fe00",
+   "verdict": "useful",
+   "reason": "reverts fix #4965 (re-raising the saved error); found only with --github"
   }
  ]
 }

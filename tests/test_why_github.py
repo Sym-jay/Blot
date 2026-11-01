@@ -142,3 +142,21 @@ def test_enrich_without_github_remote(make_repo):
 )
 def test_adjust_for_labels(subject, severity, labels, expected):
     assert adjust_for_labels(subject, severity, labels) == expected
+
+
+def test_replay_with_github_uses_issue_labels(make_repo, monkeypatch):
+    from blot.bench import replay
+    from blot.config import Config
+
+    repo = with_remote(make_repo([
+        ("Add app", {"app.py": BEFORE}),
+        ("Handle reference handling (fixes #12)", {"app.py": AFTER}),  # looks like a fix by its message
+        ("Simplify app", {"app.py": AFTER.replace(GUARD, "self_ref = self")}),
+    ]))
+    assert replay(str(repo), 10, Config()).warned  # without labels: a removed fix
+
+    fake = FakeGitHub({12: {"__typename": "Issue", "title": "Support weak references", "labels": {"nodes": [{"name": "enhancement"}]}}})
+    monkeypatch.setattr("blot.github.gh_runner", fake)
+    monkeypatch.setattr("blot.github.shutil.which", lambda name: "gh")
+    result = replay(str(repo), 10, Config(), github=True)
+    assert result.warned == [] and "1 demoted" in result.github  # the label says it was a feature

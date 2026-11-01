@@ -62,5 +62,8 @@ How to label:
 
 Write a short `reason` either way; grouping noise by reason shows which rule to fix next.
 
+Add `--github` to replay with issue and PR labels too, as after `blot index --github` (needs the
+GitHub CLI logged in and a GitHub `origin` or `upstream` remote).
+
 Target: **at most 1 warning per 10 commits**, and most of those should be worth reading.
 See [RESULTS.md](RESULTS.md) for the latest numbers.

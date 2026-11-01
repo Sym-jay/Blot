@@ -74,6 +74,29 @@ code from earlier fixes and CVEs.
 stays on, because the remaining warnings are rare (React only), but it is the first candidate to
 become opt-in if real-world reports agree.
 
+## Does `--github` help? (measured 2026-11-01)
+
+`blot bench --replay 500 --github` reads issue and PR labels the way `blot index --github` does.
+Flask, requests, Express and React track bugs on GitHub; Django's GitHub Issues are off (it uses
+Trac), so it is unchanged. New warnings were labelled with the same rules.
+
+| Repo | Without `--github` | With `--github` | Commits re-judged by labels |
+|---|---|---|---|
+| pallets/flask | 3/4 (75%) | 3/4 (75%) | 0 |
+| psf/requests | 2/8 (25%) | **4/10 (40%)** | 15 upgraded |
+| expressjs/express | 5/9 (56%) | 5/9 (56%) | 25 upgraded |
+| facebook/react | 7/29 (24%) | **12/40 (30%)** | 154 upgraded, 4 demoted |
+| **All five, with Django** | 57/109 (52.3%) | **64/122 (52.5%)** | |
+
+**`--github` doesn't raise precision; it finds more useful warnings** (7 more, with 5 more noise).
+Labels almost never demote a commit (4 of ~3,200 issues and PRs looked up). What they do is
+upgrade commits like `ReactDOM: Fix missing form data ... (#28056)`, which Blot rates as unclear
+without labels: "Fix" isn't at the start, and there's no "fixes #N" or strong defect word. That
+points at an offline rule worth measuring next: a fix verb anywhere in the subject plus a PR or
+issue number.
+
+Caveat: labels are read as they are today, so a label added after a commit was made counts too.
+
 ## Reproduce
 
 ```bash
