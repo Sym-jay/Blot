@@ -84,6 +84,7 @@ class ReplayResult:
     skipped_large: int
     seconds: float
     commits: list[ReplayCommit] = field(default_factory=list)
+    github: str = ""  # what --github did, if it ran
 
     @property
     def warned(self) -> list[ReplayCommit]:
@@ -97,7 +98,10 @@ class ReplayResult:
         return counts
 
 
-def replay(repo: str, count: int, config: Config, max_files: int = 50, progress=None) -> ReplayResult:
+def replay(repo: str, count: int, config: Config, max_files: int = 50, progress=None,
+           github: bool = False) -> ReplayResult:
+    """With `github`, commit facts also use issue/PR labels, as after `blot index --github`.
+    Labels are read as they are today, so a label added after a commit counts too."""
     start = time.perf_counter()
     head = run_git(repo, "rev-parse", "HEAD").strip()
     commits = run_git(repo, "rev-list", "--no-merges", f"--max-count={count}", "HEAD").split()[::-1]
@@ -108,9 +112,15 @@ def replay(repo: str, count: int, config: Config, max_files: int = 50, progress=
         early_db = os.path.join(tmp, "early.db")
         build_index(repo, full=True, config=config, upto=oldest_parent or commits[0], db_path=early_db)
         full, early = Store.open(repo, os.path.join(tmp, "full.db")), Store.open(repo, early_db)
+        result = ReplayResult(repo, head, 0, 0, 0.0)
+        if github:
+            from blot.github import enrich
+
+            got = enrich(repo, full)
+            result.github = got.status if got.status != "ok" else (
+                f"{got.fetched} issues/PRs fetched, {got.upgraded} commits upgraded, {got.demoted} demoted")
         store = _ReplayStore(repo, full, early)
         checks = all_checks(config)
-        result = ReplayResult(repo, head, 0, 0, 0.0)
         for i, sha in enumerate(commits, 1):
             parent = _parent(repo, sha)
             if parent is None:
@@ -151,6 +161,8 @@ def format_replay(result: ReplayResult) -> str:
         f"  warnings per 10 commits: {per10:.2f}",
         "  by check: " + ", ".join(f"{k} {v}" for k, v in result.by_check().items()),
     ]
+    if result.github:
+        lines.append(f"  github: {result.github}")
     findings = [f for c in result.commits for f in c.findings]
     if any("verdict" in f for f in findings):
         useful = sum(f["verdict"] == "useful" for f in findings)

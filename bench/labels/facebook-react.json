@@ -611,6 +611,106 @@
    "cited": "07dde64",
    "verdict": "useful",
    "reason": "reverts fix #37710 pending a complete fix (deliberate)"
+  },
+  {
+   "sha": "65eec428c",
+   "subject": "Use `FormData` `submitter` parameter (#29028)",
+   "check": "removed-fix",
+   "path": "packages/react-dom-bindings/src/events/plugins/FormActionEventPlugin.js",
+   "line": 63,
+   "cited": "29d3c83",
+   "verdict": "useful",
+   "reason": "replaces the FormData workaround from fix #28056 with the submitter parameter; found only with --github"
+  },
+  {
+   "sha": "53daaf5ab",
+   "subject": "Improve the detection of changed hooks (#35123)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-shared/src/backend/fiber/renderer.js",
+   "line": 2034,
+   "cited": "bb1b795",
+   "verdict": "noise",
+   "reason": "blame attributes copied DevTools code to an unrelated reconciler fix"
+  },
+  {
+   "sha": "3e319a943",
+   "subject": "[DevTools] Apply component filters on initial load (#35587)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-core/src/standalone.js",
+   "line": 369,
+   "cited": "40357fe",
+   "verdict": "noise",
+   "reason": "adds arguments to the call from fix #31102, fix behaviour kept"
+  },
+  {
+   "sha": "9b2d8013e",
+   "subject": "[compiler] Phase 4 (batch 2), 5, 6: Update remaining passes for fault tolerance (#35876)",
+   "check": "removed-fix",
+   "path": "compiler/packages/babel-plugin-react-compiler/src/Inference/AnalyseFunctions.ts",
+   "line": 57,
+   "cited": "94cf60b",
+   "verdict": "noise",
+   "reason": "type signature refactor (Result -> plain value)"
+  },
+  {
+   "sha": "9b2d8013e",
+   "subject": "[compiler] Phase 4 (batch 2), 5, 6: Update remaining passes for fault tolerance (#35876)",
+   "check": "removed-fix",
+   "path": "compiler/packages/babel-plugin-react-compiler/src/Inference/InferMutationAliasingRanges.ts",
+   "line": 77,
+   "cited": "94cf60b",
+   "verdict": "noise",
+   "reason": "type signature refactor (Result -> plain value)"
+  },
+  {
+   "sha": "2e0927dc7",
+   "subject": "[compiler] Remove local CompilerError accumulators, emit directly to env.recordError() (#35882)",
+   "check": "removed-fix",
+   "path": "compiler/packages/babel-plugin-react-compiler/src/Inference/InferMutationAliasingRanges.ts",
+   "line": 501,
+   "cited": "94cf60b",
+   "verdict": "noise",
+   "reason": "error accumulator refactor, same errors reported"
+  },
+  {
+   "sha": "00bacdeb1",
+   "subject": "[react-devtools] substitute %i and %f in console format strings (#36929)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-shared/src/backend/utils/index.js",
+   "line": 196,
+   "cited": "63927e0",
+   "verdict": "useful",
+   "reason": "extends the format regex from fix #21521; found only with --github"
+  },
+  {
+   "sha": "c0c39a6b3",
+   "subject": "[Fiber] Update input.defaultValue for type=number too (#36980)",
+   "check": "removed-fix",
+   "path": "packages/react-dom-bindings/src/client/ReactDOMInput.js",
+   "line": 480,
+   "cited": "c80cd8e",
+   "verdict": "useful",
+   "reason": "changes the Chrome number-input workaround (defaultValue); found only with --github"
+  },
+  {
+   "sha": "c0c39a6b3",
+   "subject": "[Fiber] Update input.defaultValue for type=number too (#36980)",
+   "check": "removed-fix",
+   "path": "packages/react-dom-bindings/src/client/ReactDOMInput.js",
+   "line": 481,
+   "cited": "f912186",
+   "verdict": "useful",
+   "reason": "changes the defaultValue workaround from the IE11 fix #19530; found only with --github"
+  },
+  {
+   "sha": "28cd4bb08",
+   "subject": "[DevTools] Buffer Bridge messages during extension reconnects (#37075)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-extensions/src/contentScripts/proxy.js",
+   "line": 95,
+   "cited": "ba0aee5",
+   "verdict": "useful",
+   "reason": "changes the message forwarding from the duplicate-message fix #24186; found only with --github"
   }
  ]
 }

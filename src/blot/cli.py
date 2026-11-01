@@ -116,7 +116,8 @@ def _cmd_bench(args: argparse.Namespace) -> int:
             if not args.quiet and (i % 50 == 0 or i == total):
                 print(f"blot bench: replayed {i}/{total} commits", file=sys.stderr)
 
-        result = bench.replay(args.repo, args.replay, config, max_files=args.max_files, progress=progress)
+        result = bench.replay(args.repo, args.replay, config, max_files=args.max_files, progress=progress,
+                              github=args.github)
         if args.labels:
             labels = bench.load_labels(args.labels)
             if labels["head"] and not result.head.startswith(labels["head"]):
@@ -173,6 +174,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--max-files", type=int, default=50, help="replay: skip commits touching more files")
     p.add_argument("--labels", metavar="FILE", help="replay: hand labels (useful/noise) to report precision")
     p.add_argument("--update-labels", action="store_true", help="replay: add unlabelled warnings to --labels FILE")
+    p.add_argument("--github", action="store_true", help="replay: also use issue/PR labels, as `blot index --github` does")
     p.add_argument("--json", metavar="FILE", help="also write full results as JSON")
     p.add_argument("--quiet", action="store_true", help="no progress output")
     p.set_defaults(func=_cmd_bench)

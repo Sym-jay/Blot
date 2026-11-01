@@ -57,4 +57,6 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 - Open issues: #2–#6 (bench cases for Django, Express, React, requests, Flask).
 - Precision (0.5.0, measured 2026-10-30): 57/109 useful (52%); Django 1.19 / 10 commits, others ≤ 0.6.
   `forgot-related-file` has 0 useful warnings in 45 labelled; candidate to become opt-in.
-- Next: remaining noise (renames, API swaps, added arguments, docstrings) in bench/RESULTS.md.
+- `--github` measured (2026-11-01): precision unchanged (52.5%), +7 useful warnings, almost no demotions.
+- Next: offline rule for "Area: Fix X (#N)" subjects (what GitHub bug labels mostly upgrade), then
+  remaining noise (renames, API swaps, added arguments, docstrings) in bench/RESULTS.md.
