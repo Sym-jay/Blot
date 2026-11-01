@@ -91,11 +91,19 @@ Trac), so it is unchanged. New warnings were labelled with the same rules.
 **`--github` doesn't raise precision; it finds more useful warnings** (7 more, with 5 more noise).
 Labels almost never demote a commit (4 of ~3,200 issues and PRs looked up). What they do is
 upgrade commits like `ReactDOM: Fix missing form data ... (#28056)`, which Blot rates as unclear
-without labels: "Fix" isn't at the start, and there's no "fixes #N" or strong defect word. That
-points at an offline rule worth measuring next: a fix verb anywhere in the subject plus a PR or
-issue number.
+without labels: "Fix" isn't at the start, and there's no "fixes #N" or strong defect word. 
 
 Caveat: labels are read as they are today, so a label added after a commit was made counts too.
+
+### Tried and dropped: "a fix word plus a PR number" (2026-11-01)
+
+Could a rule do offline what the `bug` label does? Rule tried: a fix word anywhere in the subject
+plus an issue or PR number makes a commit a fix. It added **85 warnings** (React went from 0.60 to
+1.95 per 10 commits), because almost every React and Express subject ends in its PR number. Of 46
+labelled (all of requests' and Express's, 20 of React's), **10 were useful (22%)**. Most were
+`fix(deps): …@^2.0.0` bumps, "Fix Flow type" commits and import lines. Overall precision would fall
+from 52% to about 39%, so the rule was not kept. Its 46 labels stay in `labels/` for any narrower
+attempt. A label written by a maintainer says more than a keyword can.
 
 ## Reproduce
 

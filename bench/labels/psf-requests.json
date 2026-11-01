@@ -101,6 +101,116 @@
    "cited": "d91fe00",
    "verdict": "useful",
    "reason": "reverts fix #4965 (re-raising the saved error); found only with --github"
+  },
+  {
+   "sha": "b15056d1d",
+   "subject": "Revert \"#4965 fix: Accessing response.content twice removes forgets read error.\"",
+   "check": "readded-bug",
+   "path": "requests/models.py",
+   "line": 754,
+   "cited": "bd10047",
+   "verdict": "useful",
+   "reason": "re-adds the raise that fix #4965 replaced (part of the revert)"
+  },
+  {
+   "sha": "8bce583b9",
+   "subject": "Farewell, sweet Concorde!",
+   "check": "removed-fix",
+   "path": "requests/compat.py",
+   "line": 60,
+   "cited": "db575ee",
+   "verdict": "noise",
+   "reason": "Python 2 compat removal; cited commit only touched the import line"
+  },
+  {
+   "sha": "8bce583b9",
+   "subject": "Farewell, sweet Concorde!",
+   "check": "removed-fix",
+   "path": "requests/models.py",
+   "line": 49,
+   "cited": "db575ee",
+   "verdict": "noise",
+   "reason": "import list"
+  },
+  {
+   "sha": "2a6f290bc",
+   "subject": "Add automatic code formatting to Requests (#6095)",
+   "check": "removed-fix",
+   "path": "requests/__init__.py",
+   "line": 142,
+   "cited": "db575ee",
+   "verdict": "noise",
+   "reason": "imports reflowed by a formatter"
+  },
+  {
+   "sha": "2a6f290bc",
+   "subject": "Add automatic code formatting to Requests (#6095)",
+   "check": "removed-fix",
+   "path": "requests/models.py",
+   "line": 36,
+   "cited": "db575ee",
+   "verdict": "noise",
+   "reason": "imports reflowed by a formatter"
+  },
+  {
+   "sha": "2a6f290bc",
+   "subject": "Add automatic code formatting to Requests (#6095)",
+   "check": "removed-fix",
+   "path": "requests/models.py",
+   "line": 420,
+   "cited": "6e76ab7",
+   "verdict": "noise",
+   "reason": "f-string reflow"
+  },
+  {
+   "sha": "58cea7a72",
+   "subject": "Drop support for CPython 3.7",
+   "check": "removed-fix",
+   "path": "setup.py",
+   "line": 97,
+   "cited": "16a17a3",
+   "verdict": "noise",
+   "reason": "raises the python_requires floor; cited fix only dropped an upper bound"
+  },
+  {
+   "sha": "561e4b688",
+   "subject": "Add inline types to Requests (#7272)",
+   "check": "removed-fix",
+   "path": "src/requests/models.py",
+   "line": 482,
+   "cited": "6e76ab7",
+   "verdict": "noise",
+   "reason": "equivalent argument change (None -> \"\" in urlunparse)"
+  },
+  {
+   "sha": "84d10f0be",
+   "subject": "Move Request.headers back to Mapping (#7441)",
+   "check": "removed-fix",
+   "path": "src/requests/_types.py",
+   "line": 112,
+   "cited": "e511bc7",
+   "verdict": "useful",
+   "reason": "reverts the header type change from fix #7431 (deliberate)"
+  },
+  {
+   "sha": "84d10f0be",
+   "subject": "Move Request.headers back to Mapping (#7441)",
+   "check": "removed-fix",
+   "path": "src/requests/models.py",
+   "line": 314,
+   "cited": "e511bc7",
+   "verdict": "useful",
+   "reason": "reverts the header type change from fix #7431 (deliberate)"
+  },
+  {
+   "sha": "6f66281a1",
+   "subject": "Add hasattr checks for remaining protocol isinstance checks (#7505)",
+   "check": "removed-fix",
+   "path": "src/requests/models.py",
+   "line": 241,
+   "cited": "6f205ff",
+   "verdict": "noise",
+   "reason": "same check moved into a helper"
   }
  ]
 }
