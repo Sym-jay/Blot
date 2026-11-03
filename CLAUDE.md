@@ -12,7 +12,7 @@ always changes with another (`forgot-related-file`). Mascot: Sora the slime. Own
   - `classify.py` fix severity 0/1/2 + refactor detection: most precision lives here
   - `checks/` one file per check; `trace.py` blame that follows lines past refactor commits
   - `why.py`, `github.py` (`index --github` via `gh api graphql`), `bench.py` (cases + `--replay N`)
-- `bench/cases.json` scripted real-world cases (30/30); `bench/labels/` hand verdicts for every replay
+- `bench/cases.json` scripted real-world cases (32/32); `bench/labels/` hand verdicts for every replay
   warning on the 5 reference repos; `bench/RESULTS.md` replay numbers and precision
 - `action.yml` GitHub Action; `.github/workflows/blot.yml` runs it on Blot's own PRs
 - `assets/sora/build_sprites.py` and `assets/demo/make_demo.py` regenerate the mascot and demo GIF
@@ -22,7 +22,7 @@ always changes with another (`forgot-related-file`). Mascot: Sora the slime. Own
 ```bash
 python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 .venv/Scripts/python -m pytest -q
-.venv/Scripts/blot bench --workdir <short path>     # must stay 30/30
+.venv/Scripts/blot bench --workdir <short path>     # must stay 32/32
 ```
 - Any change to `classify.py` or a check: on each of the 5 clones, checked out at the `head` in its
   labels file, run `blot bench --replay 500 --labels bench/labels/<repo>.json --update-labels`. Keep a
