@@ -2,12 +2,12 @@
 
 Measured 2026-10-30 with `blot bench`, on Windows 11, Python 3.12.
 
-## Cases: 30/30 correct
+## Cases: 32/32 correct
 
 | Check | Cases | Precision | Recall |
 |---|---|---|---|
 | removed-fix | 24 (16 warn, 8 quiet) | 100% | 100% |
-| readded-bug | 3 (3 warn) | 100% | 100% |
+| readded-bug | 5 (4 warn, 1 quiet) | 100% | 100% |
 | forgot-related-file | 3 (3 quiet) | n/a | n/a |
 
 A quiet case now fails if its scripted edit can't be applied (it used to pass without running).
