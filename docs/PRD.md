@@ -48,7 +48,7 @@ These mistakes are caught late (in CI, review or production) or never. AI coding
 
 | | On-demand "why" (code-archaeologist, Codebase Time Machine) | Agent edit-time guard (git-fence, lore) | **Blot** |
 |---|---|---|---|
-| When it runs | When you ask | When an AI agent edits | **Every commit (people and agents)** |
+| When it runs | When you ask | When an AI agent edits | **Every commit (people and agents), and before each agent edit (`blot guard`)** |
 | Works without AI agents | Yes | No (agent hook only) | **Yes** |
 | Removed-fix check | Indirect | Yes (git-fence) | Yes, **and traces past refactors** |
 | Re-added-bug check | No | No | **Yes** |
@@ -56,7 +56,9 @@ These mistakes are caught late (in CI, review or production) or never. AI coding
 | Windows | Broken / web | WSL only / yes | **Native** |
 | Accuracy is measured | No | Self-reported (git-fence) | **Public bench in repo** |
 
-**Our wedge:** commit time + checks 2 and 3 + a public bench. Possible collaboration: git-fence's classifier ideas are MIT-licensed and worth studying (with credit).
+**Our wedge:** commit time + checks 2 and 3 + a public bench. Since the agent guard (F7), Blot also
+warns an agent at edit time, with the same refactor-aware tracing and the same measured checks; of the
+competitors tested (code-archaeologist, lore, Entire), none guards an edit before it happens. Possible collaboration: git-fence's classifier ideas are MIT-licensed and worth studying (with credit).
 
 ## 5. Features (v0.1)
 
@@ -92,6 +94,17 @@ These mistakes are caught late (in CI, review or production) or never. AI coding
 
 ### F6. `blot bench`
 - Runs `bench/cases.json` and prints precision and recall per check. CI fails if precision drops.
+
+### F7. `blot guard`: warn coding agents before they edit a fix (after v0.5.0)
+- A Claude Code `PreToolUse` hook on `Edit|Write|MultiEdit`. It reads the hook JSON from stdin, applies the
+  proposed edit to the file in memory, and runs `removed-fix` and `readded-bug` on the difference
+  (`forgot-related-file` is left out: 0 useful warnings of 45 labelled).
+- Findings go back as `additionalContext`. Default: warn only, no `permissionDecision`. `--ask` makes
+  Claude Code ask the user, with the warning as the reason. It never denies an edit.
+- Same rules as `blot check`: under ~500 ms, silent when there's nothing to say, never fails an edit
+  because of its own errors. It doesn't build a first index; `blot install-agent-hook` does.
+- `blot install-agent-hook [--local] [--ask] [--uninstall]` edits `.claude/settings.json` (or
+  `settings.local.json`) without touching other hooks.
 
 ## 6. User flows
 
@@ -162,7 +175,7 @@ The user either reads the linked issue and adjusts the change, or commits anyway
 | GitHub only | GitLab and Bitbucket links; mailing lists (Linux, Postgres) |
 | | GitHub Action that comments on PRs |
 | | VS Code extension that shows warnings as you edit |
-| | MCP server, so AI agents can ask before editing |
+| | MCP server, so AI agents can ask before editing (the `blot guard` hook, F7, covers Claude Code) |
 
 ## 10. Success metrics
 
