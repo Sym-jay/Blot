@@ -5,6 +5,8 @@ Commands:
     check         run all checks against staged changes (pre-commit) or a commit range
     why           show the history behind a line: fix commits, PR, linked issues
     install-hook  add blot to .git/hooks/pre-commit
+    guard         Claude Code hook: warn a coding agent before it edits a line a fix added
+    install-agent-hook  add `blot guard` to .claude/settings.json
     bench         measure accuracy: bench cases, or replay recent commits (--replay N)
 """
 
@@ -104,6 +106,33 @@ def _cmd_install_hook(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_guard(args: argparse.Namespace) -> int:
+    import io
+
+    from blot.guard import run
+
+    # hook payloads are UTF-8 whatever the console code page (cp1252 on Windows)
+    stdin = io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8", errors="replace")
+    return run(stdin, sys.stdout, ask=args.ask)
+
+
+def _cmd_install_agent_hook(args: argparse.Namespace) -> int:
+    from blot import hooks
+
+    if args.uninstall:
+        print(f"blot: Claude Code hook {hooks.uninstall_agent(args.repo, local=args.local)}")
+        return 0
+    try:
+        status = hooks.install_agent(args.repo, ask=args.ask, local=args.local)
+    except ValueError as exc:  # unreadable settings: leave them as they are
+        print(f"blot: not installed: {exc}", file=sys.stderr)
+        return 1
+    print(f"blot: Claude Code hook {status} ({hooks.agent_settings_path(args.repo, args.local)})")
+    # the guard never builds a first index itself (too slow for a hook), so build it now
+    _open_index(args.repo).close()
+    return 0
+
+
 def _cmd_bench(args: argparse.Namespace) -> int:
     import dataclasses
     import json
@@ -166,6 +195,16 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("install-hook", help="add blot to .git/hooks/pre-commit")
     p.add_argument("--uninstall", action="store_true", help="remove blot's lines from the hook")
     p.set_defaults(func=_cmd_install_hook)
+
+    p = sub.add_parser("guard", help="Claude Code PreToolUse hook: warn the agent before it edits a fix (reads stdin)")
+    p.add_argument("--ask", action="store_true", help="also ask the user to approve edits that touch a fix")
+    p.set_defaults(func=_cmd_guard)
+
+    p = sub.add_parser("install-agent-hook", help="add `blot guard` to .claude/settings.json")
+    p.add_argument("--uninstall", action="store_true", help="remove blot's entry from the settings")
+    p.add_argument("--ask", action="store_true", help="install in ask mode (the user approves flagged edits)")
+    p.add_argument("--local", action="store_true", help="use .claude/settings.local.json (not committed)")
+    p.set_defaults(func=_cmd_install_agent_hook)
 
     p = sub.add_parser("bench", help="measure accuracy: bench cases, or replay recent commits")
     p.add_argument("--cases", default="bench/cases.json", help="cases file (default: bench/cases.json)")

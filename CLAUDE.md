@@ -7,11 +7,11 @@ always changes with another (`forgot-related-file`). Mascot: Sora the slime. Own
 
 ## Layout
 - `src/blot/`: stdlib-only on Python 3.11+ (3.10 also needs `tomli`; keep it that way)
-  - `cli.py` commands: index, check, why, install-hook, bench. `check`/`why` build/refresh the index themselves.
+  - `cli.py` commands: index, check, why, install-hook, guard, install-agent-hook, bench. `check`/`why` build/refresh the index themselves.
   - `index.py` builds `.git/blot.db` (parallel `git log` slices for 2000+ commits); `store.py` SQLite schema v2
   - `classify.py` fix severity 0/1/2 + refactor detection: most precision lives here
   - `checks/` one file per check; `trace.py` blame that follows lines past refactor commits
-  - `why.py`, `github.py` (`index --github` via `gh api graphql`), `bench.py` (cases + `--replay N`)
+  - `guard.py` (Claude Code hook; installer in `hooks.py`), `why.py`, `github.py` (`index --github` via `gh api graphql`), `bench.py` (cases + `--replay N`)
 - `bench/cases.json` scripted real-world cases (32/32); `bench/labels/` hand verdicts for every replay
   warning on the 5 reference repos; `bench/RESULTS.md` replay numbers and precision
 - `action.yml` GitHub Action; `.github/workflows/blot.yml` runs it on Blot's own PRs
@@ -60,4 +60,8 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 - `--github` measured (2026-11-01): precision unchanged (52.5%), +7 useful warnings, almost no demotions.
 - Tried and dropped (2026-11-01): "fix word + PR number" as an offline fix rule: +85 warnings at 22%
   useful. Don't retry it without a narrower signal (see bench/RESULTS.md).
+- Agent guard (2026-11-04, branch `agent-guard`, unreleased): `blot guard` is a Claude Code PreToolUse
+  hook (`src/blot/guard.py`) running removed-fix + readded-bug on a proposed Edit/Write/MultiEdit;
+  `blot install-agent-hook` edits `.claude/settings.json`. Flask edit of `self_ref` warns in ~450 ms.
+  Not yet tried in a live Claude Code session.
 - Next: remaining noise (renames, API swaps, added arguments, docstrings) in bench/RESULTS.md.

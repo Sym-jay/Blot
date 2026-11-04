@@ -71,6 +71,42 @@ src/flask/app.py:355
 
 `blot why FILE:LINE` (or `FILE:START-END`) finds the commit that explains a line, skipping commits that only moved it. Plain `git blame` stops at the refactor.
 
+## Guard coding agents
+
+Coding agents are the most likely to "clean up" a line they don't understand. `blot guard` is a
+[Claude Code](https://code.claude.com/docs/en/hooks) `PreToolUse` hook on `Edit`, `Write` and `MultiEdit`:
+it runs the `removed-fix` and `readded-bug` checks on the edit the agent is about to make, and hands any
+finding to the agent as context:
+
+```
+blot: 1 warning
+
+  ! removed-fix  src/flask/app.py:355
+    You're removing or changing a line that a bug fix added.
+    Check that the bug it fixed can't come back.
+    8efea0c "Break reference cycle created by default in Flask instances." (2020-10-03)
+    traced past refactor 0ec7f71 "Split the App and Blueprint into Sansio and IO parts"
+Run `blot why FILE:LINE` for the full history before you change it.
+```
+
+```bash
+blot install-agent-hook           # adds the hook to .claude/settings.json and builds the index
+blot install-agent-hook --local   # or .claude/settings.local.json, which isn't committed
+blot install-agent-hook --ask     # also ask you to approve edits that touch a fix
+```
+
+The hook command names this machine's Python by absolute path (like `install-hook`), so prefer `--local`
+if your team commits `.claude/settings.json`. Remove it with `blot install-agent-hook --uninstall`
+(add `--local` if you installed it there); other hooks in the file are left alone.
+
+By default the guard only warns: Claude Code adds the warning to the agent's context with the edit's
+result, and the normal permission flow is unchanged. With `--ask`, Claude Code stops before the edit and
+asks you, showing the warning. The guard prints nothing when it has nothing to say, stays quiet for
+files outside a git repo or not tracked at HEAD, and never blocks an edit because of its own errors. It
+doesn't build a first index (that can take a minute): `install-agent-hook` does, or run `blot index`.
+After that it refreshes the index incrementally. On Flask a guarded edit takes about 450 ms.
+`forgot-related-file` is left out: it had no useful warnings among the 45 labelled in replays.
+
 ## Issue and PR titles (optional)
 
 ```bash
