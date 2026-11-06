@@ -21,6 +21,10 @@ blot why src/app.py:42   # which commit explains this line, skipping refactors
 blot index --github  # optional: issue/PR titles and labels via the gh CLI
 ```
 
-> **Status:** pre-alpha. All three checks work. Replayed on 500 recent commits each of Flask, requests, Express, Django and React, Blot warns on 0.6–10% of commits; see the bench results on GitHub. Please report false alarms.
+**Guard coding agents.** `blot install-agent-hook` adds a Claude Code hook that runs the same checks on
+an edit an agent is about to make, so the agent sees "this line exists because of fix 8efea0c" before
+it "simplifies" it away. It warns by default; `--ask` makes Claude Code ask you first.
+
+> **Status:** pre-alpha. All three checks work. Replayed on 500 recent commits each of Flask, requests, Express, Django and React, Blot warns on 0.6–9.5% of commits, and about half of its warnings (labelled by hand) are worth a reviewer's time; see the bench results on GitHub. Please report false alarms.
 
 Meet Sora the slime, read the docs, or contribute on GitHub: https://github.com/Sym-jay/Blot
