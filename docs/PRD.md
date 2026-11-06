@@ -95,7 +95,7 @@ competitors tested (code-archaeologist, lore, Entire), none guards an edit befor
 ### F6. `blot bench`
 - Runs `bench/cases.json` and prints precision and recall per check. CI fails if precision drops.
 
-### F7. `blot guard`: warn coding agents before they edit a fix (after v0.5.0)
+### F7. `blot guard`: warn coding agents before they edit a fix (v0.6.0)
 - A Claude Code `PreToolUse` hook on `Edit|Write|MultiEdit`. It reads the hook JSON from stdin, applies the
   proposed edit to the file in memory, and runs `removed-fix` and `readded-bug` on the difference
   (`forgot-related-file` is left out: 0 useful warnings of 45 labelled).
