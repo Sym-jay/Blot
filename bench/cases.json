@@ -439,5 +439,20 @@
       "warn": false
     },
     "notes": "Black's formatting change from 2a6f290b in should_strip_auth. Formatting only: must stay quiet."
+  },
+  {
+    "id": "requests-quiet-per-host-proxy-feature",
+    "repo": "https://github.com/psf/requests",
+    "at": "48fe34447de02bfe9827321fafe3277741d77c38",
+    "file": "requests/adapters.py",
+    "replace": [
+      "        u = urlparse(url.lower())\n        proxy = proxies.get(u.scheme+'://'+u.hostname, proxies.get(u.scheme))",
+      "        proxy = proxies.get(urlparse(url.lower()).scheme)"
+    ],
+    "expect": {
+      "check": "readded-bug",
+      "warn": false
+    },
+    "notes": "Re-adds the exact line removed by 48fe3444. Although the commit says Fixes #2722, it implements the per-host proxy feature rather than fixing a regression. Blot classifies it with severity 1, so its removed line must not be indexed as a bug fix."
   }
 ]
