@@ -1,4 +1,4 @@
-from blot.diff import parse_unified_diff, read_changes
+from blot.diff import parse_unified_diff, python_docstring_lines, read_changes
 
 SAMPLE = """\
 diff --git a/app.py b/app.py
@@ -37,3 +37,44 @@ def test_read_staged_changes(make_repo):
     (change,) = read_changes(str(repo))
     assert change.removed == [(2, "two")]
     assert change.added == [(2, "TWO")]
+
+
+def test_python_docstring_lines_only_returns_real_docstrings():
+    source = '''\
+"""module docs = enabled()"""
+
+DATA = """assigned = payload()
+still data"""
+"""a later string expression, not a docstring = value()"""
+
+class Example:
+    """Class docs containing items[0].
+    More class docs.
+    """
+
+    def method(self):
+        """Method docs.
+        @decorator(option=True)
+        """
+        template = """runtime = render()"""
+        """a later function string expression = value()"""
+
+async def async_method():
+    """Async docs with values[0] = call()."""
+'''
+    lines = python_docstring_lines(source)
+    assert lines is not None
+    numbered = {text: i for i, text in enumerate(source.splitlines(), 1)}
+    assert numbered['"""module docs = enabled()"""'] in lines
+    assert numbered['    """Class docs containing items[0].'] in lines
+    assert numbered["        @decorator(option=True)"] in lines
+    assert numbered['    """Async docs with values[0] = call()."""'] in lines
+    assert numbered['DATA = """assigned = payload()'] not in lines
+    assert numbered['"""a later string expression, not a docstring = value()"""'] not in lines
+    assert numbered['        template = """runtime = render()"""'] not in lines
+    assert numbered['        """a later function string expression = value()"""'] not in lines
+
+
+def test_python_docstring_lines_handles_empty_and_invalid_source():
+    assert python_docstring_lines("value = 1\n") == set()
+    assert python_docstring_lines("def broken(\n") is None

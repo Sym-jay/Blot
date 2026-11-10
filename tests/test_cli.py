@@ -100,3 +100,31 @@ def test_check_range_reads_removed_lines_at_the_base(make_repo, capsys):
         assert main(["--repo", str(repo), "check", "--range", rev_range, "--format", "json"]) == 0
         found = [(f["check"], f["path"], f["line"]) for f in json.loads(capsys.readouterr().out)]
         assert ("removed-fix", "app.py", 3) in found, rev_range
+
+
+def test_check_range_ignores_docstrings_from_the_base_revision(make_repo, capsys):
+    docstring = '''\
+def render():
+    """Render safely.
+    helper(option=True)
+    """
+    return 1
+'''
+    repo = make_repo([
+        ("Add render", {"app.py": "def render():\n    return 1\n"}),
+        ("Fix crash in render (fixes #1)", {"app.py": docstring}),
+    ])
+    git = lambda *args: subprocess.run(["git", "-C", str(repo), *args], check=True, capture_output=True)  # noqa: E731
+    git("switch", "-q", "-c", "pr")
+    (repo / "app.py").write_text("def render():\n    value = 1\n    return value\n", encoding="utf-8")
+    git("commit", "-q", "-am", "Simplify render")
+    git("switch", "-q", "main")
+    (repo / "README.md").write_text("render\n", encoding="utf-8")
+    git("add", "README.md")
+    git("commit", "-q", "-m", "docs: render")
+    git("switch", "-q", "pr")
+
+    for rev_range in ("HEAD~1..HEAD", "main...pr"):
+        assert main(["--repo", str(repo), "check", "--range", rev_range, "--format", "json"]) == 0
+        findings = json.loads(capsys.readouterr().out)
+        assert all(f["check"] != "removed-fix" for f in findings), rev_range
