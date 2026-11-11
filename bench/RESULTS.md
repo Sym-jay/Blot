@@ -58,7 +58,23 @@ code from earlier fixes and CVEs.
 | commits cited as fixes that weren't: `Fixed #21189: Cleaned up ...`, `Fixed #12882 - Moved ...`, `[DevTools] upgrade to Manifest V3`, `Change Flask.__init__ to accept ...`, error-message wording (6) | `Fixed #N:` / `Fixed #N -` ticket styles judged by their description; cleanups count as refactors; `[Tag]` prefixes and "change" subjects count as features; error messages are routine |
 | docstrings with `backticks` or (asides) (1) | they count as prose |
 
-### Noise still there (52 warnings)
+### Since 0.6.0: real docstrings (#40, by @Sandro850)
+
+`removed-fix` now parses the old Python file (`ast`, only when a warning is already on its way) and skips
+lines inside real module, class and function docstrings. That removed one Django noise warning. It also
+exposed two of **our** labels as wrong: in Flask `c2705ffd` and Django `ebcb13b3`, the warning used to point at
+a docstring line, but the same change also edits the fix's code (Flask's `copy()` passing
+`session=self.session`, from fix #2935; Django's `isinstance(normalized, (dict, str))` check, from the
+CVE-2026-15307 fix). Now the warning points at the code, and both are relabelled useful.
+
+| Repo | Before | After |
+|---|---|---|
+| pallets/flask | 3/4 (75%) | **4/4 (100%)** |
+| django/django | 40/59 (68%) | **41/58 (71%)** |
+| requests, Express, React | unchanged | unchanged |
+| **All five** | 57/109 (52.3%) | **59/108 (54.6%)** |
+
+### Noise still there (49 warnings)
 
 | Pattern | Warnings | Why there's no rule yet |
 |---|---|---|
@@ -67,7 +83,6 @@ code from earlier fixes and CVEs.
 | new argument or keyword argument on a fix's call | 3 | adding an argument can change behaviour |
 | formatter reflows with f-strings or joined lines (requests' Black commit) | 4 | dropping parentheses can change precedence |
 | deleting a legacy module or feature in pieces (React) | 6 | intentional, but only the commit message says so |
-| docstring lines that still read as code | 3 | needs to know it's inside a docstring, not just how the line looks |
 | other: code moved to another file, fix behaviour kept while restructuring, generic re-added lines | 16 | case by case |
 
 **`forgot-related-file` has shown no useful warning yet**: 0/45 before this release, 0/9 after. It

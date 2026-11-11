@@ -579,8 +579,8 @@
    "path": "django/contrib/gis/gdal/raster/source.py",
    "line": 37,
    "cited": "f1949c1",
-   "verdict": "noise",
-   "reason": "docstring"
+   "verdict": "useful",
+   "reason": "extends the isinstance check from the CVE-2026-15307 fix to bytes (was mislabelled: the old warning pointed at the docstring line above)"
   },
   {
    "sha": "62ef9d40c",

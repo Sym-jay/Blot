@@ -49,8 +49,8 @@
    "path": "src/flask/ctx.py",
    "line": 348,
    "cited": "e08bcf9",
-   "verdict": "noise",
-   "reason": "docstring rewording"
+   "verdict": "useful",
+   "reason": "changes the copy() call that passes session=self.session, from fix #2935 (was mislabelled: the old warning pointed at the docstring line above)"
   }
  ]
 }
