@@ -56,7 +56,7 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
   support (`rev: v0.6.0`), GitHub Action (`uses: Sym-jay/Blot@v0.6.0`).
 - Launch: dev.to post published 2026-10-24; the CVE sentence there should mention the withdrawn advisory.
 - Open issues: #2–#4, #6 (bench cases); #33 (live guard report), #34 (quiet readded-bug case), #35–#36 (noise).
-- Precision (0.5.0, measured 2026-10-30): 57/109 useful (52%); Django 1.19 / 10 commits, others ≤ 0.6.
+- Precision (main, 2026-11-11, after #40): 59/108 useful (54.6%); Django 1.17 / 10 commits, others ≤ 0.6.
   `forgot-related-file` has 0 useful warnings in 45 labelled; candidate to become opt-in.
 - `--github` measured (2026-11-01): precision unchanged (52.5%), +7 useful warnings, almost no demotions.
 - Tried and dropped (2026-11-01): "fix word + PR number" as an offline fix rule: +85 warnings at 22%
@@ -65,4 +65,6 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
   hook (`src/blot/guard.py`) running removed-fix + readded-bug on a proposed Edit/Write/MultiEdit;
   `blot install-agent-hook` edits `.claude/settings.json`. Flask edit of `self_ref` warns in ~450 ms.
   Not yet tried in a live Claude Code session.
-- Next: remaining noise (renames, API swaps, added arguments, docstrings) in bench/RESULTS.md.
+- Next: remaining noise (renames, API swaps, added arguments) in bench/RESULTS.md.
+- Labels match on commit/check/path/cited commit, not line: when a rule moves a warning to another line,
+  re-check its label (#40 found two that way).
