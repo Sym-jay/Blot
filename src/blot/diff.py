@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import hashlib
 import re
 from dataclasses import dataclass, field
@@ -103,6 +104,30 @@ class KeptLines:
 def is_meaningful_line(normalized: str) -> bool:
     """Worth checking against history: real code, not blank, generic or prose."""
     return bool(normalized) and not is_trivial_line(normalized) and not is_prose_line(normalized)
+
+
+def python_docstring_lines(source: str) -> set[int] | None:
+    """Line numbers occupied by real Python docstrings, or None if parsing fails."""
+    try:
+        tree = ast.parse(source)
+    except (SyntaxError, ValueError, RecursionError):
+        return None
+
+    lines: set[int] = set()
+    scopes = (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)
+    for node in ast.walk(tree):
+        if not isinstance(node, scopes) or not node.body:
+            continue
+        first = node.body[0]
+        if not (
+            isinstance(first, ast.Expr)
+            and isinstance(first.value, ast.Constant)
+            and isinstance(first.value.value, str)
+        ):
+            continue
+        end = first.value.end_lineno or first.value.lineno
+        lines.update(range(first.value.lineno, end + 1))
+    return lines
 
 
 def line_hash(normalized: str) -> str:

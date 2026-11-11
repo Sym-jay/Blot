@@ -13,9 +13,18 @@ normalized text, preferring the same path. That is how a file split is followed 
 
 from __future__ import annotations
 
+import subprocess
+
 from blot.checks.base import Check, Finding, describe_commit, is_skipped
-from blot.diff import KeptLines, is_meaningful_line, normalize_line
+from blot.diff import (
+    KeptLines,
+    is_meaningful_line,
+    normalize_line,
+    python_docstring_lines,
+)
+from blot.git import run_git
 from blot.trace import RefactorOrigins, trace_lines
+
 
 class RemovedFix(Check):
     id = "removed-fix"
@@ -23,6 +32,7 @@ class RemovedFix(Check):
 
     def run(self, changes, store, config) -> list[Finding]:
         origins = RefactorOrigins(store.repo)
+        docstrings: dict[tuple[str, str], set[int] | None] = {}
         findings: list[Finding] = []
         # a line that reappears anywhere in the change was moved, not removed
         moved = {normalize_line(text) for c in changes for _, text in c.added}
@@ -41,12 +51,30 @@ class RemovedFix(Check):
                 continue
 
             trail = trace_lines(store, store.rev, change.old_path, texts, origins)
+            candidates = []
+            for n in sorted(trail):
+                row = store.get_commit(trail[n].sha)
+                if row is not None and not row.is_refactor and row.severity >= config.min_severity:
+                    candidates.append((n, trail[n], row))
+            if not candidates:
+                continue
+
+            docstring_lines: set[int] | None = None
+            if change.old_path.endswith(".py"):
+                key = (store.rev, change.old_path)
+                if key not in docstrings:
+                    try:
+                        source = run_git(store.repo, "show", f"{store.rev}:{change.old_path}")
+                    except subprocess.CalledProcessError:
+                        docstrings[key] = None
+                    else:
+                        docstrings[key] = python_docstring_lines(source)
+                docstring_lines = docstrings[key]
 
             reported: set[str] = set()
-            for n in sorted(trail):
-                sha, via = trail[n].sha, trail[n].via
-                row = store.get_commit(sha)
-                if row is None or row.is_refactor or row.severity < config.min_severity or sha in reported:
+            for n, traced, row in candidates:
+                sha, via = traced.sha, traced.via
+                if (docstring_lines is not None and n in docstring_lines) or sha in reported:
                     continue
                 reported.add(sha)  # one finding per fix per file, at its first line
                 evidence = [describe_commit(row, store)]

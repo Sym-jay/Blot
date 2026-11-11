@@ -7,6 +7,7 @@ import time
 
 import pytest
 
+import blot.checks.removed_fix as removed_fix_module
 from blot import guard, hooks
 from blot.index import build_index
 from test_checks import AFTER, FIXED, GUARD, sha
@@ -15,6 +16,27 @@ from test_checks import AFTER, FIXED, GUARD, sha
 @pytest.fixture
 def fixed_repo(make_repo):
     repo = make_repo(FIXED)
+    build_index(str(repo))
+    return repo
+
+
+GUARD_DOCSTRING = '''\
+def render():
+    """Render safely.
+    helper(documented=True)
+    """
+    value = helper(executable=True)
+    name = "render"
+    return value
+'''
+
+
+@pytest.fixture
+def docstring_repo(make_repo):
+    repo = make_repo([
+        ("Add render", {"app.py": 'def render():\n    name = "render"\n    return 1\n'}),
+        ("Fix render crash (fixes #1)", {"app.py": GUARD_DOCSTRING}),
+    ])
     build_index(str(repo))
     return repo
 
@@ -70,6 +92,43 @@ def test_line_numbers_follow_uncommitted_edits(fixed_repo):
     (fixed_repo / "app.py").write_text("import weakref\n\n" + AFTER, encoding="utf-8")
     out = run_guard(payload(fixed_repo, "Edit", old_string=GUARD, new_string="self_ref = self"))
     assert "app.py:5" in out
+
+
+def test_guard_docstrings_use_head_lines_and_keep_executable_findings(docstring_repo, monkeypatch):
+    # Guard maps these working-tree lines back to HEAD before RemovedFix checks docstring ranges.
+    (docstring_repo / "app.py").write_text("# local change\n\n" + GUARD_DOCSTRING, encoding="utf-8")
+    original = removed_fix_module.run_git
+    reads = 0
+
+    def count_historical_reads(repo, *args):
+        nonlocal reads
+        reads += 1
+        return original(repo, *args)
+
+    monkeypatch.setattr(removed_fix_module, "run_git", count_historical_reads)
+    assert run_guard(payload(
+        docstring_repo, "Edit", old_string="helper(documented=True)",
+        new_string="helper(documented=False)",
+    )) == ""
+    assert reads == 1
+
+    reads = 0
+    out = run_guard(payload(
+        docstring_repo, "Edit", old_string="value = helper(executable=True)",
+        new_string="value = helper(executable=False)",
+    ))
+    assert "removed-fix  app.py:7" in out
+    assert reads == 1
+
+
+def test_guard_does_not_read_history_for_ineligible_lines(docstring_repo, monkeypatch):
+    monkeypatch.setattr(
+        removed_fix_module, "run_git",
+        lambda *args: pytest.fail("an ineligible trace must not read the historical file"),
+    )
+    assert run_guard(payload(
+        docstring_repo, "Edit", old_string='name = "render"', new_string='name = "renderer"',
+    )) == ""
 
 
 def test_ask_mode_asks_the_user(fixed_repo):

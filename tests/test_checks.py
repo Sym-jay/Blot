@@ -1,5 +1,7 @@
 import subprocess
 
+import blot.checks.removed_fix as removed_fix_module
+import pytest
 from blot.checks.cochange import ForgotRelatedFile
 from blot.checks.readded_bug import ReaddedBug
 from blot.checks.removed_fix import RemovedFix
@@ -60,6 +62,147 @@ def test_removed_fix_respects_min_severity(make_repo):
     stage(repo, {"app.py": BEFORE})
     assert run_check(RemovedFix(), repo) == []
     assert run_check(RemovedFix(), repo, Config(min_severity=3)) == []
+
+
+DOCSTRING_BEFORE = '''\
+def render():
+    """Render safely.
+    helper(option=True)
+    """
+    return 1
+'''
+
+
+def test_removed_fix_ignores_staged_python_docstring_changes(make_repo):
+    repo = make_repo([
+        ("Add render", {"app.py": "def render():\n    return 1\n"}),
+        ("Fix crash in render (fixes #1)", {"app.py": DOCSTRING_BEFORE}),
+    ])
+    stage(repo, {"app.py": DOCSTRING_BEFORE.replace("option=True", "option=False")})
+    assert run_check(RemovedFix(), repo) == []
+
+
+def test_removed_fix_docstring_filter_keeps_executable_code(make_repo):
+    fixed = "def render():\n    value = helper(option=True)\n    return value\n"
+    repo = make_repo([
+        ("Add render", {"app.py": "def render():\n    return 1\n"}),
+        ("Fix crash in render (fixes #1)", {"app.py": fixed}),
+    ])
+    stage(repo, {"app.py": fixed.replace("option=True", "option=False")})
+    assert len(run_check(RemovedFix(), repo)) == 1
+
+
+def test_removed_fix_docstring_filter_deduplicates_after_suppressing(make_repo):
+    fixed = '''\
+def render():
+    """Render safely.
+    helper(documented=True)
+    """
+    value = helper(executable=True)
+    return value
+'''
+    repo = make_repo([
+        ("Add render", {"app.py": "def render():\n    return 1\n"}),
+        ("Fix crash in render (fixes #1)", {"app.py": fixed}),
+    ])
+    changed = fixed.replace("documented=True", "documented=False").replace(
+        "executable=True", "executable=False"
+    )
+    stage(repo, {"app.py": changed})
+    (finding,) = run_check(RemovedFix(), repo)
+    assert finding.line == 5  # the earlier docstring line doesn't consume this commit's finding
+
+
+def test_removed_fix_docstring_filter_keeps_multiline_string_data(make_repo):
+    fixed = 'QUERY = """\nSELECT helper(option=True)\n"""\n'
+    repo = make_repo([
+        ("Add query", {"app.py": 'QUERY = "select 1"\n'}),
+        ("Fix query crash (fixes #1)", {"app.py": fixed}),
+    ])
+    stage(repo, {"app.py": fixed.replace("option=True", "option=False")})
+    assert len(run_check(RemovedFix(), repo)) == 1
+
+
+def test_removed_fix_docstring_parse_failure_is_conservative(make_repo):
+    fixed = "def broken(\nvalue = helper(option=True)\n"
+    repo = make_repo([
+        ("Add broken file", {"app.py": "def broken(\n"}),
+        ("Fix crash in broken file (fixes #1)", {"app.py": fixed}),
+    ])
+    stage(repo, {"app.py": fixed.replace("option=True", "option=False")})
+    assert len(run_check(RemovedFix(), repo)) == 1
+
+
+def test_removed_fix_docstring_read_failure_is_conservative(make_repo, monkeypatch):
+    repo = make_repo([
+        ("Add render", {"app.py": "def render():\n    return 1\n"}),
+        ("Fix crash in render (fixes #1)", {"app.py": DOCSTRING_BEFORE}),
+    ])
+    stage(repo, {"app.py": DOCSTRING_BEFORE.replace("option=True", "option=False")})
+
+    def fail_historical_read(repo, *args):
+        raise subprocess.CalledProcessError(128, ["git", *args])
+
+    monkeypatch.setattr(removed_fix_module, "run_git", fail_historical_read)
+    assert len(run_check(RemovedFix(), repo)) == 1
+
+
+def test_removed_fix_docstring_filter_does_not_read_non_python_files(make_repo, monkeypatch):
+    fixed = "value = helper(option=True)\n"
+    repo = make_repo([
+        ("Add script", {"app.js": "value = 1\n"}),
+        ("Fix script crash (fixes #1)", {"app.js": fixed}),
+    ])
+    stage(repo, {"app.js": fixed.replace("option=True", "option=False")})
+    monkeypatch.setattr(
+        removed_fix_module, "run_git",
+        lambda *args: pytest.fail("non-Python files must not trigger a historical file read"),
+    )
+    assert len(run_check(RemovedFix(), repo)) == 1
+
+
+def test_removed_fix_reads_docstrings_once_per_historical_file(make_repo, monkeypatch):
+    fixed = DOCSTRING_BEFORE.replace(
+        "    helper(option=True)\n",
+        "    helper(option=True)\n    helper(other=True)\n",
+    )
+    repo = make_repo([
+        ("Add render", {"app.py": "def render():\n    return 1\n"}),
+        ("Fix crash in render (fixes #1)", {"app.py": fixed}),
+    ])
+    changed = fixed.replace("option=True", "option=False").replace("other=True", "other=False")
+    stage(repo, {"app.py": changed})
+    build_index(str(repo))
+    store = Store.open(str(repo))
+    changes = read_changes(str(repo))
+    original = removed_fix_module.run_git
+    calls = 0
+
+    def count_historical_reads(repo, *args):
+        nonlocal calls
+        calls += 1
+        return original(repo, *args)
+
+    monkeypatch.setattr(removed_fix_module, "run_git", count_historical_reads)
+    try:
+        assert RemovedFix().run([*changes, *changes], store, Config()) == []
+    finally:
+        store.close()
+    assert calls == 1
+
+
+def test_removed_fix_does_not_read_file_without_an_eligible_fix(make_repo, monkeypatch):
+    added = "def render():\n    value = helper(option=True)\n    return value\n"
+    repo = make_repo([
+        ("Add render", {"app.py": "def render():\n    return 1\n"}),
+        ("Add optional rendering", {"app.py": added}),
+    ])
+    stage(repo, {"app.py": added.replace("option=True", "option=False")})
+    monkeypatch.setattr(
+        removed_fix_module, "run_git",
+        lambda *args: pytest.fail("a non-fix trace must not trigger a historical file read"),
+    )
+    assert run_check(RemovedFix(), repo) == []
 
 
 # --- readded-bug ------------------------------------------------------------------------
