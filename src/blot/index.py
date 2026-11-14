@@ -180,3 +180,19 @@ def build_index(
     store.commit()
     store.close()
     return IndexResult(len(parsed), len(fix_shas), time.perf_counter() - start, rebuild)
+
+
+def open_index(repo: str) -> Store:
+    """Open the index, building or refreshing it first.
+
+    The pre-commit framework installs Blot where users can't easily run `blot index`, so the hook
+    must look after the index itself: one full build on first use, then cheap incremental refreshes.
+    `check`, `why`, `map` and the MCP server all come through here.
+    """
+    import sys
+
+    if not os.path.exists(Store.db_path(repo)):
+        print("blot: first run, indexing this repo's history once (big repos can take a minute)...",
+              file=sys.stderr)
+    build_index(repo)
+    return Store.open(repo)

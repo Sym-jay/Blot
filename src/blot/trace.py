@@ -9,6 +9,7 @@ same path) and blame again at the refactor's parent, up to MAX_HOPS times.
 from __future__ import annotations
 
 import subprocess
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
@@ -19,6 +20,7 @@ if TYPE_CHECKING:
     from blot.store import Store
 
 MAX_HOPS = 3
+MAX_BLAME_RANGES = 20  # more `-L` ranges than this are blamed as one span
 
 
 def _ranges(numbers: list[int]) -> list[tuple[int, int]]:
@@ -32,10 +34,19 @@ def _ranges(numbers: list[int]) -> list[tuple[int, int]]:
     return runs
 
 
-def blame(repo: str, rev: str, path: str, lines: list[int]) -> dict[int, tuple[str, str, int]]:
-    """{line: (sha, path in that commit, line in that commit)} via one porcelain blame call."""
-    args = ["blame", "-w", "-M", "-C", "--porcelain"]
-    for start, end in _ranges(lines):
+def blame(repo: str, rev: str, path: str, lines: list[int], copies: bool = True,
+          span: bool = False) -> dict[int, tuple[str, str, int]]:
+    """{line: (sha, path in that commit, line in that commit)} via one porcelain blame call.
+
+    `copies=False` drops `-C` (lines copied from other files): see trace_lines. With `span`, more
+    than MAX_BLAME_RANGES runs of lines are blamed as one span (and more lines than asked for come
+    back), which keeps the command line short when `blot map` asks about a whole file.
+    """
+    args = ["blame", "-w", "-M", *(["-C"] if copies else []), "--porcelain"]
+    runs = _ranges(lines)
+    if span and len(runs) > MAX_BLAME_RANGES:
+        runs = [(runs[0][0], runs[-1][1])]
+    for start, end in runs:
         args += ["-L", f"{start},{end}"]
     try:
         out = run_git(repo, *args, rev, "--", path)
@@ -63,17 +74,26 @@ class RefactorOrigins:
         self.repo = repo
         self.cache: dict[str, dict[str, list[tuple[str, int]]]] = {}
 
+    def _load(self, sha: str) -> dict[str, list[tuple[str, int]]]:
+        origins: dict[str, list[tuple[str, int]]] = {}
+        try:
+            diff = run_git(self.repo, "show", "--format=", "-U0", "--no-color", "--no-ext-diff", "-M", sha)
+        except subprocess.CalledProcessError:
+            diff = ""
+        for change in parse_unified_diff(diff):
+            for number, removed in change.removed:
+                origins.setdefault(normalize_line(removed), []).append((change.old_path or change.path, number))
+        return origins
+
+    def prefetch(self, shas: list[str]) -> None:
+        """Read several refactors' diffs at once (each git call costs ~40 ms on Windows)."""
+        todo = [sha for sha in dict.fromkeys(shas) if sha not in self.cache]
+        for sha, origins in zip(todo, _parallel(self._load, todo)):
+            self.cache[sha] = origins
+
     def find(self, sha: str, path: str, text: str) -> tuple[str, int] | None:
         if sha not in self.cache:
-            origins: dict[str, list[tuple[str, int]]] = {}
-            try:
-                diff = run_git(self.repo, "show", "--format=", "-U0", "--no-color", "--no-ext-diff", "-M", sha)
-            except subprocess.CalledProcessError:
-                diff = ""
-            for change in parse_unified_diff(diff):
-                for number, removed in change.removed:
-                    origins.setdefault(normalize_line(removed), []).append((change.old_path or change.path, number))
-            self.cache[sha] = origins
+            self.cache[sha] = self._load(sha)
         candidates = self.cache[sha].get(normalize_line(text), [])
         same_path = [c for c in candidates if c[0] == path]
         return (same_path or candidates or [None])[0]
@@ -88,27 +108,44 @@ class Trail:
     via: list[str] = field(default_factory=list)  # refactor commits traced past, newest first
 
 
+def _parallel(fn, items: list) -> list:
+    if len(items) < 2:
+        return [fn(item) for item in items]
+    with ThreadPoolExecutor(max_workers=min(8, len(items))) as pool:
+        return list(pool.map(fn, items))
+
+
 def trace_lines(store: Store, rev: str, path: str, texts: dict[int, str],
-                origins: RefactorOrigins | None = None) -> dict[int, Trail]:
-    """{line number at `rev`: Trail} for the given lines of `path` (text keyed by line number)."""
+                origins: RefactorOrigins | None = None, whole_file: bool = False) -> dict[int, Trail]:
+    """{line number at `rev`: Trail} for the given lines of `path` (text keyed by line number).
+
+    `whole_file` is for `blot map`, which asks about every line: blames cover spans rather than
+    hundreds of `-L` ranges, and the first blame leaves out `-C`. Blaming a whole file with `-C`, git
+    credits a line moved by a file split straight to its older commit, while blaming that one line
+    (as `blot why` does) stops at the split. Without `-C` both stop at the split, which the refactor
+    hop below then traces past, so `map` and `why` tell the same story. On Flask's 24 source files
+    the lines marked are the same either way.
+    """
     repo = store.repo
     origins = origins or RefactorOrigins(repo)
-    trail = {n: Trail(sha, p, o) for n, (sha, p, o) in blame(repo, rev, path, list(texts)).items() if n in texts}
+    first = blame(repo, rev, path, list(texts), copies=not whole_file, span=whole_file)
+    trail = {n: Trail(sha, p, o) for n, (sha, p, o) in first.items() if n in texts}
     for _ in range(MAX_HOPS):
+        refactored = [n for n, t in trail.items() if (row := store.get_commit(t.sha)) is not None and row.is_refactor]
+        origins.prefetch([trail[n].sha for n in refactored])
         pending: dict[tuple[str, str], list[tuple[int, int]]] = {}  # (parent rev, path) -> [(line, origin line)]
-        for n, t in trail.items():
-            row = store.get_commit(t.sha)
-            if row is None or not row.is_refactor:
-                continue
+        for n in refactored:
+            t = trail[n]
             origin = origins.find(t.sha, t.path, texts[n])
             if origin is None:
                 continue
             pending.setdefault((f"{t.sha}^", origin[0]), []).append((n, origin[1]))
         if not pending:
             break
-        for (parent, origin_path), items in pending.items():
-            earlier = blame(repo, parent, origin_path, [o for _, o in items])
-            for n, o in items:
+        keys = list(pending)
+        blamed = _parallel(lambda key: blame(repo, key[0], key[1], [o for _, o in pending[key]], span=whole_file), keys)
+        for key, earlier in zip(keys, blamed):
+            for n, o in pending[key]:
                 if o in earlier:
                     sha, p, line = earlier[o]
                     trail[n] = Trail(sha, p, line, [*trail[n].via, trail[n].sha])

@@ -176,3 +176,104 @@ def uninstall_agent(repo: str, local: bool = False) -> str:
     else:
         os.remove(path)
     return "removed"
+
+
+# --- MCP server -------------------------------------------------------------------------------
+# Claude Code reads project MCP servers from .mcp.json at the repo root (and asks each user once
+# before starting them). Servers just for you live in ~/.claude.json, which only `claude mcp add
+# --scope local` should write, so --local goes through the claude CLI.
+
+MCP_NAME = "blot"
+_MCP_ARGS = ["-m", "blot", "mcp"]
+
+
+def mcp_config_path(repo: str) -> str:
+    top = run_git(repo, "rev-parse", "--show-toplevel").strip()
+    return os.path.normpath(os.path.join(top, ".mcp.json"))
+
+
+def _mcp_entry(python: str) -> dict:
+    return {"type": "stdio", "command": python.replace("\\", "/"), "args": list(_MCP_ARGS)}
+
+
+def _is_blot_mcp(entry: object) -> bool:
+    return isinstance(entry, dict) and entry.get("args") == _MCP_ARGS
+
+
+def mcp_add_command(python: str | None = None) -> list[str]:
+    """The `claude mcp add` command that registers the server for this project, just for you."""
+    return ["claude", "mcp", "add", "--scope", "local", "--transport", "stdio", MCP_NAME, "--",
+            (python or sys.executable).replace("\\", "/"), *_MCP_ARGS]
+
+
+def _run_claude(repo: str, command: list[str]) -> None:
+    import shutil
+    import subprocess
+
+    exe = shutil.which("claude")
+    if exe is None:
+        shown = " ".join(f'"{a}"' if " " in a else a for a in command)
+        raise RuntimeError(f"the claude CLI isn't on PATH; run this in the repo instead:\n  {shown}")
+    top = run_git(repo, "rev-parse", "--show-toplevel").strip()
+    result = subprocess.run([exe, *command[1:]], cwd=top, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError((result.stderr or result.stdout).strip() or f"{' '.join(command[:3])} failed")
+
+
+def install_mcp(repo: str, python: str | None = None, local: bool = False) -> tuple[str, str]:
+    """Register `blot mcp`. Returns (status, where): status is 'installed', 'updated' or 'already installed'.
+
+    Raises ValueError for an unreadable .mcp.json (never overwritten) and RuntimeError when the
+    claude CLI is needed (--local) and missing or failing.
+    """
+    python = python or sys.executable
+    if local:
+        _run_claude(repo, mcp_add_command(python))
+        return "installed", "claude mcp add --scope local"
+    path = mcp_config_path(repo)
+    config = _read_settings(path)
+    servers = config.setdefault("mcpServers", {})
+    if not isinstance(servers, dict):
+        raise ValueError(f"{path}: mcpServers is not a JSON object")
+    entry = _mcp_entry(python)
+    name = next((k for k, v in servers.items() if _is_blot_mcp(v)), None)
+    if name is None:
+        if MCP_NAME in servers:
+            raise ValueError(f"{path} already has a server named {MCP_NAME!r} that isn't `blot mcp`")
+        servers[MCP_NAME] = entry
+        _write_settings(path, config)
+        return "installed", path
+    if servers[name] == entry or {**servers[name], "type": "stdio"} == entry:
+        return "already installed", path
+    servers[name] = {**servers[name], **entry}  # e.g. a new virtualenv; keeps env and other keys
+    _write_settings(path, config)
+    return "updated", path
+
+
+def uninstall_mcp(repo: str, local: bool = False) -> str:
+    """Remove the server's entry. Deletes .mcp.json only if nothing else is left in it."""
+    if local:
+        try:
+            _run_claude(repo, ["claude", "mcp", "remove", "--scope", "local", MCP_NAME])
+        except RuntimeError as exc:
+            return f"not removed: {exc}"
+        return "removed"
+    path = mcp_config_path(repo)
+    if not os.path.exists(path):
+        return "not installed"
+    config = _read_settings(path)
+    servers = config.get("mcpServers")
+    if not isinstance(servers, dict):
+        return "not installed"
+    names = [k for k, v in servers.items() if _is_blot_mcp(v)]
+    if not names:
+        return "not installed"
+    for name in names:
+        del servers[name]
+    if not servers:
+        del config["mcpServers"]
+    if config:
+        _write_settings(path, config)
+    else:
+        os.remove(path)
+    return "removed"

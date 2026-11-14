@@ -38,25 +38,49 @@ def parse_location(location: str) -> tuple[str, int, int]:
 
 def _repo_path(repo: str, path: str) -> str:
     """Path relative to the repo root, as git names it."""
-    out = run_git(repo, "ls-files", "--full-name", "--", path).strip().splitlines()
+    try:
+        out = run_git(repo, "ls-files", "--full-name", "--", path).strip().splitlines()
+    except subprocess.CalledProcessError as exc:  # e.g. a path outside the repository
+        raise WhyError(f"{path} is not in this git repository") from exc
     if not out:
         raise WhyError(f"{path} is not tracked by git")
     return out[0]
 
 
-def explain(store: Store, location: str, rev: str = "HEAD") -> tuple[str, list[Explained]]:
-    path, start, end = parse_location(location)
+def read_file(store: Store, path: str, rev: str = "HEAD") -> tuple[str, str]:
+    """(path relative to the repo root, the file's text at `rev`), or WhyError."""
     path = _repo_path(store.repo, path)
     try:
-        lines = run_git(store.repo, "show", f"{rev}:{path}").splitlines()
+        return path, run_git(store.repo, "show", f"{rev}:{path}")
     except subprocess.CalledProcessError as exc:
         raise WhyError(f"{path} doesn't exist at {rev}") from exc
+
+
+def explain(store: Store, location: str, rev: str = "HEAD") -> tuple[str, list[Explained]]:
+    path, start, end = parse_location(location)
+    path, source = read_file(store, path, rev)
+    lines = source.splitlines()
     if start > len(lines):
         raise WhyError(f"{path} has only {len(lines)} lines at {rev}")
     end = min(end, len(lines))
     texts = {n: lines[n - 1] for n in range(start, end + 1) if lines[n - 1].strip()}
     trail = trace_lines(store, rev, path, texts)
     return path, [Explained(n, texts[n], t.sha, t.via) for n, t in sorted(trail.items())]
+
+
+def commit_info(store: Store, sha: str) -> dict:
+    """A commit as JSON: sha, date, subject, kind, severity and issues (with titles once fetched)."""
+    row = store.get_commit(sha)
+    if row is not None:
+        date, subject = row.date[:10], row.subject
+    else:
+        date, subject = run_git(store.repo, "log", "-1", "--format=%as%x00%s", sha).strip().split("\0", 1)
+    issues = []
+    for ref in row.issues if row is not None else []:
+        found = store.issue(ref)
+        issues.append({"ref": ref, "title": found[0] if found else None})
+    return {"sha": sha, "short": sha[:7], "date": date, "subject": subject, "kind": _kind(row),
+            "severity": row.severity if row is not None else None, "issues": issues}
 
 
 def _kind(row: CommitRow | None) -> str:

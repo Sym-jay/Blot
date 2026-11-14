@@ -4,9 +4,12 @@ Commands:
     index         build or refresh the local history index (.git/blot.db)
     check         run all checks against staged changes (pre-commit) or a commit range
     why           show the history behind a line: fix commits, PR, linked issues
+    map           show which lines of a file exist because of bug fixes
+    mcp           MCP server on stdio for coding agents (explain_lines, load_bearing_lines)
     install-hook  add blot to .git/hooks/pre-commit
     guard         Claude Code hook: warn a coding agent before it edits a line a fix added
     install-agent-hook  add `blot guard` to .claude/settings.json
+    install-mcp   add `blot mcp` to .mcp.json (or `claude mcp add --scope local`)
     bench         measure accuracy: bench cases, or replay recent commits (--replay N)
 """
 
@@ -46,19 +49,9 @@ def _cmd_index(args: argparse.Namespace) -> int:
 
 
 def _open_index(repo: str):
-    """Open the index, building or refreshing it first.
+    from blot.index import open_index
 
-    The pre-commit framework installs Blot where users can't easily run `blot index`, so the hook
-    must look after the index itself: one full build on first use, then cheap incremental refreshes.
-    """
-    from blot.index import build_index
-    from blot.store import Store
-
-    if not os.path.exists(Store.db_path(repo)):
-        print("blot: first run, indexing this repo's history once (big repos can take a minute)...",
-              file=sys.stderr)
-    build_index(repo)
-    return Store.open(repo)
+    return open_index(repo)
 
 
 def _cmd_check(args: argparse.Namespace) -> int:
@@ -90,6 +83,48 @@ def _cmd_why(args: argparse.Namespace) -> int:
     text = render(store, path, explained)
     store.close()
     print(text, end="")
+    return 0
+
+
+def _cmd_map(args: argparse.Namespace) -> int:
+    import json
+
+    from blot.fixmap import build_map, render, to_json
+    from blot.why import WhyError
+
+    min_severity = args.min_severity if args.min_severity is not None else load_config(args.repo).min_severity
+    store = _open_index(args.repo)
+    try:
+        fmap = build_map(store, args.file, args.rev, min_severity)
+        text = json.dumps(to_json(store, fmap), indent=2) + "\n" if args.format == "json" else render(store, fmap, args.full)
+    except WhyError as exc:
+        print(f"blot: {exc}", file=sys.stderr)
+        return 1
+    finally:
+        store.close()
+    print(text, end="")
+    return 0
+
+
+def _cmd_mcp(args: argparse.Namespace) -> int:
+    from blot.mcp import serve_stdio
+
+    return serve_stdio(args.repo)
+
+
+def _cmd_install_mcp(args: argparse.Namespace) -> int:
+    from blot import hooks
+
+    if args.uninstall:
+        print(f"blot: MCP server {hooks.uninstall_mcp(args.repo, local=args.local)}")
+        return 0
+    try:
+        status, where = hooks.install_mcp(args.repo, local=args.local)
+    except (ValueError, RuntimeError) as exc:
+        print(f"blot: not installed: {exc}", file=sys.stderr)
+        return 1
+    print(f"blot: MCP server {status} ({where})")
+    _open_index(args.repo).close()  # a first index can take a minute: build it now, not in a tool call
     return 0
 
 
@@ -191,6 +226,24 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("location", metavar="FILE:LINE", help="e.g. src/app.py:42 or src/app.py:40-48")
     p.add_argument("--rev", default="HEAD", help="explain the file as of this commit (default: HEAD)")
     p.set_defaults(func=_cmd_why)
+
+    p = sub.add_parser("map", help="show which lines of a file exist because of bug fixes")
+    p.add_argument("file", metavar="FILE", help="e.g. src/app.py")
+    p.add_argument("--rev", default="HEAD", help="map the file as of this commit (default: HEAD)")
+    p.add_argument("--format", choices=["text", "json"], default="text")
+    p.add_argument("--full", action="store_true", help="print the whole file with fix commits in the gutter")
+    p.add_argument("--min-severity", type=int, choices=[1, 2], default=None,
+                   help="1 also counts routine fixes (default: min-severity from config, normally 2)")
+    p.set_defaults(func=_cmd_map)
+
+    p = sub.add_parser("mcp", help="run an MCP server on stdio (explain_lines, load_bearing_lines) for coding agents")
+    p.set_defaults(func=_cmd_mcp)
+
+    p = sub.add_parser("install-mcp", help="register `blot mcp` with Claude Code (.mcp.json)")
+    p.add_argument("--uninstall", action="store_true", help="remove blot's entry")
+    p.add_argument("--local", action="store_true",
+                   help="just for you, in this project (runs `claude mcp add --scope local`) instead of .mcp.json")
+    p.set_defaults(func=_cmd_install_mcp)
 
     p = sub.add_parser("install-hook", help="add blot to .git/hooks/pre-commit")
     p.add_argument("--uninstall", action="store_true", help="remove blot's lines from the hook")

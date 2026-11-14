@@ -7,10 +7,12 @@ always changes with another (`forgot-related-file`). Mascot: Sora the slime. Own
 
 ## Layout
 - `src/blot/`: stdlib-only on Python 3.11+ (3.10 also needs `tomli`; keep it that way)
-  - `cli.py` commands: index, check, why, install-hook, guard, install-agent-hook, bench. `check`/`why` build/refresh the index themselves.
+  - `cli.py` commands: index, check, why, map, mcp, install-hook, guard, install-agent-hook, install-mcp, bench.
+    `check`/`why`/`map`/`mcp` build/refresh the index themselves (`index.open_index`).
   - `index.py` builds `.git/blot.db` (parallel `git log` slices for 2000+ commits); `store.py` SQLite schema v2
   - `classify.py` fix severity 0/1/2 + refactor detection: most precision lives here
   - `checks/` one file per check; `trace.py` blame that follows lines past refactor commits
+  - `fixmap.py` (`blot map`), `mcp.py` (stdio MCP server, both protocol eras; `install-mcp` in `hooks.py`)
   - `guard.py` (Claude Code hook; installer in `hooks.py`), `why.py`, `github.py` (`index --github` via `gh api graphql`), `bench.py` (cases + `--replay N`)
 - `bench/cases.json` scripted real-world cases (33/33); `bench/labels/` hand verdicts for every replay
   warning on the 5 reference repos; `bench/RESULTS.md` replay numbers and precision
@@ -50,7 +52,7 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 - Writing code through bash heredocs mangles `\b`, `\n`, `\s`: use the Edit tool for regexes/strings.
 - `gh api` paths: no leading slash (Git Bash rewrites it).
 
-## State (2026-11-06)
+## State (2026-11-14)
 - Released 0.6.0: checks, `why`, `--github`, agent guard (`blot guard` / `install-agent-hook`, tested
   live in Claude Code 2026-11-06), bench/replay with labels, parallel indexing, pre-commit framework
   support (`rev: v0.6.0`), GitHub Action (`uses: Sym-jay/Blot@v0.6.0`).
@@ -65,6 +67,11 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
   hook (`src/blot/guard.py`) running removed-fix + readded-bug on a proposed Edit/Write/MultiEdit;
   `blot install-agent-hook` edits `.claude/settings.json`. Flask edit of `self_ref` warns in ~450 ms.
   Not yet tried in a live Claude Code session.
+- `blot map` + `blot mcp` (2026-11-14, branch `map-and-mcp`, unreleased): map = `why` over a whole file,
+  ~1.5 s on Flask app.py (marks 355 via 0ec7f71). `trace_lines(whole_file=True)` drops `-C` from the first
+  blame so map and why agree (same marked lines on Flask's 24 files); checks still use the old path.
+  MCP server speaks 2026-07-28 and legacy `initialize`; Claude Code 2.1.321 connected and listed both
+  tools from `.mcp.json` (headless, not logged in, so no agent run yet). A full agent run is still to do.
 - Next: remaining noise (renames, API swaps, added arguments) in bench/RESULTS.md.
 - Labels match on commit/check/path/cited commit, not line: when a rule moves a warning to another line,
   re-check its label (#40 found two that way).

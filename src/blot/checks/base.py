@@ -63,3 +63,13 @@ def describe_commit(row: CommitRow, store: Store | None = None) -> str:
         refs = [store.describe_issue(ref) for ref in row.issues] if store else row.issues
         details.append("fixes " + ", ".join(refs))
     return f'{row.sha[:7]} "{row.subject}" ({", ".join(details)})'
+
+
+def describe_trail(row: CommitRow, via: list[str], store: Store) -> list[str]:
+    """describe_commit, then one 'traced past refactor 0ec7f71 "subject"' line per refactor hop."""
+    lines = [describe_commit(row, store)]
+    for sha in via:
+        ref = store.get_commit(sha)
+        if ref is not None:
+            lines.append(f'traced past refactor {sha[:7]} "{ref.subject}"')
+    return lines

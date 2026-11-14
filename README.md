@@ -71,6 +71,61 @@ src/flask/app.py:355
 
 `blot why FILE:LINE` (or `FILE:START-END`) finds the commit that explains a line, skipping commits that only moved it. Plain `git blame` stops at the refactor.
 
+## Map a file's load-bearing lines
+
+```
+$ blot map src/flask/app.py
+src/flask/app.py: 3 load-bearing lines in 2 ranges, from 2 fixes
+
+355        | self_ref = weakref.ref(self)
+             8efea0c "Break reference cycle created by default in Flask instances." (2020-10-03)
+             traced past refactor 0ec7f71 "Split the App and Blueprint into Sansio and IO parts"
+
+1061-1062  | rv = self.response_class()
+           | rv.allow.update(methods)
+             dbf55de "Fixed an issue where the default `OPTIONS` response was not exposing all valid methods in the `Allow` header." (2010-07-28, fixes #97)
+             traced past refactor 0ec7f71 "Split the App and Blueprint into Sansio and IO parts"
+```
+
+`blot map FILE` runs `why` over a whole file and keeps the lines whose explaining commit is a bug fix:
+the lines `blot check` would warn about if you changed them. Consecutive lines from one fix are grouped.
+`--full` prints the whole file with the fix commit in the gutter, `--format json` gives the ranges and
+commits as JSON, `--rev` maps an older version, and `--min-severity 1` also counts routine fixes.
+On Flask's 1,625-line `app.py` it takes about 1.5 s.
+
+## Give agents the history before they edit (MCP)
+
+`blot mcp` is a [Model Context Protocol](https://modelcontextprotocol.io) server on stdio, so a coding
+agent can ask about a file *before* it plans a change, instead of hearing about it from `blot guard` at
+the last moment. It has two read-only tools:
+
+| Tool | Same as | Arguments |
+|---|---|---|
+| `load_bearing_lines` | `blot map FILE` | `path`, optional `rev`, `min_severity` |
+| `explain_lines` | `blot why FILE:START-END` | `path`, `start`, optional `end`, `rev` |
+
+Each returns one paragraph per commit: short sha, date, subject, linked issues, the lines it explains
+and any refactor traced past. The same data comes back as JSON in `structuredContent`.
+
+```bash
+blot install-mcp           # adds `blot` to .mcp.json at the repo root and builds the index
+blot install-mcp --local   # or just for you, via `claude mcp add --scope local` (needs the claude CLI)
+```
+
+Claude Code asks each person once before it starts a server from `.mcp.json`. The entry names this
+machine's Python by absolute path, like `install-agent-hook` does, so prefer `--local` if your team
+commits `.mcp.json`. Other servers in the file are left alone; remove Blot's entry with
+`blot install-mcp --uninstall` (add `--local` if you installed it that way). To register it by hand:
+
+```bash
+claude mcp add --scope local --transport stdio blot -- python -m blot mcp
+```
+
+The server works on the repository it is started in (or `blot --repo PATH mcp`). It speaks MCP
+2026-07-28 and the earlier `initialize`-handshake versions (2024-11-05 to 2025-11-25), uses only the
+standard library, writes nothing but protocol messages to stdout, and answers a bad path or an
+untracked file with a tool error rather than exiting.
+
 ## Guard coding agents
 
 Coding agents are the most likely to "clean up" a line they don't understand. `blot guard` is a
