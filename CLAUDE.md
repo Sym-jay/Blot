@@ -53,25 +53,23 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 - `gh api` paths: no leading slash (Git Bash rewrites it).
 
 ## State (2026-11-14)
-- Released 0.6.0: checks, `why`, `--github`, agent guard (`blot guard` / `install-agent-hook`, tested
-  live in Claude Code 2026-11-06), bench/replay with labels, parallel indexing, pre-commit framework
-  support (`rev: v0.6.0`), GitHub Action (`uses: Sym-jay/Blot@v0.6.0`).
-- Launch: dev.to post published 2026-10-24; the CVE sentence there should mention the withdrawn advisory.
-- Open issues: #2–#4, #6 (bench cases); #33 (live guard report), #34 (quiet readded-bug case), #35–#36 (noise).
-- Precision (main, 2026-11-11, after #40): 59/108 useful (54.6%); Django 1.17 / 10 commits, others ≤ 0.6.
+- Released 0.7.0: checks, `why`, `map`, `--github`, agent guard (`blot guard` / `install-agent-hook`),
+  MCP server (`blot mcp` / `install-mcp`, tools `explain_lines` and `load_bearing_lines`), bench/replay
+  with labels, parallel indexing, pre-commit framework (`rev: v0.7.0`), GitHub Action (`@v0.7.0`).
+- Live-tested in Claude Code: the guard (2026-11-06: the agent cited fix 8efea0c it was undoing) and MCP
+  (2026-11-14: an agent called `load_bearing_lines` on its own and answered correctly).
+  Throwaway test folder: `Documentslask-guard-test` (guard hook + `.mcp.json`).
+- `blot map` takes ~1.5 s on Flask app.py. `trace_lines(whole_file=True)` drops `-C` from the first blame so
+  map and why agree; checks still use the old path.
+- Precision (2026-11-11, after #40): 59/108 useful (54.6%); Django 1.17 / 10 commits, others ≤ 0.6.
   `forgot-related-file` has 0 useful warnings in 45 labelled; candidate to become opt-in.
-- `--github` measured (2026-11-01): precision unchanged (52.5%), +7 useful warnings, almost no demotions.
+- `--github` measured (2026-11-01): precision unchanged, +7 useful warnings, almost no demotions.
 - Tried and dropped (2026-11-01): "fix word + PR number" as an offline fix rule: +85 warnings at 22%
   useful. Don't retry it without a narrower signal (see bench/RESULTS.md).
-- Agent guard (2026-11-04, branch `agent-guard`, unreleased): `blot guard` is a Claude Code PreToolUse
-  hook (`src/blot/guard.py`) running removed-fix + readded-bug on a proposed Edit/Write/MultiEdit;
-  `blot install-agent-hook` edits `.claude/settings.json`. Flask edit of `self_ref` warns in ~450 ms.
-  Not yet tried in a live Claude Code session.
-- `blot map` + `blot mcp` (2026-11-14, branch `map-and-mcp`, unreleased): map = `why` over a whole file,
-  ~1.5 s on Flask app.py (marks 355 via 0ec7f71). `trace_lines(whole_file=True)` drops `-C` from the first
-  blame so map and why agree (same marked lines on Flask's 24 files); checks still use the old path.
-  MCP server speaks 2026-07-28 and legacy `initialize`; Claude Code 2.1.321 connected and listed both
-  tools from `.mcp.json` (headless, not logged in, so no agent run yet). A full agent run is still to do.
-- Next: remaining noise (renames, API swaps, added arguments) in bench/RESULTS.md.
+- Known recall limit: tracing only passes commits classified as refactors, so a big non-refactor rewrite
+  hides older fixes (e.g. Flask `c2705ffd` hides fix #2935 in `ctx.py` `copy()`).
 - Labels match on commit/check/path/cited commit, not line: when a rule moves a warning to another line,
   re-check its label (#40 found two that way).
+- Contributors: Sandro850 (#30, #38, #40). Open issues: #2–#4, #6 (bench cases), #33 (guard reports),
+  #36 (keyword-argument noise).
+- Launch: dev.to post published 2026-10-24; the CVE sentence there should mention the withdrawn advisory.
