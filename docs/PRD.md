@@ -106,6 +106,20 @@ competitors tested (code-archaeologist, lore, Entire), none guards an edit befor
 - `blot install-agent-hook [--local] [--ask] [--uninstall]` edits `.claude/settings.json` (or
   `settings.local.json`) without touching other hooks.
 
+### F8. `blot map FILE` and `blot mcp`: history before the agent plans (unreleased)
+- `blot map FILE [--rev R] [--format json] [--full] [--min-severity N]`: every line whose explaining commit
+  (traced past refactors, as `why` does) is a fix at or above `min_severity`, grouped into ranges per fix.
+  It considers the lines `removed-fix` guards (no blank, generic, prose or docstring lines). One blame
+  of the whole file plus refactor hops: ~1.5 s on Flask's 1,625-line `app.py`.
+- `blot mcp`: a stdio MCP server, stdlib only. Tools `explain_lines(path, start, end?, rev?)` (= `why`) and
+  `load_bearing_lines(path, rev?, min_severity?)` (= `map`) return one paragraph per commit plus
+  `structuredContent`. It speaks MCP 2026-07-28 (`server/discover`, per-request `_meta`) and the
+  `initialize` handshake of 2024-11-05 to 2025-11-25. Bad paths and untracked files are tool errors
+  (`isError: true`); only protocol messages go to stdout.
+- `blot install-mcp [--local] [--uninstall]` adds `blot` to `.mcp.json` without touching other servers,
+  or with `--local` runs `claude mcp add --scope local`.
+- Why: `why` explains rather than warns, so unlike `guard` it isn't hurt by the checks' noise (55% precision).
+
 ## 6. User flows
 
 **First run (2 minutes):**
@@ -175,7 +189,7 @@ The user either reads the linked issue and adjusts the change, or commits anyway
 | GitHub only | GitLab and Bitbucket links; mailing lists (Linux, Postgres) |
 | | GitHub Action that comments on PRs |
 | | VS Code extension that shows warnings as you edit |
-| | MCP server, so AI agents can ask before editing (the `blot guard` hook, F7, covers Claude Code) |
+| | ~~MCP server, so AI agents can ask before editing~~ done (unreleased): `blot mcp` with `explain_lines` and `load_bearing_lines`, alongside the `blot guard` hook (F7) |
 
 ## 10. Success metrics
 

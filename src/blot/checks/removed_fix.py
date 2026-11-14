@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import subprocess
 
-from blot.checks.base import Check, Finding, describe_commit, is_skipped
+from blot.checks.base import Check, Finding, describe_trail, is_skipped
 from blot.diff import (
     KeptLines,
     is_meaningful_line,
@@ -77,11 +77,7 @@ class RemovedFix(Check):
                 if (docstring_lines is not None and n in docstring_lines) or sha in reported:
                     continue
                 reported.add(sha)  # one finding per fix per file, at its first line
-                evidence = [describe_commit(row, store)]
-                for ref_sha in via:
-                    ref = store.get_commit(ref_sha)
-                    if ref is not None:
-                        evidence.append(f'traced past refactor {ref_sha[:7]} "{ref.subject}"')
+                evidence = describe_trail(row, via, store)
                 findings.append(Finding(
                     self.id, change.old_path, n,
                     "You're removing or changing a line that a bug fix added.\n"
