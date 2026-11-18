@@ -51,6 +51,16 @@
    "cited": "e08bcf9",
    "verdict": "useful",
    "reason": "changes the copy() call that passes session=self.session, from fix #2935 (was mislabelled: the old warning pointed at the docstring line above)"
+  },
+  {
+   "sha": "44ffe6c6d",
+   "subject": "add __future__ annotations",
+   "check": "removed-fix",
+   "path": "src/flask/ctx.py",
+   "line": 318,
+   "cited": "e08bcf9",
+   "verdict": "noise",
+   "reason": "trace-past-unchanged experiment (2026-11-18): type-hint modernization of the `self.session` annotation; behaviour unchanged"
   }
  ]
 }

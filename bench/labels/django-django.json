@@ -641,6 +641,46 @@
    "cited": "b8741c0",
    "verdict": "noise",
    "reason": "cited commit is an error-message wording fix"
+  },
+  {
+   "sha": "46c5e76f0",
+   "subject": "Fixed #36900 -- Used safe_join() on downloaded template archive.",
+   "check": "removed-fix",
+   "path": "django/core/management/templates.py",
+   "line": 348,
+   "cited": "a9a0f0b",
+   "verdict": "noise",
+   "reason": "trace-past-unchanged experiment (2026-11-18): cited commit is the #17042 startproject/startapp feature, not a fix"
+  },
+  {
+   "sha": "76e1bca13",
+   "subject": "Fixed #36694 -- Restored missing Index options in PostGISSchemaEditor._create_spatial_index_sql().",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/db/backends/postgis/schema.py",
+   "line": 111,
+   "cited": "29345ae",
+   "verdict": "noise",
+   "reason": "trace-past-unchanged experiment (2026-11-18): restructures the index-name default into kwargs; the #32721 naming fix's behaviour is kept"
+  },
+  {
+   "sha": "1b4d021b6",
+   "subject": "Fixed #37403 -- Fixed JSONField __in crash on SQLite with Value(None) expressions.",
+   "check": "removed-fix",
+   "path": "django/db/models/fields/json.py",
+   "line": 444,
+   "cited": "7e1e198",
+   "verdict": "useful",
+   "reason": "trace-past-unchanged experiment (2026-11-18): a JSONIn __in fix reworks the Oracle json.loads(param) decoding that the #32096 __in crash fix added"
+  },
+  {
+   "sha": "c07486b98",
+   "subject": "Fixed #32980 -- Optimized ManyRelatedManager.__init__().",
+   "check": "removed-fix",
+   "path": "django/db/models/fields/related_descriptors.py",
+   "line": 1107,
+   "cited": "9777442",
+   "verdict": "noise",
+   "reason": "trace-past-unchanged experiment (2026-11-18): moves the through-field lookups from __init__ to the class body; #19385's behaviour is kept"
   }
  ]
 }

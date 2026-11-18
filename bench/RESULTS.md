@@ -120,6 +120,51 @@ labelled (all of requests' and Express's, 20 of React's), **10 were useful (22%)
 from 52% to about 39%, so the rule was not kept. Its 46 labels stay in `labels/` for any narrower
 attempt. A label written by a maintainer says more than a keyword can.
 
+### Tried and dropped: tracing past unchanged lines (2026-11-18)
+
+**The gap.** At Flask HEAD, `blot why` and `blot map src/flask/ctx.py` don't link `copy()` to fix
+#2935 (`e08bcf9`). Blame stops at `c2705ffd` ("merge app and request context"), and tracing only goes
+past commits classified as refactors.
+
+**Diagnosis: `c2705ffd` really rewrote those lines.** It changed `request=self.request,` /
+`session=self.session,` to `request=self._request,` / `session=self._session,` (the session became
+a lazy property backed by `_session`), dropped `environ=self.request.environ,`, and changed the
+signature to `def copy(self) -> te.Self:`. `git blame -w -M -C -C` also stops at `c2705ffd`. No
+normalized or KeptLines match exists in the parent, so no rule of the form "the line survived
+unchanged" can reach #2935 here. The fix's intent survives; its tokens don't. Replay already warns on
+`c2705ffd` itself (labelled useful), which is when it matters most.
+
+**Rule tried anyway, to measure it:** when blame lands on a non-refactor commit that removed a line
+from the same file with the same normalized text (or one the line only reformats, per `KeptLines`),
+hop to the parent like a refactor hop, within `MAX_HOPS`.
+
+| Repo | Warnings | Precision, before → with the rule | Lost (useful) | New (useful) |
+|---|---|---|---|---|
+| pallets/flask | 4 → 4 | 4/4 → 3/4 | 1 (1) | 1 (0) |
+| psf/requests | 8 → 9 | 2/8 → 2/9 | 0 | 1 (0) |
+| expressjs/express | 9 → 7 | 5/9 → 4/7 | 2 (1) | 0 |
+| django/django | 58 → 58 | 41/58 → 40/58 | 4 (2) | 4 (1) |
+| facebook/react | 29 → 28 | 7/29 → 7/28 | 1 (0) | 0 |
+| **All five** | **108 → 106** | **59/108 (54.6%) → 56/106 (52.8%)** | **8 (4)** | **6 (1)** |
+
+It loses useful warnings because `KeptLines` treats an inserted call as cosmetic, so the rule hops
+past fixes that wrapped a value. Express `76eaa32` changed `this.set('Location', loc)` to
+`this.set('Location', encodeUrl(loc))`, so the warning on the later open-redirect fix
+(`0867302dd`) disappeared. Flask lost the `c2705ffd` warning: `e08bcf9` only added a comma to
+`request=self.request`, and the line it did add, `session=self.session`, gained a trailing comma
+in Black's `025589ee`, which the exact-match refactor hop can't follow. The one useful new warning
+is Django `1b4d021b6`. Cost: `blot check` on the Flask demo went from ~470 to ~485 ms (median of 6),
+and `blot map src/flask/app.py` from 1.4 s to 3.5 s.
+
+An **exact-text-only variant** (no `KeptLines`) changed **no warning** on any of the five repos and still cost ~35 ms per check. Neither version was kept. The six new warnings stay
+labelled in `labels/` (reasons prefixed "trace-past-unchanged experiment"). `tests/test_trace.py`
+pins both behaviours: a rewritten line stops the trace, and a fix that wraps a value stays the
+explanation.
+
+Two narrower leads came out of this, both unmeasured: let the refactor hop match with `KeptLines`
+(Black's trailing commas, as in `025589ee`), and follow renamed attributes (`self.session` →
+`self._session`).
+
 ## Reproduce
 
 ```bash
