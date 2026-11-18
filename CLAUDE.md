@@ -30,7 +30,8 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
   labels file, run `blot bench --replay 500 --labels bench/labels/<repo>.json --update-labels`. Keep a
   rule only if precision rises and no `useful` warning disappears; label any new `null` verdicts
   (rules in bench/README.md). Targets: ≤ 1 warning / 10 commits, precision ≥ 80%.
-- Clones live in `%LOCALAPPDATA%\Temp\wl\replay\` (labelled heads) and `...\wl\bench\` (case runs).
+- Clones live in `%LOCALAPPDATA%\Temp\wl\rp\` (labelled heads; `...\wl\replay\` was wiped by a temp
+  cleanup on 2026-11-16) and `...\wl\bench\` (case runs). Temp can be cleared: re-clone if `.git` is empty.
 - `blot check` must stay under ~500 ms and never fail a commit because of Blot's own errors.
 
 ## Release (each release so far followed this)
@@ -67,7 +68,14 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 - Tried and dropped (2026-11-01): "fix word + PR number" as an offline fix rule: +85 warnings at 22%
   useful. Don't retry it without a narrower signal (see bench/RESULTS.md).
 - Known recall limit: tracing only passes commits classified as refactors, so a big non-refactor rewrite
-  hides older fixes (e.g. Flask `c2705ffd` hides fix #2935 in `ctx.py` `copy()`).
+  hides older fixes (e.g. Flask `c2705ffd` hides fix #2935 in `ctx.py` `copy()`). Diagnosed 2026-11-18:
+  `c2705ffd` really changed those tokens (`self.session` → `self._session`), so no "unchanged line" rule
+  can reach #2935.
+- Tried and dropped (2026-11-18): hop past non-refactor commits when the line survived them unchanged in
+  the same file (normalized or KeptLines). Precision 54.6% → 52.8%: lost 8 warnings (4 useful, e.g. Express's
+  open-redirect fix), added 6 (1 useful). `map` on app.py went 1.4 → 3.5 s. Exact-only matching changed no
+  warning. `tests/test_trace.py` pins why. Unmeasured leads: KeptLines in the refactor hop (Black's
+  trailing commas), renamed attributes.
 - Labels match on commit/check/path/cited commit, not line: when a rule moves a warning to another line,
   re-check its label (#40 found two that way).
 - Contributors: Sandro850 (#30, #38, #40). Open issues: #2–#4, #6 (bench cases), #33 (guard reports),

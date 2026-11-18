@@ -211,6 +211,16 @@
    "cited": "6f205ff",
    "verdict": "noise",
    "reason": "same check moved into a helper"
+  },
+  {
+   "sha": "561e4b688",
+   "subject": "Add inline types to Requests (#7272)",
+   "check": "removed-fix",
+   "path": "src/requests/models.py",
+   "line": 942,
+   "cited": "bc5cc0d",
+   "verdict": "noise",
+   "reason": "trace-past-unchanged experiment (2026-11-18): wrong trail: KeptLines matched the main decode line to the blind-fallback line bc5cc0d added; the edited line predates the fix"
   }
  ]
 }
