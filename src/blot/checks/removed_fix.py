@@ -41,7 +41,7 @@ class RemovedFix(Check):
             if change.old_path is None or change.deleted or not change.removed or is_skipped(change.old_path, config):
                 continue
             # reformatted or extended in place (quotes, wrapping, type hints): not removed either
-            kept = KeptLines([text for _, text in change.added])
+            kept = KeptLines([text for _, text in change.added], numbers=[n for n, _ in change.added])
             # blank, generic (imports, `return`) and prose lines say nothing about the fix
             texts = {
                 n: t for n, t in change.removed
