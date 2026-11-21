@@ -24,14 +24,15 @@ always changes with another (`forgot-related-file`). Mascot: Sora the slime. Own
 ```bash
 python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 .venv/Scripts/python -m pytest -q
-.venv/Scripts/blot bench --workdir <short path>     # must stay 33/33
+.venv/Scripts/blot bench --workdir <short path>     # must stay 33/33 (e.g. %LOCALAPPDATA%\Temp\wl\b33)
 ```
 - Any change to `classify.py` or a check: on each of the 5 clones, checked out at the `head` in its
   labels file, run `blot bench --replay 500 --labels bench/labels/<repo>.json --update-labels`. Keep a
   rule only if precision rises and no `useful` warning disappears; label any new `null` verdicts
   (rules in bench/README.md). Targets: ≤ 1 warning / 10 commits, precision ≥ 80%.
 - Clones live in `%LOCALAPPDATA%\Temp\wl\rp\` (labelled heads; `...\wl\replay\` was wiped by a temp
-  cleanup on 2026-11-16) and `...\wl\bench\` (case runs). Temp can be cleared: re-clone if `.git` is empty.
+  cleanup on 2026-11-16) and `...\wl\b33\` (case runs; `wl\bench\` was emptied too, so b33 was cloned from
+  `rp\` with `origin` set to GitHub). Temp can be cleared: re-clone if `.git` is empty.
 - `blot check` must stay under ~500 ms and never fail a commit because of Blot's own errors.
 
 ## Release (each release so far followed this)
@@ -53,16 +54,18 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 - Writing code through bash heredocs mangles `\b`, `\n`, `\s`: use the Edit tool for regexes/strings.
 - `gh api` paths: no leading slash (Git Bash rewrites it).
 
-## State (2026-11-14)
-- Released 0.7.0: checks, `why`, `map`, `--github`, agent guard (`blot guard` / `install-agent-hook`),
+## State (2026-11-21)
+- Released 0.7.1: checks, `why`, `map`, `--github`, agent guard (`blot guard` / `install-agent-hook`),
   MCP server (`blot mcp` / `install-mcp`, tools `explain_lines` and `load_bearing_lines`), bench/replay
-  with labels, parallel indexing, pre-commit framework (`rev: v0.7.0`), GitHub Action (`@v0.7.0`).
+  with labels, parallel indexing, pre-commit framework (`rev: v0.7.1`), GitHub Action (`@v0.7.1`).
+  0.7.1 adds the docstring rule (#40) and the structural `KeptLines` matcher (#45).
 - Live-tested in Claude Code: the guard (2026-11-06: the agent cited fix 8efea0c it was undoing) and MCP
   (2026-11-14: an agent called `load_bearing_lines` on its own and answered correctly).
-  Throwaway test folder: `Documentslask-guard-test` (guard hook + `.mcp.json`).
+  Throwaway test folder: `Documents\flask-guard-test` (guard hook + `.mcp.json`).
 - `blot map` takes ~1.5 s on Flask app.py. `trace_lines(whole_file=True)` drops `-C` from the first blame so
   map and why agree; checks still use the old path.
-- Precision (2026-11-11, after #40): 59/108 useful (54.6%); Django 1.17 / 10 commits, others ≤ 0.6.
+- Precision (2026-11-21, after #45): 69/124 useful (55.6%); Django 1.43 / 10 commits (over the ≤ 1
+  target), others ≤ 0.62.
   `forgot-related-file` has 0 useful warnings in 45 labelled; candidate to become opt-in.
 - `--github` measured (2026-11-01): precision unchanged, +7 useful warnings, almost no demotions.
 - Tried and dropped (2026-11-01): "fix word + PR number" as an offline fix rule: +85 warnings at 22%
@@ -78,6 +81,5 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
   trailing commas), renamed attributes.
 - Labels match on commit/check/path/cited commit, not line: when a rule moves a warning to another line,
   re-check its label (#40 found two that way).
-- Contributors: Sandro850 (#30, #38, #40). Open issues: #2–#4, #6 (bench cases), #33 (guard reports),
-  #36 (keyword-argument noise).
+- Contributors: Sandro850 (#30, #38, #40, #45). Open issues: #2–#4, #6 (bench cases), #33 (guard reports).
 - Launch: dev.to post published 2026-10-24; the CVE sentence there should mention the withdrawn advisory.

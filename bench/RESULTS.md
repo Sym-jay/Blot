@@ -74,16 +74,38 @@ CVE-2026-15307 fix). Now the warning points at the code, and both are relabelled
 | requests, Express, React | unchanged | unchanged |
 | **All five** | 57/109 (52.3%) | **59/108 (54.6%)** |
 
-### Noise still there (49 warnings)
+### Since 0.7.0: a structural matcher (#45, by @Sandro850)
+
+`removed-fix` decides whether a removed line survives among the added lines (`KeptLines`). The old
+matcher accepted any inserted token outside `_LOGIC`, which flagged an appended keyword argument (it
+inserts `=`) but let real edits through: `value` → `value.strip()`, arguments inserted mid-list,
+matches stitched across hunks. The new matcher is structural: the fix's existing arguments stay token
+for token, new arguments may only be appended to that same call (a `def` only gains parameters with a
+default), and anything it can't verify counts as an edit.
+
+| Repo | Before | After |
+|---|---|---|
+| pallets/flask | 4/4 (100%) | 4/4 (100%) |
+| psf/requests | 2/8 (25%) | 2/10 (20%) |
+| expressjs/express | 5/9 (56%) | 5/9 (56%) |
+| django/django | 41/58 (71%), 1.17 / 10 commits | 49/71 (69%), 1.43 / 10 commits |
+| facebook/react | 7/29 (24%) | 9/30 (30%) |
+| **All five** | 59/108 (54.6%) | **69/124 (55.6%)** |
+
+The three #36 noise warnings are gone and no useful warning was lost. The stricter matcher adds 19
+warnings (10 useful, e.g. two Django CVE fixes whose code gained `.strip()`; 9 noise). Re-measured
+independently on all five repos before merging. Cost: Django is further over the ≤ 1 / 10 target.
+
+### Noise still there (55 warnings)
 
 | Pattern | Warnings | Why there's no rule yet |
 |---|---|---|
 | co-change partner not needed (React) | 9 | **0 of 45 co-change warnings across all five repos were useful.** See below. |
 | renames, equivalent API swaps (`substr` → `slice`, `req.connection` → `req.socket`) | 11 | a rename and a switch to a different variable look the same on one line |
-| new argument or keyword argument on a fix's call | 3 | adding an argument can change behaviour |
-| formatter reflows with f-strings or joined lines (requests' Black commit) | 4 | dropping parentheses can change precedence |
+| formatter reflows with f-strings, joined lines or re-split strings (requests' Black commit) | 6 | dropping parentheses can change precedence |
 | deleting a legacy module or feature in pieces (React) | 6 | intentional, but only the commit message says so |
-| other: code moved to another file, fix behaviour kept while restructuring, generic re-added lines | 16 | case by case |
+| colour-only template changes (Django's dark mode, `3d34265d`) | 5 | the line really changed; only a reader knows it's cosmetic |
+| other: code moved to another file, fix behaviour kept while restructuring, generic re-added lines | 18 | case by case |
 
 **`forgot-related-file` has shown no useful warning yet**: 0/45 before this release, 0/9 after. It
 stays on, because the remaining warnings are rare (React only), but it is the first candidate to
