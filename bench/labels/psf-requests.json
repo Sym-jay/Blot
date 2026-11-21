@@ -221,6 +221,26 @@
    "cited": "bc5cc0d",
    "verdict": "noise",
    "reason": "trace-past-unchanged experiment (2026-11-18): wrong trail: KeptLines matched the main decode line to the blind-fallback line bc5cc0d added; the edited line predates the fix"
+  },
+  {
+   "sha": "2a6f290bc",
+   "subject": "Add automatic code formatting to Requests (#6095)",
+   "check": "removed-fix",
+   "path": "requests/adapters.py",
+   "line": 308,
+   "cited": "9a8a826",
+   "verdict": "noise",
+   "reason": "#36 replay: Black reformat; the implicitly concatenated message only moved its split point (same string), but literal tokens differ, so the matcher fails closed"
+  },
+  {
+   "sha": "2a6f290bc",
+   "subject": "Add automatic code formatting to Requests (#6095)",
+   "check": "removed-fix",
+   "path": "requests/structures.py",
+   "line": 68,
+   "cited": "f7596c7",
+   "verdict": "noise",
+   "reason": "#36 replay: Black joins the multi-line generator onto one line with identical tokens; fragment lines fail closed"
   }
  ]
 }

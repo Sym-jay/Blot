@@ -281,3 +281,83 @@ def test_removed_fix_quiet_when_the_whole_file_is_deleted(make_repo):
     repo = make_repo(FIXED)
     subprocess.run(["git", "-C", str(repo), "rm", "-q", "app.py"], check=True)
     assert run_check(RemovedFix(), repo) == []
+
+
+# --- issue #36: arguments appended to a fix's call --------------------------------------------
+
+GEOS_BEFORE = "def clean(value):\n    value = parse(value)\n    return value\n"
+GEOS_FIX = "def clean(value):\n    value = GEOSGeometry(value)\n    return value\n"
+GEOS_FIXED = [
+    ("Add clean", {"fields.py": GEOS_BEFORE}),
+    ("Fix SRID lost in clean (fixes #26360)", {"fields.py": GEOS_FIX}),
+]
+
+
+def test_removed_fix_quiet_when_a_keyword_argument_is_appended_to_the_fix_call(make_repo):
+    # Django d2e59b77 on django/contrib/gis/forms/fields.py: reflowed, fix call kept
+    repo = make_repo(GEOS_FIXED)
+    stage(repo, {"fields.py": GEOS_FIX.replace(
+        "    value = GEOSGeometry(value)\n",
+        "    value = GEOSGeometry(\n        value, max_geom_collections=self.max_geom_collections\n    )\n",
+    )})
+    assert run_check(RemovedFix(), repo) == []
+
+
+def test_removed_fix_warns_when_the_fix_call_argument_changes_and_one_is_appended(make_repo):
+    repo = make_repo(GEOS_FIXED)
+    stage(repo, {"fields.py": GEOS_FIX.replace(
+        "GEOSGeometry(value)", "GEOSGeometry(not value, max_geom_collections=1)")})
+    (finding,) = run_check(RemovedFix(), repo)
+    assert (finding.check, finding.path, finding.line) == ("removed-fix", "fields.py", 2)
+
+
+# requests 2a6f290b (Black): a fix's multi-line generator joined onto one line
+GEN_FIX = ("class D:\n    def lower_items(self):\n        return (\n            (lowerkey, keyval[1])\n"
+           "            for (lowerkey, keyval)\n            in self._store.items()\n        )\n")
+GEN_FIXED = [
+    ("Add D", {"structures.py": "class D:\n    def lower_items(self):\n        return iter(())\n"}),
+    ("Rewrite D to work correctly (fixes #649)", {"structures.py": GEN_FIX}),
+]
+
+
+def test_removed_fix_warns_when_a_rejoined_fix_block_also_changes(make_repo):
+    repo = make_repo(GEN_FIXED)
+    stage(repo, {"structures.py": "class D:\n    def lower_items(self):\n"
+                 "        return ((lowerkey, keyval[1]) for (lowerkey, keyval) in self._store.values())\n"})
+    (finding,) = run_check(RemovedFix(), repo)
+    assert (finding.check, finding.path) == ("removed-fix", "structures.py")
+
+
+# third audit: removed blocks are never matched as a whole (the reverted `rewrapped`)
+
+TWIN = ("        return (\n            (key, value)\n            for (key, value)\n"
+        "            in self._store.items()\n        )\n")
+
+
+def test_removed_fix_warns_when_one_of_two_identical_blocks_changes(make_repo):
+    # first() now filters on `value`; second() is only rejoined. The rejoined block must not vouch
+    # for its changed twin: the warning lands on first()'s lines (4 is its first meaningful one).
+    empty = "        return iter(())\n"
+    repo = make_repo([
+        ("Add D", {"structures.py": "class D:\n    def first(self):\n" + empty + "    def second(self):\n" + empty}),
+        ("Fix D iteration (fixes #649)", {"structures.py": "class D:\n    def first(self):\n" + TWIN
+                                          + "    def second(self):\n" + TWIN}),
+    ])
+    joined = "        return ((key, value) for (key, value) in self._store.items())\n"
+    stage(repo, {"structures.py": "class D:\n    def first(self):\n"
+                 + joined.replace(".items())", ".items() if value is not None)") + "    def second(self):\n" + joined})
+    (finding,) = run_check(RemovedFix(), repo)
+    assert (finding.path, finding.line, finding.evidence[0][:7]) == ("structures.py", 4, sha(repo)[:7])
+
+
+@pytest.mark.parametrize("name, line, fix, joined", [
+    ("app.py", "    value = 1  #(\n", "    self.release_lock(value)\n", "    value = 1  #( self.release_lock(value)\n"),
+    ("app.js", "  let value = 1; //(\n", "  releaseLock(value);\n", "  let value = 1; //( releaseLock(value);\n"),
+])
+def test_removed_fix_warns_when_a_join_turns_the_fix_into_a_comment(make_repo, name, line, fix, joined):
+    # the `(` after `#` / `//` is comment text: joining the lines comments the fix out
+    repo = make_repo([("Add run", {name: "run:\n" + line + "  done\n"}),
+                      ("Fix lock leak in run (fixes #12)", {name: "run:\n" + line + fix + "  done\n"})])
+    stage(repo, {name: "run:\n" + joined + "  done\n"})
+    (finding,) = run_check(RemovedFix(), repo)
+    assert (finding.path, finding.evidence[0][:7]) == (name, sha(repo)[:7])

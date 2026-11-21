@@ -681,6 +681,156 @@
    "cited": "9777442",
    "verdict": "noise",
    "reason": "trace-past-unchanged experiment (2026-11-18): moves the through-field lookups from __init__ to the class body; #19385's behaviour is kept"
+  },
+  {
+   "sha": "21c51c262",
+   "subject": "Fixed #37060 -- Propagated AlterField through attname-based to_field references.",
+   "check": "removed-fix",
+   "path": "django/db/backends/base/schema.py",
+   "line": 39,
+   "cited": "ee17bb8",
+   "verdict": "useful",
+   "reason": "extends the relevance condition from fix #29193 (adds `or altered_field.attname in field.to_fields`)"
+  },
+  {
+   "sha": "bc9bed573",
+   "subject": "Fixed #37088 -- Included attributes in media object equality.",
+   "check": "removed-fix",
+   "path": "django/forms/widgets.py",
+   "line": 145,
+   "cited": "959d0c0",
+   "verdict": "useful",
+   "reason": "changes how Media builds _css_lists/_js_lists, the structure fix #30153's merge ordering works on"
+  },
+  {
+   "sha": "42aa0b336",
+   "subject": "Fixed CVE-2026-48587 -- Ignored whitespace padding when checking Vary header values.",
+   "check": "removed-fix",
+   "path": "django/utils/cache.py",
+   "line": 336,
+   "cited": "00fda7f",
+   "verdict": "useful",
+   "reason": "CVE-2026-48587: changes the Vary header comparison from fix #13283 (adds .strip())"
+  },
+  {
+   "sha": "f1440a752",
+   "subject": "Fixed #36969, #35371 -- Reduced false positives in strings during collectstatic.",
+   "check": "removed-fix",
+   "path": "django/contrib/staticfiles/storage.py",
+   "line": 129,
+   "cited": "3047981",
+   "verdict": "useful",
+   "reason": "changes the pattern tuples and loop that fix #18050 added for @import handling"
+  },
+  {
+   "sha": "cd385e6b8",
+   "subject": "Fixed #31317 -- Avoided crash in CreateModel with unique_together and AlterUniqueTogether.",
+   "check": "removed-fix",
+   "path": "django/db/backends/base/schema.py",
+   "line": 671,
+   "cited": "b949e40",
+   "verdict": "noise",
+   "reason": "fix #23740's condition is kept: `constraint_kwargs.get(\"unique\") is True` is only extracted into `is_unique_constraint`; the deferred_sql fix doesn't change it"
+  },
+  {
+   "sha": "b461519bf",
+   "subject": "Refs #36560, CVE-2026-35193 -- Recognized qualified cache-control directives.",
+   "check": "removed-fix",
+   "path": "django/utils/cache.py",
+   "line": 53,
+   "cited": "b522469",
+   "verdict": "useful",
+   "reason": "CVE-2026-35193: changes the cache-control directive parsing from fix #4071 (adds .strip())"
+  },
+  {
+   "sha": "7b8504eaa",
+   "subject": "Fixed #35813 -- Made migrations track all changes to unmanaged models.",
+   "check": "removed-fix",
+   "path": "django/db/migrations/autodetector.py",
+   "line": 1843,
+   "cited": "061caa5",
+   "verdict": "useful",
+   "reason": "reorganises managed/unmanaged model handling, removing kept_unmanaged_keys paths that fix #24037 (data loss on Meta.managed changes) relied on"
+  },
+  {
+   "sha": "3d34265d5",
+   "subject": "Fixed #35875 -- Added dark mode support to technical 404 and 500 error views.",
+   "check": "removed-fix",
+   "path": "django/views/templates/csrf_403.html",
+   "line": 13,
+   "cited": "6b2d6e1",
+   "verdict": "noise",
+   "reason": "dark mode: only colours become light-dark(); the styling from fix #13590 is kept"
+  },
+  {
+   "sha": "3d34265d5",
+   "subject": "Fixed #35875 -- Added dark mode support to technical 404 and 500 error views.",
+   "check": "removed-fix",
+   "path": "django/views/templates/technical_404.html",
+   "line": 13,
+   "cited": "0a98333",
+   "verdict": "noise",
+   "reason": "dark mode: only colours become light-dark(); fix #36853's selectors are kept"
+  },
+  {
+   "sha": "3d34265d5",
+   "subject": "Fixed #35875 -- Added dark mode support to technical 404 and 500 error views.",
+   "check": "removed-fix",
+   "path": "django/views/templates/technical_404.html",
+   "line": 24,
+   "cited": "3b8527e",
+   "verdict": "noise",
+   "reason": "dark mode: only colours become light-dark(); the exception message style from fix #32637 is kept"
+  },
+  {
+   "sha": "3d34265d5",
+   "subject": "Fixed #35875 -- Added dark mode support to technical 404 and 500 error views.",
+   "check": "removed-fix",
+   "path": "django/views/templates/technical_500.html",
+   "line": 14,
+   "cited": "0a98333",
+   "verdict": "noise",
+   "reason": "dark mode: only colours become light-dark(); fix #36853's selectors are kept"
+  },
+  {
+   "sha": "3d34265d5",
+   "subject": "Fixed #35875 -- Added dark mode support to technical 404 and 500 error views.",
+   "check": "removed-fix",
+   "path": "django/views/templates/technical_500.html",
+   "line": 47,
+   "cited": "1c00493",
+   "verdict": "noise",
+   "reason": "dark mode: only colours become light-dark(); unrelated to fix #32624's show/hide markup"
+  },
+  {
+   "sha": "8cbdd4a81",
+   "subject": "Fixed #37286 -- Preserved unique constraints when removing db_index.",
+   "check": "removed-fix",
+   "path": "django/db/backends/base/schema.py",
+   "line": 1095,
+   "cited": "5c17c27",
+   "verdict": "useful",
+   "reason": "changes the exclude set that fix #30172 added (now also excludes meta_constraint_names)"
+  },
+  {
+   "sha": "62ef9d40c",
+   "subject": "Refs CVE-2026-15830 -- Fixed WKB geometry collection limit bypasses.",
+   "check": "removed-fix",
+   "path": "django/contrib/gis/geos/prototypes/io.py",
+   "line": 307,
+   "cited": "f3822d4",
+   "verdict": "useful",
+   "reason": "rewrites the str/bytes handling from fix #34026"
+  },
+  {
+   "sha": "9014ca519",
+   "subject": "Fixed #37418 -- Fixed JSONField/HStoreField crash on deeply nested JSON.",
+   "check": "removed-fix",
+   "path": "django/forms/fields.py",
+   "line": 1366,
+   "cited": "6789ded",
+   "verdict": "noise",
+   "reason": "cited commit adds the JSONField feature (#12990), not a bug fix"
   }
  ]
 }

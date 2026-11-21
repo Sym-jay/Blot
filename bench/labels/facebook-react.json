@@ -911,6 +911,26 @@
    "cited": "65a56d0",
    "verdict": "useful",
    "reason": "changes the promise resolution from timing fix #31304"
+  },
+  {
+   "sha": "f4e0d4ed0",
+   "subject": "[enableInfiniteRenderLoopDetection] Add a flag to force throwing (#36357)",
+   "check": "removed-fix",
+   "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+   "line": 5197,
+   "cited": "b4546cd",
+   "verdict": "useful",
+   "reason": "changes the warn-instead-of-throw decision that fix #35999 introduced"
+  },
+  {
+   "sha": "43bcbf800",
+   "subject": "[Fizz] Allow Pending Work to Specialize Abort Reasons (#36586)",
+   "check": "removed-fix",
+   "path": "packages/react-server/src/ReactFizzServer.js",
+   "line": 4207,
+   "cited": "96aca5f",
+   "verdict": "useful",
+   "reason": "changes the ping callbacks in the stack-overflow fix #30419"
   }
  ]
 }
