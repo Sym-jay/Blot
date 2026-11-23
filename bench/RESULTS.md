@@ -179,10 +179,7 @@ is Django `1b4d021b6`. Cost: `blot check` on the Flask demo went from ~470 to ~4
 and `blot map src/flask/app.py` from 1.4 s to 3.5 s.
 
 An **exact-text-only variant** (no `KeptLines`) changed **no warning** on any of the five repos and still cost ~35 ms per check. Neither version was kept. The six new warnings stay
-labelled in `labels/` (reasons prefixed "trace-past-unchanged experiment"). `tests/test_trace.py`
-pins both behaviours: a rewritten line stops the trace, and a fix that wraps a value stays the
-explanation.
-
+labelled in `labels/` (reas
 Two narrower leads came out of this, both unmeasured: let the refactor hop match with `KeptLines`
 (Black's trailing commas, as in `025589ee`), and follow renamed attributes (`self.session` →
 `self._session`).

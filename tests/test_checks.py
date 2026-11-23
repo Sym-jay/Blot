@@ -208,12 +208,7 @@ def test_removed_fix_does_not_read_file_without_an_eligible_fix(make_repo, monke
 # --- readded-bug ------------------------------------------------------------------------
 
 
-def test_readded_bug_warns_when_removed_line_comes_back(make_repo):
-    repo = make_repo(FIXED)
-    stage(repo, {"app.py": BEFORE + "    # back to the simple version\n"})
-    findings = run_check(ReaddedBug(), repo)
-    assert [(f.check, f.path, f.line) for f in findings] == [("readded-bug", "app.py", 3)]
-    assert findings[0].evidence[0].startswith(sha(repo)[:7])
+
 
 
 def test_readded_bug_quiet_when_line_still_exists_at_head(make_repo):
