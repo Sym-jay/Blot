@@ -1,0 +1,1045 @@
+{
+ "repo": "C:\\Users\\N Jayasankar\\AppData\\Local/Temp/wl/rp/requests",
+ "head": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+ "max_files": 50,
+ "cap": 40,
+ "candidates": 45,
+ "dropped": {
+  "sha not found or not an ancestor of the fix": 2,
+  "culprit is itself a revert (a re-land, not a bug)": 1,
+  "touches no checked file (tests, docs, generated)": 8,
+  "merge": 2,
+  "pr not mapped to exactly one commit": 1
+ },
+ "pairs": [
+  {
+   "culprit": "4b66260cb7",
+   "culprit_subject": "New helper method `set_http_proxy` in `Session` to set proxies in a more user friendly way",
+   "fix": "d1ca591c0f",
+   "fix_subject": "Revert \"New helper method `set_http_proxy` in `Session` to set proxies in a more user friendly way\"",
+   "fix_date": "2020-11-27",
+   "kind": "revert",
+   "ref": "4b66260c",
+   "fix_files": [
+    "requests/sessions.py"
+   ],
+   "ms": 94,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "new helper reverted the same day with no stated bug; pure addition"
+  },
+  {
+   "culprit": "bd10047244",
+   "culprit_subject": "#4965 fix: Accessing response.content twice removes forgets read error.",
+   "fix": "b15056d1d3",
+   "fix_subject": "Revert \"#4965 fix: Accessing response.content twice removes forgets read error.\"",
+   "fix_date": "2020-02-18",
+   "kind": "revert",
+   "ref": "bd100472443dcf4189630f6b1ed3ec0a61259dd8",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 69,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/models.py",
+     "lines": [
+      643,
+      755,
+      758,
+      761
+     ],
+     "count": 4,
+     "origin": "d91fe00983",
+     "subject": "#4965 fix-draw: Accessing response.content twice removes forgets read error.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "requests/models.py",
+     "lines": [
+      756
+     ],
+     "count": 1,
+     "origin": "79f3e69f5e",
+     "subject": "Wrap IncompleteRead in ChunkedEncodingError.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/models.py",
+     "lines": [
+      759
+     ],
+     "count": 1,
+     "origin": "aad828704d",
+     "subject": "Re-raise DecodeError",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/models.py",
+     "lines": [
+      762
+     ],
+     "count": 1,
+     "origin": "9eab9f7415",
+     "subject": "Handle socket errors in iter_content",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "one of six 3.0-branch commits reverted off master on 2020-02-18, no bug stated"
+  },
+  {
+   "culprit": "d91fe00983",
+   "culprit_subject": "#4965 fix-draw: Accessing response.content twice removes forgets read error.",
+   "fix": "b15056d1d3",
+   "fix_subject": "Revert \"#4965 fix: Accessing response.content twice removes forgets read error.\"",
+   "fix_date": "2020-02-18",
+   "kind": "revert",
+   "ref": "d91fe00983f1c66b9a428fe1ad15bf6ea8238972",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 1,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "3.0-branch commit reverted off master on 2020-02-18, no bug stated"
+  },
+  {
+   "culprit": "2da7fe0858",
+   "culprit_subject": "Use urllib for chunked requests",
+   "fix": "24bcb9eab6",
+   "fix_subject": "Revert \"Use urllib for chunked requests\"",
+   "fix_date": "2020-02-18",
+   "kind": "revert",
+   "ref": "2da7fe08586aeaff614c017a9a834a22c937384a",
+   "fix_files": [
+    "requests/adapters.py"
+   ],
+   "ms": 102,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      438,
+      454,
+      455,
+      464,
+      465
+     ],
+     "count": 14,
+     "origin": "ef8563ab36",
+     "subject": "CHUNKED REQUESTS!",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      449
+     ],
+     "count": 1,
+     "origin": "4c13678587",
+     "subject": "remove change for timeout=None",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      457
+     ],
+     "count": 1,
+     "origin": "e9a1e35f89",
+     "subject": "Only pass useful timeouts to _get_conn",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      460,
+      462,
+      494
+     ],
+     "count": 3,
+     "origin": "31c0962e83",
+     "subject": "Better connection behaviour for chunked upload.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      479,
+      482
+     ],
+     "count": 2,
+     "origin": "e67cd15bc8",
+     "subject": "Fix breakage introduced by 8f591682",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      480
+     ],
+     "count": 1,
+     "origin": "8f591682e6",
+     "subject": "Use buffering for HTTP responses on chunked requests",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      484
+     ],
+     "count": 1,
+     "origin": "9606f0240b",
+     "subject": "PEP8 fix to make me happier.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "3.0-branch commit reverted off master on 2020-02-18, no bug stated (it did rewrite lines from fix e67cd15b, sev 1)"
+  },
+  {
+   "culprit": "19cff44ec1",
+   "culprit_subject": "fix response with utf8 bom",
+   "fix": "fd13816d01",
+   "fix_subject": "Revert \"Fix for response with UTF-8 BOM #4976\"",
+   "fix_date": "2020-02-18",
+   "kind": "revert",
+   "ref": "19cff44ec1b8eeec99459b504a681aa440f6344c",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "3.0-branch commit reverted off master on 2020-02-18, no bug stated"
+  },
+  {
+   "culprit": "9e27326d68",
+   "culprit_subject": "add failing tests for bom",
+   "fix": "fd13816d01",
+   "fix_subject": "Revert \"Fix for response with UTF-8 BOM #4976\"",
+   "fix_date": "2020-02-18",
+   "kind": "revert",
+   "ref": "9e27326d6843e7c26e9847776159eeb68a999675",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "tests and .gitignore, reverted with the BOM change"
+  },
+  {
+   "culprit": "f507a3ef12",
+   "culprit_subject": "add utf8 with bom to test",
+   "fix": "fd13816d01",
+   "fix_subject": "Revert \"Fix for response with UTF-8 BOM #4976\"",
+   "fix_date": "2020-02-18",
+   "kind": "revert",
+   "ref": "f507a3ef12ce6e100f68741f68d39bcaf8a70c7a",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "tests and .gitignore, reverted with the BOM change"
+  },
+  {
+   "culprit": "fbe48fbb7c",
+   "culprit_subject": "Add trusted domains",
+   "fix": "09fd857eb1",
+   "fix_subject": "Revert \"Add trusted domains\"",
+   "fix_date": "2019-09-19",
+   "kind": "revert",
+   "ref": "fbe48fbb7c5b96cde3a16453311e45f723516afd",
+   "fix_files": [
+    "requests/sessions.py"
+   ],
+   "ms": 39,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/sessions.py",
+     "lines": [
+      122
+     ],
+     "count": 1,
+     "origin": "857e9b7ac2",
+     "subject": "Rework authorization stripping logic as discussed",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted the same day with no stated bug"
+  },
+  {
+   "culprit": "e4974c7ff5",
+   "culprit_subject": "Set up Azure Pipelines for Linux and Windows",
+   "fix": "abe950cfd3",
+   "fix_subject": "Revert \"Set up Azure Pipelines for Linux and Windows\"",
+   "fix_date": "2018-12-09",
+   "kind": "revert",
+   "ref": "e4974c7ff55e95e6a04755f46bc71dd6c028f831",
+   "fix_files": [
+    "_azure-pipelines/template-linux.yml",
+    "_azure-pipelines/template-windows.yml",
+    "azure-pipelines.yml"
+   ],
+   "ms": 3,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "CI setup reverted"
+  },
+  {
+   "culprit": "85400d8d67",
+   "culprit_subject": "Allow use of 'no_proxy' in the proxies argument",
+   "fix": "a9470fe31f",
+   "fix_subject": "Fix regression in API caused by commit 85400d8d6751071ef78f042d1efa72bdcf76cc0e   - The added optional parameter changes API and should default to None",
+   "fix_date": "2017-05-24",
+   "kind": "broken",
+   "ref": "85400d8d6751071ef78f042d1efa72bdcf76cc0e",
+   "fix_files": [
+    "requests/utils.py"
+   ],
+   "ms": 192,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/sessions.py",
+     "lines": [
+      237,
+      239
+     ],
+     "count": 2,
+     "origin": "459f8dfccb",
+     "subject": "Don't repopulate proxies if we don't trust the env.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/sessions.py",
+     "lines": [
+      654
+     ],
+     "count": 1,
+     "origin": "a982b0d903",
+     "subject": "proxy manager",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/utils.py",
+     "lines": [
+      557
+     ],
+     "count": 1,
+     "origin": "6d7e8a97bb",
+     "subject": "Split get_environ_proxies into two methods.",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "requests/utils.py",
+     "lines": [
+      611
+     ],
+     "count": 1,
+     "origin": "8da100f652",
+     "subject": "Respect the no_proxy environment variable.",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "changed the signature of get_environ_proxies (API break for direct callers); the def line was created by refactor 6d7e8a9, no fix behind it"
+  },
+  {
+   "culprit": "34af72c87d",
+   "culprit_subject": "Restrict URL preparation to HTTP/HTTPS",
+   "fix": "402a55b647",
+   "fix_subject": "Revert \"Restrict URL preparation to HTTP/HTTPS\"",
+   "fix_date": "2016-11-30",
+   "kind": "revert",
+   "ref": "34af72c87d79bd8852e8564c050dd7711c6a08d6",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 56,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/models.py",
+     "lines": [
+      352
+     ],
+     "count": 1,
+     "origin": "b149be5d86",
+     "subject": "loosen URL handling for non-native URL schemes",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-gap",
+   "note": "classification: changed the line from b149be5 'loosen URL handling for non-native URL schemes', a real fix (http+unix style schemes) with no fix word; HISTORY 2.12.3 calls the result a regression. A warning there would have been on target"
+  },
+  {
+   "culprit": "9a20afd6b5",
+   "culprit_subject": "Refactor default params",
+   "fix": "9aca57d4bf",
+   "fix_subject": "Revert changes to params",
+   "fix_date": "2015-12-11",
+   "kind": "revert",
+   "ref": "9a20afd6b5140da4b9f187a3c0c6ea7010baeee9",
+   "fix_files": [
+    "requests/sessions.py"
+   ],
+   "ms": 62,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/sessions.py",
+     "lines": [
+      403
+     ],
+     "count": 1,
+     "origin": "4c3b9df609",
+     "subject": "/s/prefetch/stream",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/sessions.py",
+     "lines": [
+      404
+     ],
+     "count": 1,
+     "origin": "82e69de44f",
+     "subject": "Exposed key_file and cert_file in requests, to support https client certificates.",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "params change rejected in review ('changes to params were not' desirable), not a bug"
+  },
+  {
+   "culprit": "8f591682e6",
+   "culprit_subject": "Use buffering for HTTP responses on chunked requests",
+   "fix": "e67cd15bc8",
+   "fix_subject": "Fix breakage introduced by 8f591682",
+   "fix_date": "2015-11-05",
+   "kind": "introduced",
+   "ref": "8f591682",
+   "fix_files": [
+    "requests/adapters.py"
+   ],
+   "ms": 50,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      397
+     ],
+     "count": 1,
+     "origin": "ef8563ab36",
+     "subject": "CHUNKED REQUESTS!",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new buffering argument broke chunked responses; the changed line is from the chunked-requests feature ef8563a"
+  },
+  {
+   "culprit": "086e19d8e1",
+   "culprit_subject": "Clarify the contract of Response#ok, and avoid exceptions in it",
+   "fix": "a89d5c003a",
+   "fix_subject": "Revert \"Clarify the contract of Response#ok, and avoid exceptions in it\"",
+   "fix_date": "2015-10-03",
+   "kind": "revert",
+   "ref": "086e19d8e175cccb630ee3589affdd2f38075ecd",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 89,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/models.py",
+     "lines": [
+      620,
+      622
+     ],
+     "count": 2,
+     "origin": "d04f31b302",
+     "subject": "HTTPError",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/models.py",
+     "lines": [
+      621
+     ],
+     "count": 1,
+     "origin": "925e975295",
+     "subject": "catch exception more specifically in Response.ok",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "behaviour change of Response.ok reverted, no bug stated"
+  },
+  {
+   "culprit": "cfd6e25749",
+   "culprit_subject": "fix failing test \"test_prepare_unicode_url\"",
+   "fix": "77687de509",
+   "fix_subject": "Revert \"fix failing test \"test_prepare_unicode_url\"\"",
+   "fix_date": "2014-10-26",
+   "kind": "revert",
+   "ref": "cfd6e25749dd17c6b511043a6720b672f74029ed",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "author reverted their own attempt the same day"
+  },
+  {
+   "culprit": "26ed7c2e1d",
+   "culprit_subject": "fix failing test \"test_prepare_unicode_url\"",
+   "fix": "8e69c9f0a1",
+   "fix_subject": "Revert \"fix failing test \"test_prepare_unicode_url\"\"",
+   "fix_date": "2014-10-26",
+   "kind": "revert",
+   "ref": "26ed7c2e1dce4271f3a3b111a167a6dcca3acddf",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 49,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/models.py",
+     "lines": [
+      313
+     ],
+     "count": 1,
+     "origin": "0ab7a52f7c",
+     "subject": "Merge settings when creating PreparedRequest, don't copy Request.",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "author reverted their own attempt the same day"
+  },
+  {
+   "culprit": "af21ec6165",
+   "culprit_subject": "Font layer convert to curves",
+   "fix": "b4354fc66f",
+   "fix_subject": "Revert \"Font layer convert to curves\"",
+   "fix_date": "2014-04-16",
+   "kind": "revert",
+   "ref": "af21ec6165c40c0c12f8dccc8379eb97de53da20",
+   "fix_files": [
+    "ext/requests-logo.ai"
+   ],
+   "ms": 388,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "ext/requests-logo.ai",
+     "lines": [
+      20,
+      21,
+      26,
+      28,
+      41
+     ],
+     "count": 364,
+     "origin": "784fe8bbdb",
+     "subject": "working requests logo",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "logo artwork"
+  },
+  {
+   "culprit": "840540b6b1",
+   "culprit_subject": "Proxy urls should have explicit schemes.",
+   "fix": "780ce3902e",
+   "fix_subject": "Revert \"Proxy urls should have explicit schemes.\"",
+   "fix_date": "2014-02-18",
+   "kind": "revert",
+   "ref": "840540b6b1f07ef87faab73392c03fbef0dcc9fe",
+   "fix_files": [
+    "requests/adapters.py",
+    "requests/utils.py"
+   ],
+   "ms": 87,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      18
+     ],
+     "count": 1,
+     "origin": "d437c338d0",
+     "subject": "Add Proxy-Auth header when proxies have credentials.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      196
+     ],
+     "count": 1,
+     "origin": "01993d21dc",
+     "subject": "added tests for mixed-case scheme URLs, changed adapters passing down URLs into urllib3 by lower-ifying them so that the underlying pool manager can effectively pool by scheme as dictionary key",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/utils.py",
+     "lines": [
+      527,
+      530,
+      535,
+      536,
+      538
+     ],
+     "count": 5,
+     "origin": "641f4611b2",
+     "subject": "Make sure proxies have their scheme attached.",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-gap",
+   "note": "classification: rewrote the lines from 641f461 'Make sure proxies have their scheme attached.', a fix with no fix word; HISTORY 2.0.1 says mandating schemes was reverted. A warning there would have been on target"
+  },
+  {
+   "culprit": "ca0aea640d",
+   "culprit_subject": "Fix for the issue https://github.com/kennethreitz/requests/issues/1280",
+   "fix": "54ed5ed469",
+   "fix_subject": "Revert \"Fix for the issue https://github.com/kennethreitz/requests/issues/1280\"",
+   "fix_date": "2013-04-02",
+   "kind": "revert",
+   "ref": "ca0aea640d0cce01c126220b74362c9014cabbd6",
+   "fix_files": [
+    "requests/sessions.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug"
+  },
+  {
+   "culprit": "796d3225dd",
+   "culprit_subject": "[kennethreitz/requests#1208] adding a max_retries argument",
+   "fix": "23d8522285",
+   "fix_subject": "Revert \"[kennethreitz/requests#1208] adding a max_retries argument\"",
+   "fix_date": "2013-03-03",
+   "kind": "revert",
+   "ref": "796d3225ddf08a9ebaa429209b9d077c3a8f99b8",
+   "fix_files": [
+    "requests/adapters.py",
+    "requests/api.py",
+    "requests/sessions.py"
+   ],
+   "ms": 84,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      48
+     ],
+     "count": 1,
+     "origin": "88d4143018",
+     "subject": "base adapter",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      169
+     ],
+     "count": 1,
+     "origin": "4c3b9df609",
+     "subject": "/s/prefetch/stream",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/adapters.py",
+     "lines": [
+      191
+     ],
+     "count": 1,
+     "origin": "5ce4b69c9f",
+     "subject": "working!!!",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/sessions.py",
+     "lines": [
+      83
+     ],
+     "count": 1,
+     "origin": "e7bc9bf1b2",
+     "subject": "Preserve the original request.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "requests/sessions.py",
+     "lines": [
+      422
+     ],
+     "count": 1,
+     "origin": "3299771e34",
+     "subject": "Fix the potential issue mentioned in #1151",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "feature (max_retries argument) reverted with no stated bug"
+  },
+  {
+   "culprit": "544d08d0f6",
+   "culprit_subject": "If Content-Length is already set, don't override",
+   "fix": "be62645dd5",
+   "fix_subject": "Revert \"If Content-Length is already set..\"[1]",
+   "fix_date": "2013-02-25",
+   "kind": "revert",
+   "ref": "544d08d0f61c35358cf13b4a6b677e4e51dbbe7e",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug; pure addition"
+  },
+  {
+   "culprit": "178ff62b93",
+   "culprit_subject": "Lukasa is lazy",
+   "fix": "c01bc5be5b",
+   "fix_subject": "Revert \"Lukasa is lazy\"",
+   "fix_date": "2013-02-22",
+   "kind": "revert",
+   "ref": "178ff62b934c30278114028f654e42374206c291",
+   "fix_files": [
+    "requests/adapters.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug"
+  },
+  {
+   "culprit": "c19650b00f",
+   "culprit_subject": "Fix SSL3 error on Ubuntu 12.04",
+   "fix": "5ce25688e0",
+   "fix_subject": "Revert \"Fix SSL3 error on Ubuntu 12.04\"",
+   "fix_date": "2012-09-24",
+   "kind": "revert",
+   "ref": "c19650b00f0c169cdf6372a093425830e11a8771",
+   "fix_files": [
+    "requests/packages/urllib3/connectionpool.py"
+   ],
+   "ms": 47,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/packages/urllib3/connectionpool.py",
+     "lines": [
+      101
+     ],
+     "count": 1,
+     "origin": "7c271a466f",
+     "subject": "Import urllib3",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "patch to vendored urllib3 reverted, no bug stated"
+  },
+  {
+   "culprit": "c71f48b5f1",
+   "culprit_subject": "Some pyflakes fixes.",
+   "fix": "a5d462e176",
+   "fix_subject": "Revert \"Some pyflakes fixes.\"",
+   "fix_date": "2012-08-18",
+   "kind": "revert",
+   "ref": "c71f48b5f1d989644e26b9004c2af7a6f27d4708",
+   "fix_files": [],
+   "ms": 39,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "Makefile",
+     "lines": [
+      40
+     ],
+     "count": 1,
+     "origin": "7f9ea04286",
+     "subject": "Various Makefile updates",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "Makefile/tests lint change reverted"
+  },
+  {
+   "culprit": "62a23bfbde",
+   "culprit_subject": "Auto-detect CA Cert path instead of requiring users to hack setup.py",
+   "fix": "488a51d619",
+   "fix_subject": "Revert \"Auto-detect CA Cert path instead of requiring users to hack setup.py\"",
+   "fix_date": "2012-06-05",
+   "kind": "revert",
+   "ref": "62a23bfbdecf54e13e571237df5a175e53d539cb",
+   "fix_files": [
+    "setup.py"
+   ],
+   "ms": 42,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "setup.py",
+     "lines": [
+      37
+     ],
+     "count": 1,
+     "origin": "bdd7f8f8a2",
+     "subject": "Change setup.py to reflect required/optional dependencies",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "setup.py feature reverted with no stated bug"
+  },
+  {
+   "culprit": "35d5ac6e8f",
+   "culprit_subject": "Use utf-8 as the default encoding",
+   "fix": "8a81a437d2",
+   "fix_subject": "Revert \"Use utf-8 as the default encoding\"",
+   "fix_date": "2012-05-02",
+   "kind": "revert",
+   "ref": "35d5ac6e8f5f4357f945b8c4890388207f7f1c00",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "default-encoding change reverted with no stated bug"
+  },
+  {
+   "culprit": "d232948188",
+   "culprit_subject": "Cache the value of the `Response.text` property",
+   "fix": "6271046a27",
+   "fix_subject": "Revert \"Cache the value of the `Response.text` property\"",
+   "fix_date": "2012-05-02",
+   "kind": "revert",
+   "ref": "d232948188f922c137dd709b53f77c49d1442c84",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "caching feature reverted with no stated bug; pure addition"
+  },
+  {
+   "culprit": "a453a78c7c",
+   "culprit_subject": "Update Makefile and travis configuration to run all (non-external) tests",
+   "fix": "53d60cac4f",
+   "fix_subject": "Revert \"Update Makefile and travis configuration to run all (non-external) tests\"",
+   "fix_date": "2012-05-02",
+   "kind": "revert",
+   "ref": "a453a78c7c94aa220aa099dd62a36ec5b5232571",
+   "fix_files": [
+    ".travis.yml",
+    "Makefile"
+   ],
+   "ms": 84,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": ".travis.yml",
+     "lines": [
+      7
+     ],
+     "count": 1,
+     "origin": "32a6d07036",
+     "subject": "simpleci",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "Makefile",
+     "lines": [
+      20,
+      23
+     ],
+     "count": 2,
+     "origin": "d6c2d8f1dc",
+     "subject": "simpleci",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "CI/Makefile change reverted"
+  },
+  {
+   "culprit": "9217a2523d",
+   "culprit_subject": "Call auth callable before encoding body data",
+   "fix": "be04142723",
+   "fix_subject": "Revert \"Call auth callable before encoding body data\"",
+   "fix_date": "2012-05-01",
+   "kind": "revert",
+   "ref": "9217a2523d7d4fafeebb259884276fc349a376b1",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 57,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "requests/models.py",
+     "lines": [
+      491
+     ],
+     "count": 1,
+     "origin": "a9822b0bb6",
+     "subject": "fix content uploads",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "requests/models.py",
+     "lines": [
+      492
+     ],
+     "count": 1,
+     "origin": "b0e2e4f284",
+     "subject": "blah",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted the next day with no stated bug (it reordered lines from a9822b0 'fix content uploads', sev 1)"
+  },
+  {
+   "culprit": "e2645826be",
+   "culprit_subject": "Decode URL to utf-8 before joining.",
+   "fix": "0e65dff008",
+   "fix_subject": "Remove unnecessary bit from previous branch.",
+   "fix_date": "2012-03-08",
+   "kind": "revert",
+   "ref": "e2645826be0449842dcc812e31541c5254c69e05",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "leftover 'unnecessary bit' removed, no bug stated"
+  },
+  {
+   "culprit": "730c0e2e2b",
+   "culprit_subject": "Initial stop-the-bleeding fix",
+   "fix": "b98cc8b4e9",
+   "fix_subject": "Revert \"Initial stop-the-bleeding fix\"",
+   "fix_date": "2012-01-29",
+   "kind": "revert",
+   "ref": "730c0e2e2bef77968a86962f9d5f2bebba4d19ec",
+   "fix_files": [
+    "requests/models.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug; pure addition"
+  }
+ ]
+}

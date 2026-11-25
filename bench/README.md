@@ -67,3 +67,17 @@ GitHub CLI logged in and a GitHub `origin` or `upstream` remote).
 
 Target: **at most 1 warning per 10 commits**, and most of those should be worth reading.
 See [RESULTS.md](RESULTS.md) for the latest numbers.
+
+## 3. Regressions: recall on real history
+
+`regressions.py` finds commits that a later fix names as the culprit (`This reverts commit <sha>`,
+Django's `Regression in <sha>.`, and similar), replays each culprit at its parent like `--replay`
+does, and reports how many Blot warned on. `regressions/<owner>-<repo>.json` holds the pairs, the
+warnings and a hand judgement per pair (`bug`, `verdict`, `note`). `collect` keeps judgements, so
+it can be re-run as history grows. See the docstring in `regressions.py` for the verdicts.
+
+```bash
+python bench/regressions.py collect --repo <clone> --out regressions/<owner>-<repo>.json
+python bench/regressions.py run --repo <clone> --file regressions/<owner>-<repo>.json
+python bench/regressions.py report regressions/*.json
+```
