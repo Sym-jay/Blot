@@ -1,0 +1,655 @@
+{
+ "repo": "C:\\Users\\N Jayasankar\\AppData\\Local/Temp/wl/rp/express",
+ "head": "0dee2c52c7c873498f8ed7d8ee4ddd0a04d3ada8",
+ "max_files": 50,
+ "cap": 40,
+ "candidates": 20,
+ "dropped": {
+  "touches no checked file (tests, docs, generated)": 1
+ },
+ "pairs": [
+  {
+   "culprit": "6d2df035a9",
+   "culprit_subject": "build(deps-dev): bump supertest from 6.3.0 to 7.3.0 (#7494)",
+   "fix": "a419aa7350",
+   "fix_subject": "Revert \"build(deps-dev): bump supertest from 6.3.0 to 7.3.0 (#7494)\" (#7518)",
+   "fix_date": "2026-10-09",
+   "kind": "revert",
+   "ref": "6d2df035a95f3d1002be3e29997b7a4bfe976b5f",
+   "fix_files": [
+    "package.json"
+   ],
+   "ms": 47,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "package.json",
+     "lines": [
+      79
+     ],
+     "count": 1,
+     "origin": "d2de128a32",
+     "subject": "fix (deps): update deps (#6337)",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "dev-dependency bump broke CI (#7518); the package.json line came from a 'fix (deps)' bump (sev 1), not a fix to that line"
+  },
+  {
+   "culprit": "2f64f68c37",
+   "culprit_subject": "sec: security patch for CVE-2024-51999",
+   "fix": "697547cde6",
+   "fix_subject": "Revert \"sec: security patch for CVE-2024-51999\"",
+   "fix_date": "2025-12-01",
+   "kind": "revert",
+   "ref": "2f64f68c37c64ae333e41ff38032d21860f22255",
+   "fix_files": [
+    "lib/utils.js"
+   ],
+   "ms": 78,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "lib/utils.js",
+     "lines": [
+      269
+     ],
+     "count": 1,
+     "origin": "7bea53b92b",
+     "subject": "deps: qs@4.0.0",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "the CVE-2024-51999 patch itself was the breaking change (History 5.2.1); the changed line came from 'deps: qs@4.0.0', not a fix"
+  },
+  {
+   "culprit": "31b2e2d7b4",
+   "culprit_subject": "fix behavior of multiple app.VERB for the same path",
+   "fix": "7f049164b7",
+   "fix_subject": "Revert \"fix behavior of multiple app.VERB for the same path\"",
+   "fix_date": "2014-05-23",
+   "kind": "revert",
+   "ref": "31b2e2d7b4774eed16a93f9a8a20a9967e91e524",
+   "fix_files": [
+    "lib/application.js"
+   ],
+   "ms": 137,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "lib/application.js",
+     "lines": [
+      402
+     ],
+     "count": 1,
+     "origin": "e0bd0d6470",
+     "subject": "Added `app.get(setting)`. Closes #842",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "lib/application.js",
+     "lines": [
+      406,
+      425
+     ],
+     "count": 2,
+     "origin": "f41d09a3cf",
+     "subject": "remove app.router and refactor middleware processing",
+     "severity": 0,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "revert fixes #2133; the changed lines came from a feature and from refactor f41d09a, which created them"
+  },
+  {
+   "culprit": "138d74aefa",
+   "culprit_subject": "remove charset from json responses. Closes #1631",
+   "fix": "6cf6c8b918",
+   "fix_subject": "Revert \"remove charset from json responses. Closes #1631\"",
+   "fix_date": "2013-08-27",
+   "kind": "revert",
+   "ref": "138d74aefa75b0287aab8a905406553ecd3073c5",
+   "fix_files": [
+    "lib/response.js"
+   ],
+   "ms": 62,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "lib/response.js",
+     "lines": [
+      188
+     ],
+     "count": 1,
+     "origin": "3afbcd0acf",
+     "subject": "JSON and JSONP default to UTF-8 in the same way as HTML. Closes #632.",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-gap",
+   "note": "classification: removed the charset line from 3afbcd0 'JSON and JSONP default to UTF-8 ... Closes #632', a fix with no fix word; History 3.3.6 says the removal 'causes issues in some clients'. A warning there would have been on target"
+  },
+  {
+   "culprit": "2bba69f633",
+   "culprit_subject": "remove old OPTIONS default response",
+   "fix": "c3bd65eda2",
+   "fix_subject": "Revert \"remove old OPTIONS default response\"",
+   "fix_date": "2013-07-16",
+   "kind": "revert",
+   "ref": "2bba69f6333eddaa140346ef3ee3226c5efb5195",
+   "fix_files": [
+    "lib/router/index.js"
+   ],
+   "ms": 193,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "lib/router/index.js",
+     "line": 108,
+     "evidence": [
+      "9c87eed \"Fixed OPTIONS regression preventing custom routing for this method\" (2011-05-24)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "lib/router/index.js",
+     "lines": [
+      108
+     ],
+     "count": 1,
+     "origin": "9c87eed60e",
+     "subject": "Fixed OPTIONS regression preventing custom routing for this method",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "lib/router/index.js",
+     "lines": [
+      184,
+      186,
+      198,
+      200,
+      203
+     ],
+     "count": 6,
+     "origin": "80e9ffbf5d",
+     "subject": "Refactored router. Closes #639",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "lib/router/index.js",
+     "lines": [
+      185
+     ],
+     "count": 1,
+     "origin": "73092c9898",
+     "subject": "Perf: memoize parsed urls",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "lib/router/index.js",
+     "lines": [
+      187
+     ],
+     "count": 1,
+     "origin": "76fd462bcc",
+     "subject": "Removed `res.header(field, value)`",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "lib/router/index.js",
+     "lines": [
+      199
+     ],
+     "count": 1,
+     "origin": "3d597a554d",
+     "subject": "moved files from lib/express/* to lib/",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "lib/router/index.js",
+     "lines": [
+      201
+     ],
+     "count": 1,
+     "origin": "42953c7c44",
+     "subject": "Fixed default OPTIONS behavior",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "lib/router/index.js",
+     "lines": [
+      202
+     ],
+     "count": 1,
+     "origin": "f15eb6d5ef",
+     "subject": "added options test",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "lib/router/index.js",
+     "lines": [
+      206,
+      207
+     ],
+     "count": 2,
+     "origin": "6722716fa7",
+     "subject": "Moved router over from connect",
+     "severity": 0,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned on the default OPTIONS response from fix 9c87eed; removing it was issue #1690 ('Default OPTIONS Not Functioning') and the revert restored exactly that code"
+  },
+  {
+   "culprit": "28b8a3b5f7",
+   "culprit_subject": "fix infinite loop when res.send(status) is undefined. Closes #1623",
+   "fix": "10b21b41f7",
+   "fix_subject": "Revert \"fix infinite loop when res.send(status) is undefined. Closes #1623\"",
+   "fix_date": "2013-05-13",
+   "kind": "revert",
+   "ref": "28b8a3b5f72829fecdaea5f0d585654470337a9a",
+   "fix_files": [
+    "lib/response.js"
+   ],
+   "ms": 37,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug; pure addition"
+  },
+  {
+   "culprit": "6f6eec7d8d",
+   "culprit_subject": "add 'etag' option",
+   "fix": "9bd86cdddc",
+   "fix_subject": "Revert \"add 'etag' option\"",
+   "fix_date": "2012-12-06",
+   "kind": "revert",
+   "ref": "6f6eec7d8d929112a37de61c6b78a50bd9f46a73",
+   "fix_files": [
+    "lib/application.js",
+    "lib/response.js"
+   ],
+   "ms": 40,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "lib/response.js",
+     "lines": [
+      131
+     ],
+     "count": 1,
+     "origin": "214f913b0c",
+     "subject": "merge",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "feature (etag option) reverted with no stated bug"
+  },
+  {
+   "culprit": "6aaa7dc26d",
+   "culprit_subject": "Added + support to the router",
+   "fix": "140efb574c",
+   "fix_subject": "Revert \"Added + support to the router\"",
+   "fix_date": "2012-06-22",
+   "kind": "revert",
+   "ref": "6aaa7dc26dc12de5f91e5f747408f121fb39d2cc",
+   "fix_files": [
+    "lib/utils.js"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "feature reverted with no stated bug; pure addition"
+  },
+  {
+   "culprit": "0ae18bca60",
+   "culprit_subject": "removed jsonp stripping",
+   "fix": "60d16eab77",
+   "fix_subject": "Revert \"removed jsonp stripping\"",
+   "fix_date": "2011-07-06",
+   "kind": "revert",
+   "ref": "0ae18bca6075c8f6d9a7d58405c5f52c1ae61958",
+   "fix_files": [
+    "lib/response.js"
+   ],
+   "ms": 42,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "lib/response.js",
+     "lines": [
+      138
+     ],
+     "count": 1,
+     "origin": "73ea5cd7ee",
+     "subject": "Added `res.json()` JSONP support. Closes #737",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug"
+  },
+  {
+   "culprit": "1c2e9a476c",
+   "culprit_subject": "Fixed _ prefix object resolution on partials (resolveObjectName), added _ prefix fallback to view file resolution (prefixPath)",
+   "fix": "f53686a2f3",
+   "fix_subject": "Fixed index view resolution bug introduced by 1c2e9a476c50",
+   "fix_date": "2010-12-29",
+   "kind": "introduced",
+   "ref": "1c2e9a476c50",
+   "fix_files": [
+    "lib/express/view.js"
+   ],
+   "ms": 1,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "'index view resolution bug introduced by 1c2e9a4': new resolution code, no fix-added line changed"
+  },
+  {
+   "culprit": "45590415a6",
+   "culprit_subject": "only register error handlers once",
+   "fix": "252f330658",
+   "fix_subject": "Revert \"only register error handlers once\"",
+   "fix_date": "2010-10-29",
+   "kind": "revert",
+   "ref": "45590415a6668ec5fc3e792b482f06b297b1a388",
+   "fix_files": [
+    "lib/express/server.js"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug; pure addition"
+  },
+  {
+   "culprit": "bdfd81322b",
+   "culprit_subject": "Removed `make install-support`",
+   "fix": "880fb5bd89",
+   "fix_subject": "Revert \"Removed `make install-support`\"",
+   "fix_date": "2010-07-20",
+   "kind": "revert",
+   "ref": "bdfd81322b7f29f75d40fdf9c91374e6bef3115b",
+   "fix_files": [
+    "Makefile"
+   ],
+   "ms": 42,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "Makefile",
+     "lines": [
+      23,
+      24,
+      25,
+      27,
+      28
+     ],
+     "count": 6,
+     "origin": "774e25d944",
+     "subject": "Added `make install-support` and `make uninstall-support`",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "Makefile target removal reverted"
+  },
+  {
+   "culprit": "115765e1ee",
+   "culprit_subject": "Clone / reverse plugins ONCE",
+   "fix": "7afa5c7b43",
+   "fix_subject": "Revert \"Clone / reverse plugins ONCE\"",
+   "fix_date": "2010-04-30",
+   "kind": "revert",
+   "ref": "115765e1ee0f61b9a8bc01f5ec74f69a59524ae3",
+   "fix_files": [
+    "lib/express/request.js"
+   ],
+   "ms": 43,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "lib/express/request.js",
+     "lines": [
+      327
+     ],
+     "count": 1,
+     "origin": "906ef02c5e",
+     "subject": "request response event is now fired in reverse.",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "revert says it 'was causing some bugs'; the changed line came from a feature (906ef02)"
+  },
+  {
+   "culprit": "1bc9a1af6a",
+   "culprit_subject": "Fixed Cache Store.Memory usage of Object#reduce()",
+   "fix": "9ff2f81a10",
+   "fix_subject": "Fixed cache bugs introduced by 1bc9a1a",
+   "fix_date": "2010-04-29",
+   "kind": "introduced",
+   "ref": "1bc9a1a",
+   "fix_files": [
+    "lib/express/plugins/cache.js"
+   ],
+   "ms": 44,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "lib/express/plugins/cache.js",
+     "lines": [
+      129
+     ],
+     "count": 1,
+     "origin": "4ce5c7650e",
+     "subject": "Finished memory data-store for cache api. Closes #130",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "lib/express/plugins/cache.js",
+     "lines": [
+      130
+     ],
+     "count": 1,
+     "origin": "655ad77bce",
+     "subject": "fn -> callback",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "lib/express/plugins/cache.js",
+     "lines": [
+      131,
+      132
+     ],
+     "count": 2,
+     "origin": "200d09c7bd",
+     "subject": "cache Memory.Store#get() utilizing Collection",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "'cache bugs introduced by 1bc9a1a': the rewritten lines came from the cache feature commits"
+  },
+  {
+   "culprit": "27b27af7cd",
+   "culprit_subject": "Renamed session Base",
+   "fix": "135afb0883",
+   "fix_subject": "Revert \"Renamed session Base\" - haha :) just kidding",
+   "fix_date": "2010-04-21",
+   "kind": "revert",
+   "ref": "27b27af7cd6ac325a5a1cdc6cc3406cb6892ff0d",
+   "fix_files": [
+    "lib/express/plugins/session.js"
+   ],
+   "ms": 48,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "lib/express/plugins/session.js",
+     "lines": [
+      13
+     ],
+     "count": 1,
+     "origin": "212dc88b89",
+     "subject": "Squashed commit of the changes I've put in place to support callback methods on the session object.",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "rename reverted as a joke ('just kidding')"
+  },
+  {
+   "culprit": "0950083da2",
+   "culprit_subject": "Only unshift support libs once",
+   "fix": "28df150784",
+   "fix_subject": "Revert \"Only unshift support libs once\"",
+   "fix_date": "2010-04-16",
+   "kind": "revert",
+   "ref": "0950083da24377142418e0a8dd14e883ba7db210",
+   "fix_files": [
+    "lib/express.js"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug"
+  },
+  {
+   "culprit": "f714945bbb",
+   "culprit_subject": "Fixed relative require of Class",
+   "fix": "18dd495d99",
+   "fix_subject": "Revert \"Fixed relative require of Class\"",
+   "fix_date": "2010-04-08",
+   "kind": "revert",
+   "ref": "f714945bbbb8f4b8b9be18f8d6c6c435f2718d85",
+   "fix_files": [
+    "lib/express.js"
+   ],
+   "ms": 41,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "lib/express.js",
+     "lines": [
+      6
+     ],
+     "count": 1,
+     "origin": "c3b8ba4b9a",
+     "subject": "NewClass -> Class, removed js-oo dependency",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug"
+  },
+  {
+   "culprit": "52a08401c7",
+   "culprit_subject": "Fail to test CI",
+   "fix": "ce82a91d14",
+   "fix_subject": "Revert \"Fail to test CI\"",
+   "fix_date": "2010-03-18",
+   "kind": "revert",
+   "ref": "52a08401c7b9f05fb3e780a3951294f455e4e52d",
+   "fix_files": [
+    "spec/spec.plugins.flash.js"
+   ],
+   "ms": 42,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "spec/spec.plugins.flash.js",
+     "lines": [
+      16
+     ],
+     "count": 1,
+     "origin": "9727fac291",
+     "subject": "Added flash support. Closes #64",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "deliberately failing spec to test CI"
+  },
+  {
+   "culprit": "31fdba80d4",
+   "culprit_subject": "Removed sass / haml \"dependencies\"",
+   "fix": "7d33769cd2",
+   "fix_subject": "Revert \"Removed sass / haml \"dependencies\"\"",
+   "fix_date": "2010-03-15",
+   "kind": "revert",
+   "ref": "31fdba80d493599b8a99723c7b1604b9930fefe5",
+   "fix_files": [
+    "seed.yml"
+   ],
+   "ms": 40,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "seed.yml",
+     "lines": [
+      8,
+      9
+     ],
+     "count": 2,
+     "origin": "4f315f9b11",
+     "subject": "Added haml / sass dependencies",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "seed.yml dependency list"
+  }
+ ]
+}

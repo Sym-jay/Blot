@@ -1,0 +1,325 @@
+{
+ "repo": "C:\\Users\\N Jayasankar\\AppData\\Local/Temp/wl/rp/flask",
+ "head": "d086db856be187255b8ec61ef409357393020f32",
+ "max_files": 50,
+ "cap": 40,
+ "candidates": 11,
+ "dropped": {
+  "merge": 1,
+  "culprit is itself a revert (a re-land, not a bug)": 1,
+  "touches no checked file (tests, docs, generated)": 2
+ },
+ "pairs": [
+  {
+   "culprit": "0109e496f6",
+   "culprit_subject": "use uv",
+   "fix": "fe3b215d3a",
+   "fix_subject": "Increase required flit_core version to 3.11",
+   "fix_date": "2025-12-17",
+   "kind": "fixes-trailer",
+   "ref": "0109e496f",
+   "fix_files": [
+    "pyproject.toml"
+   ],
+   "ms": 221,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": ".pre-commit-config.yaml",
+     "lines": [
+      3
+     ],
+     "count": 1,
+     "origin": "165af0a090",
+     "subject": "update dev dependencies",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": ".readthedocs.yaml",
+     "lines": [
+      3
+     ],
+     "count": 1,
+     "origin": "6277036567",
+     "subject": "update read the docs env",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": ".readthedocs.yaml",
+     "lines": [
+      5
+     ],
+     "count": 1,
+     "origin": "87d5f5b9a9",
+     "subject": "update project files (#5457)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": ".readthedocs.yaml",
+     "lines": [
+      8
+     ],
+     "count": 1,
+     "origin": "eea31f29a5",
+     "subject": "use pip-compile to pin dev requirements",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": ".readthedocs.yaml",
+     "lines": [
+      9,
+      13
+     ],
+     "count": 2,
+     "origin": "cdf0b5bc79",
+     "subject": "add readthedocs config",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": ".readthedocs.yaml",
+     "lines": [
+      12
+     ],
+     "count": 1,
+     "origin": "235c52fa10",
+     "subject": "fix rtd build",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": ".readthedocs.yaml",
+     "lines": [
+      14
+     ],
+     "count": 1,
+     "origin": "8d9501598f",
+     "subject": "use rtd to build docs for prs",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "pyproject.toml",
+     "lines": [
+      6
+     ],
+     "count": 1,
+     "origin": "87d5f5b9a9",
+     "subject": "update project files (#5457)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "pyproject.toml",
+     "lines": [
+      24,
+      26,
+      29
+     ],
+     "count": 3,
+     "origin": "8f37c82f61",
+     "subject": "update min dependencies",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "pyproject.toml",
+     "lines": [
+      25
+     ],
+     "count": 1,
+     "origin": "79ebf6c39c",
+     "subject": "update minimum requirements",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "pyproject.toml",
+     "lines": [
+      28
+     ],
+     "count": 1,
+     "origin": "470e2b8d17",
+     "subject": "update min blinker version",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "pyproject.toml",
+     "lines": [
+      35
+     ],
+     "count": 1,
+     "origin": "6d6d986fc5",
+     "subject": "switch to pyproject.toml",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "pyproject.toml",
+     "lines": [
+      57,
+      60
+     ],
+     "count": 2,
+     "origin": "f38f3a745a",
+     "subject": "switch to flit build backend",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "pyproject.toml",
+     "lines": [
+      82,
+      98
+     ],
+     "count": 2,
+     "origin": "e13373f838",
+     "subject": "enable secret key rotation",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "build config rewrite (uv); the flit_core minimum it needed was new metadata, no fix-added line involved"
+  },
+  {
+   "culprit": "e6178fe489",
+   "culprit_subject": "Handle different sep across os",
+   "fix": "7ba35c4d4f",
+   "fix_subject": "Restore support for using pathlib.Path for static_folder.",
+   "fix_date": "2020-04-20",
+   "kind": "broken",
+   "ref": "e6178fe489b7828acc2bb8fd4b56a70b11ab6c6a",
+   "fix_files": [
+    "src/flask/helpers.py"
+   ],
+   "ms": 47,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "src/flask/helpers.py",
+     "lines": [
+      1016
+     ],
+     "count": 1,
+     "origin": "d4076cf07c",
+     "subject": "strip the ending slash for static_url_path",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-gap",
+   "note": "classification: the changed line came from d4076cf 'strip the ending slash for static_url_path', a real fix with no fix word; the bug itself was in the new rstrip() on a Path"
+  },
+  {
+   "culprit": "a22d143f96",
+   "culprit_subject": "Add `python_requires` metadata for PyPI",
+   "fix": "78b56dbf2c",
+   "fix_subject": "Revert \"Add `python_requires` metadata for PyPI\"",
+   "fix_date": "2018-04-27",
+   "kind": "revert",
+   "ref": "a22d143f96ee3c7d14887e871b34a84683835a3f",
+   "fix_files": [
+    "setup.py"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug; python_requires was re-added later (#2721)"
+  },
+  {
+   "culprit": "b7f6ff4f0b",
+   "culprit_subject": "Close tag on js examples.",
+   "fix": "64ac1b0d36",
+   "fix_subject": "Revert \"Close tag on js examples.\"",
+   "fix_date": "2018-04-21",
+   "kind": "revert",
+   "ref": "b7f6ff4f0b74076f21fa01013e7fb6e6194f578d",
+   "fix_files": [
+    "examples/javascript/js_example/templates/base.html"
+   ],
+   "ms": 41,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "examples/javascript/js_example/templates/base.html",
+     "lines": [
+      15
+     ],
+     "count": 1,
+     "origin": "fce1885f76",
+     "subject": "add javascript ajax example",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "example template; reverted with no stated bug"
+  },
+  {
+   "culprit": "0e6cab3576",
+   "culprit_subject": "Rewrite test_jsonify_aware_datetimes without pytz",
+   "fix": "eb9618347c",
+   "fix_subject": "Use pytz again for tests",
+   "fix_date": "2017-06-14",
+   "kind": "revert",
+   "ref": "0e6cab357690614791ab4ca0da0ac65dbb803041",
+   "fix_files": [
+    "tox.ini"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "test rewrite used py3-only datetime.timezone; the checked part is one tox.ini dependency line, not from a fix"
+  },
+  {
+   "culprit": "1d4448abe3",
+   "culprit_subject": "Handle BaseExceptions (#2222)",
+   "fix": "c935eaceaf",
+   "fix_subject": "Revert \"Handle BaseExceptions (#2222)\"",
+   "fix_date": "2017-03-31",
+   "kind": "revert",
+   "ref": "1d4448abe335741c61b3c8c5f99e1607a13f7e3d",
+   "fix_files": [
+    "CHANGES",
+    "flask/app.py"
+   ],
+   "ms": 1,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted the same day with no stated bug; pure addition"
+  },
+  {
+   "culprit": "fb6dee3639",
+   "culprit_subject": "update README to markdown",
+   "fix": "b89af66346",
+   "fix_subject": "Revert \"update README to markdown\"",
+   "fix_date": "2013-05-14",
+   "kind": "revert",
+   "ref": "fb6dee3639b5fad1800472cb5258d2603408e732",
+   "fix_files": [
+    "README"
+   ],
+   "ms": 0,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "README format change"
+  }
+ ]
+}

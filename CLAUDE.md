@@ -15,7 +15,9 @@ always changes with another (`forgot-related-file`). Mascot: Sora the slime. Own
   - `fixmap.py` (`blot map`), `mcp.py` (stdio MCP server, both protocol eras; `install-mcp` in `hooks.py`)
   - `guard.py` (Claude Code hook; installer in `hooks.py`), `why.py`, `github.py` (`index --github` via `gh api graphql`), `bench.py` (cases + `--replay N`)
 - `bench/cases.json` scripted real-world cases (33/33); `bench/labels/` hand verdicts for every replay
-  warning on the 5 reference repos; `bench/RESULTS.md` replay numbers and precision
+  warning on the 5 reference repos; `bench/RESULTS.md` replay numbers, precision and recall
+- `bench/regressions.py` (collect / run / report) + `bench/regressions/<repo>.json`: recall on real
+  regressions (culprit commits named by a later fix), with hand judgements per pair
 - `action.yml` GitHub Action; `.github/workflows/blot.yml` runs it on Blot's own PRs
 - `assets/sora/build_sprites.py` and `assets/demo/make_demo.py` regenerate the mascot and demo GIF
 - `docs/PRD.md` roadmap; `docs/PYPI.md` is the PyPI page (no relative images there)
@@ -64,6 +66,13 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
   Throwaway test folder: `Documents\flask-guard-test` (guard hook + `.mcp.json`).
 - `blot map` takes ~1.5 s on Flask app.py. `trace_lines(whole_file=True)` drops `-C` from the first blame so
   map and why agree; checks still use the old path.
+- Recall (2026-11-25, first measurement, 0.7.1 checks): 137 culprit/fix pairs (newest 40 per repo for
+  Django/React), 71 real bugs; 11 warned on target = **15% raw, 11/25 (44%) within Blot's model**.
+  Django 10/39, Express 1/8, Flask/requests/React 0. All 6 in-model misses are classification gaps
+  (fixes without fix words: "loosen ...", "Make sure ...", "Closes #632", Django `Fixed #N -- Changed`
+  at severity 1); none came from tracing or the matcher. 46 misses are outside the model (new code,
+  feature lines, build/deps). Re-run with `bench/regressions.py run` after any classify/check change.
+  Judging rule: a revert is a bug only if a message/PR/changelog/ticket says what broke.
 - Precision (2026-11-21, after #45): 69/124 useful (55.6%); Django 1.43 / 10 commits (over the ≤ 1
   target), others ≤ 0.62.
   `forgot-related-file` has 0 useful warnings in 45 labelled; candidate to become opt-in.

@@ -187,6 +187,106 @@ Two narrower leads came out of this, both unmeasured: let the refactor hop match
 (Black's trailing commas, as in `025589ee`), and follow renamed attributes (`self.session` →
 `self._session`).
 
+## Recall: real regressions (measured 2026-11-25)
+
+Precision asks "when Blot warns, is it worth reading?". Recall asks the other half: **of the commits
+that later turned out to cause a bug, how many did Blot warn on when they were committed?** This is
+the first time it has been measured on real history rather than scripted cases.
+
+**Pairs.** [`regressions.py`](regressions.py) reads each reference repo's whole history (at the
+labelled heads above) for fix commits that name their culprit by sha: `This reverts commit <sha>`,
+Django's `Regression in <sha>.`, "regression introduced by / caused by / broken in <sha>",
+`Fixes: <sha>`, and React's `Reverts facebook/react#N` / "regression from #N" (mapped to the one
+commit whose subject ends in `(#N)`). From 1,067 references:
+
+| Dropped | Count |
+|---|---|
+| older than the 40 newest pairs per repo (Django and React only) | 614 |
+| culprit already named by an earlier fix | 118 |
+| touches no file Blot checks (tests, docs, generated) | 88 |
+| sha not found, or not an ancestor of the fix | 45 |
+| more than 50 files (the replay's `--max-files`) | 25 |
+| culprit is itself a revert (a re-land, not a bug) | 19 |
+| merge commit | 16 |
+| PR number not mapped to exactly one commit | 5 |
+| **kept** | **137** |
+
+**Replay.** Each culprit is checked at its parent with only its ancestors visible, as
+`blot bench --replay` does: `_ReplayStore` hides fixes that weren't ancestors, and co-change counts
+come from the culprit's own ancestors. Blot's checks were not changed.
+
+**Judgement.** Every pair was judged by hand (notes in [`regressions/`](regressions/)):
+
+- `bug`: did the culprit really cause a bug? A revert counts only if the message, PR, changelog
+  or ticket says what broke. 66 of the 137 were reverted for other reasons (wrong branch, flag
+  rollouts, design changes, "just kidding"), mostly in requests and React. They are left out.
+- `hit-on-target`: Blot warned, and on the code the later fix was about. `hit-elsewhere`: it
+  warned, but about something else. To help decide, each warning records `near_fix`: whether
+  the fix changed what the culprit wrote in that hunk.
+- `miss-gap`: no warning, but the culprit changed a line from a real earlier fix, and a warning
+  there would have been on target. `miss-outside`: the bug is outside Blot's model (new code, or
+  lines that came from features).
+
+| Repo | Pairs | Real bugs | Warned | On target | Recall, raw | Within Blot's model | Recall within model |
+|---|---|---|---|---|---|---|---|
+| pallets/flask | 7 | 3 | 0 | 0 | 0/3 | 1 | 0/1 |
+| psf/requests | 31 | 4 | 0 | 0 | 0/4 | 2 | 0/2 |
+| expressjs/express | 19 | 8 | 1 | 1 | 1/8 (12%) | 2 | 1/2 |
+| django/django | 40 | 39 | 17 | 10 | 10/39 (26%) | 19 | 10/19 (53%) |
+| facebook/react | 40 | 17 | 1 | 0 | 0/17 | 1 | 0/1 |
+| **All** | 137 | **71** | 19 | **11** | **11/71 (15%)** | 25 | **11/25 (44%)** |
+
+"Within Blot's model" = hits + `miss-gap`. Raw recall counts only on-target hits. Counting every
+warning, 19/71 (27%) of culprits got one.
+
+**What it means.** Blot catches regressions of one kind: a change that undoes part of an earlier,
+recognisable fix. In Django, where every fix says `Fixed #N --` and regressions often rework
+recent fixes, 10 of 39 regressions were flagged on the right code. Some of them:
+
+- `0246f4788` deprecated `constant_time_compare()` and replaced its calls added by fixes #34384
+  and #32800. The change broke mixed-type callers (#36572, a release blocker) and was reverted.
+- `7d9aab8da` moved the `_prepare_related_fields_for_save()` call from fix #29497. The fix for
+  #37234 moved it back.
+- `821619aa8` simplified away the `hints=` plumbing from fix #13724. The regression (#37300) lost
+  instance hints on prefetch querysets.
+- Express `2bba69f63` removed the default OPTIONS response from fix 9c87eed. Issue #1690
+  ("Default OPTIONS Not Functioning") followed, and the change was reverted.
+
+Of the 8 `hit-elsewhere` warnings, 6 cite a real fix in another file or function. In the other 2,
+a generic re-added line (`for field in fields:`) happened to sit in the code the fix changed, but
+the cited fix had nothing to do with it.
+
+**Why the rest were missed** (52 real-bug misses):
+
+| Reason | Misses |
+|---|---|
+| outside the model: changed lines came from features or other non-fix commits | 23 |
+| outside the model: the bug is in new code (pure additions, new functions or checks) | 18 |
+| **classification: the culprit changed lines from a real fix that Blot didn't recognise as one** | **6** |
+| outside the model: build, dependency or CI breakage (`pyproject.toml`, `package.json`, `tox.ini`) | 5 |
+
+All 6 in-model misses are classification gaps, and each fix lacks a fix word:
+requests `b149be5` "loosen URL handling for non-native URL schemes", requests `641f461` "Make sure
+proxies have their scheme attached.", Express `3afbcd0` "JSON and JSONP default to UTF-8 … Closes
+#632", Flask `d4076cf` "strip the ending slash for static_url_path", Django `44dd91e` "Fixed #4015
+-- Changed login() and logout() …" (severity 1: "Changed"), and Django `857b104` "Fixed #34619 --
+Associated FilteredSelectMultiple elements to their label". No miss was caused by tracing or the
+matcher. The Black reformat `9c19aff7` stopped tracing on 5 lines, but each of those culprits was
+caught through another line.
+
+React is 0/17. Its regressions were in new code or in lines from feature commits, and most
+reverts there are flag rollouts, which have no bug to catch.
+
+Caveats: the newest 40 pairs per repo for Django and React, so fixes from 2025-08 on (Django)
+and 2020-08 on (React); a single judge; reverts without a stated reason count as "not a bug", which
+may undercount real regressions in requests and React.
+
+```bash
+python bench/regressions.py collect --repo <clone> --out bench/regressions/<owner>-<repo>.json  # finds pairs, keeps judgements
+python bench/regressions.py run --repo <clone> --file bench/regressions/<owner>-<repo>.json      # replays culprits (Django ~2.5 min)
+python bench/regressions.py report bench/regressions/*.json
+```
+
 ## Reproduce
 
 ```bash

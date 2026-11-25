@@ -1,0 +1,3808 @@
+{
+ "repo": "C:\\Users\\N Jayasankar\\AppData\\Local/Temp/wl/rp/django",
+ "head": "79502d08405dbf24efa39e8731320f31035b9e9c",
+ "max_files": 50,
+ "cap": 40,
+ "candidates": 800,
+ "dropped": {
+  "touches no checked file (tests, docs, generated)": 69,
+  "pr not mapped to exactly one commit": 3,
+  "more than 50 files": 24,
+  "merge": 3,
+  "culprit already named by an earlier fix": 116,
+  "sha not found or not an ancestor of the fix": 7,
+  "culprit is itself a revert (a re-land, not a bug)": 1,
+  "older than the newest 40": 537
+ },
+ "pairs": [
+  {
+   "culprit": "7142667340",
+   "culprit_subject": "Replaced yaml serializer workaround to preserve dict order with PyYAML's sort_keys=False.",
+   "fix": "a269574f1b",
+   "fix_subject": "Fixed #37405 -- Fixed crash if sort_keys option is used with YAML serializer.",
+   "fix_date": "2026-10-06",
+   "kind": "regression",
+   "ref": "7142667340f78403cbbcaa8f33703c494282b7b7",
+   "fix_files": [
+    "django/core/serializers/pyyaml.py"
+   ],
+   "ms": 387,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/core/serializers/pyyaml.py",
+     "line": 62,
+     "evidence": [
+      "e4e9645 \"Fixed #10240 -- Restored YAML serialization with Decimal objects that broke with r9823. Thanks Alex Gaynor for the report.\" (2009-02-12, fixes #10240)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/core/serializers/pyyaml.py",
+     "lines": [
+      39
+     ],
+     "count": 1,
+     "origin": "24b82cd201",
+     "subject": "Fixed #30159 -- Removed unneeded use of OrderedDict.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/core/serializers/pyyaml.py",
+     "lines": [
+      62
+     ],
+     "count": 1,
+     "origin": "e4e964510c",
+     "subject": "Fixed #10240 -- Restored YAML serialization with Decimal objects that broke with r9823. Thanks Alex Gaynor for the report.",
+     "severity": 2,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned on end_serialization's yaml.dump call from fix #10240; the sort_keys crash fix rewrote that call"
+  },
+  {
+   "culprit": "bdbda29c3e",
+   "culprit_subject": "Fixed #29303 -- Avoided mutating original view in non_atomic_requests().",
+   "fix": "93d7e82b6a",
+   "fix_subject": "Fixed #37382, Refs #29303 -- Made @non_atomic_requests recognize async views.",
+   "fix_date": "2026-10-02",
+   "kind": "regression",
+   "ref": "bdbda29c3e126754c3ae04ceb5c5d35d49aae01c",
+   "fix_files": [
+    "django/db/transaction.py"
+   ],
+   "ms": 319,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/db/transaction.py",
+     "lines": [
+      340
+     ],
+     "count": 1,
+     "origin": "6633eeb886",
+     "subject": "Changed API to disable ATOMIC_REQUESTS per view.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/db/transaction.py",
+     "lines": [
+      342
+     ],
+     "count": 1,
+     "origin": "b2aad7b836",
+     "subject": "Replaced set([foo, ...]) by {foo, ...} literals. Refs PR 3282.",
+     "severity": 0,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "the rewritten decorator lines came from a feature (per-view ATOMIC_REQUESTS API); async views were never handled"
+  },
+  {
+   "culprit": "9b8e4c6d7d",
+   "culprit_subject": "Refs #36689 -- Serialized JSONIn rhs parameters wrapped in Value expressions.",
+   "fix": "fabce94374",
+   "fix_subject": "Fixed #37377 -- Fixed JSONField __in crash/wrong result for Value() primitives.",
+   "fix_date": "2026-09-29",
+   "kind": "regression",
+   "ref": "9b8e4c6d7d47f7b2e96817ba334e9fd53c10a0df",
+   "fix_files": [
+    "django/db/models/fields/json.py"
+   ],
+   "ms": 1106,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/db/models/fields/json.py",
+     "line": 437,
+     "evidence": [
+      "66fed37 \"Fixed #36689 -- Fixed top-level JSONField __in lookup failures on MySQL and Oracle.\" (2025-10-30, fixes #36689)"
+     ],
+     "near_fix": "fix-touched-file"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/db/models/fields/json.py",
+     "lines": [
+      433,
+      434
+     ],
+     "count": 2,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/models/fields/json.py",
+     "lines": [
+      437
+     ],
+     "count": 1,
+     "origin": "66fed37ecb",
+     "subject": "Fixed #36689 -- Fixed top-level JSONField __in lookup failures on MySQL and Oracle.",
+     "severity": 2,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned in JSONIn.process_rhs on lines from fix #36689; the follow-up fix #37377 changed the same Value() rhs handling"
+  },
+  {
+   "culprit": "6025eab3c5",
+   "culprit_subject": "Fixed #36806 -- Added system check for null kwarg in GeneratedField.",
+   "fix": "fb32a564cc",
+   "fix_subject": "Fixed #37348 -- Reverted \"Fixed #36806 -- Added system check for null kwarg in GeneratedField.\".",
+   "fix_date": "2026-09-17",
+   "kind": "revert",
+   "ref": "6025eab3c509b4de922117e16866bbfe0ee99aa6",
+   "fix_files": [
+    "django/db/models/fields/generated.py"
+   ],
+   "ms": 119,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new system check (pure addition) that broke valid models; reverted in 6.1.2"
+  },
+  {
+   "culprit": "1a8fd5cf75",
+   "culprit_subject": "Fixed #36727 -- Deprecated Field.get_placeholder in favor of get_placeholder_sql.",
+   "fix": "08e4c0d8e7",
+   "fix_subject": "Fixed #37322 -- Avoided transforms on spatial fields with srid=None.",
+   "fix_date": "2026-09-04",
+   "kind": "regression",
+   "ref": "1a8fd5cf75bf855852f6bc2f75c3da9f7b145669",
+   "fix_files": [
+    "django/contrib/gis/db/backends/base/operations.py",
+    "django/contrib/gis/db/backends/postgis/operations.py"
+   ],
+   "ms": 9624,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/gis/db/backends/base/operations.py",
+     "line": 126,
+     "evidence": [
+      "e7afef1 \"Fixed #26788 -- Fixed QuerySet.update() crash when updating a geometry to another one.\" (2017-04-10, fixes #26788)"
+     ],
+     "near_fix": "other"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/gis/db/backends/oracle/operations.py",
+     "line": 210,
+     "evidence": [
+      "e7afef1 \"Fixed #26788 -- Fixed QuerySet.update() crash when updating a geometry to another one.\" (2017-04-10, fixes #26788)"
+     ],
+     "near_fix": "other"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/gis/db/backends/postgis/operations.py",
+     "line": 315,
+     "evidence": [
+      "e7afef1 \"Fixed #26788 -- Fixed QuerySet.update() crash when updating a geometry to another one.\" (2017-04-10, fixes #26788)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/postgres/fields/ranges.py",
+     "line": 88,
+     "evidence": [
+      "e0ae136 \"Fixed #33905 -- Fixed CheckConstraint() validation on range fields.\" (2022-08-09, fixes #33905)"
+     ],
+     "near_fix": "other"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/db/models/sql/compiler.py",
+     "line": 1693,
+     "evidence": [
+      "2638b75 \"Refs #35936 -- Avoided field placeholder lookup for each value inserted.\" (2024-11-16, fixes #35936)"
+     ],
+     "near_fix": "other"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/contrib/gis/db/backends/base/operations.py",
+     "lines": [
+      118
+     ],
+     "count": 1,
+     "origin": "f61256da3a",
+     "subject": "Renamed qn to compiler",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/gis/db/backends/base/operations.py",
+     "lines": [
+      126,
+      132,
+      135
+     ],
+     "count": 3,
+     "origin": "e7afef13f5",
+     "subject": "Fixed #26788 -- Fixed QuerySet.update() crash when updating a geometry to another one.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/gis/db/backends/base/operations.py",
+     "lines": [
+      131,
+      137,
+      138,
+      139,
+      144
+     ],
+     "count": 6,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/gis/db/backends/oracle/operations.py",
+     "lines": [
+      207
+     ],
+     "count": 1,
+     "origin": "f61256da3a",
+     "subject": "Renamed qn to compiler",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/gis/db/backends/oracle/operations.py",
+     "lines": [
+      209
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/gis/db/backends/oracle/operations.py",
+     "lines": [
+      210
+     ],
+     "count": 1,
+     "origin": "e7afef13f5",
+     "subject": "Fixed #26788 -- Fixed QuerySet.update() crash when updating a geometry to another one.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/gis/db/backends/postgis/operations.py",
+     "lines": [
+      307
+     ],
+     "count": 1,
+     "origin": "f61256da3a",
+     "subject": "Renamed qn to compiler",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/gis/db/backends/postgis/operations.py",
+     "lines": [
+      315,
+      319
+     ],
+     "count": 2,
+     "origin": "e7afef13f5",
+     "subject": "Fixed #26788 -- Fixed QuerySet.update() crash when updating a geometry to another one.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/gis/db/backends/postgis/operations.py",
+     "lines": [
+      316,
+      318,
+      330,
+      332
+     ],
+     "count": 4,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/gis/db/backends/postgis/operations.py",
+     "lines": [
+      334
+     ],
+     "count": 1,
+     "origin": "ff60c5f9de",
+     "subject": "Fixed #1142 -- Added multiple database support.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/gis/db/models/fields.py",
+     "lines": [
+      143
+     ],
+     "count": 1,
+     "origin": "f61256da3a",
+     "subject": "Renamed qn to compiler",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/gis/db/models/lookups.py",
+     "lines": [
+      65,
+      70
+     ],
+     "count": 2,
+     "origin": "6ebe3a95ea",
+     "subject": "Fixed #28437 -- Added support for complex geometry expressions in GIS lookups.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/gis/db/models/lookups.py",
+     "lines": [
+      66
+     ],
+     "count": 1,
+     "origin": "d6eaf7c018",
+     "subject": "Refs #23919 -- Replaced super(ClassName, self) with super().",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/gis/db/models/lookups.py",
+     "lines": [
+      67,
+      68
+     ],
+     "count": 2,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/postgres/fields/array.py",
+     "lines": [
+      128
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/postgres/fields/ranges.py",
+     "lines": [
+      88
+     ],
+     "count": 1,
+     "origin": "e0ae1363ec",
+     "subject": "Fixed #33905 -- Fixed CheckConstraint() validation on range fields.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/db/backends/base/operations.py",
+     "lines": [
+      737
+     ],
+     "count": 1,
+     "origin": "204e00c0c5",
+     "subject": "Fixed #26140 -- Suppressed MySQL warning when inserting binary content",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/backends/mysql/operations.py",
+     "lines": [
+      309
+     ],
+     "count": 1,
+     "origin": "204e00c0c5",
+     "subject": "Fixed #26140 -- Suppressed MySQL warning when inserting binary content",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/backends/mysql/operations.py",
+     "lines": [
+      311
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/backends/postgresql/compiler.py",
+     "lines": [
+      43
+     ],
+     "count": 1,
+     "origin": "5834643f43",
+     "subject": "Fixed #36748 -- Filtered non-standard placeholders from UNNEST queries.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/expressions.py",
+     "lines": [
+      1180
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/models/expressions.py",
+     "lines": [
+      1181
+     ],
+     "count": 1,
+     "origin": "504ce3914f",
+     "subject": "Fixed #28394 -- Allowed setting BaseExpression.output_field (renamed from _output_field).",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/models/sql/compiler.py",
+     "lines": [
+      1693,
+      1708,
+      1711,
+      1780,
+      1783
+     ],
+     "count": 6,
+     "origin": "2638b75554",
+     "subject": "Refs #35936 -- Avoided field placeholder lookup for each value inserted.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/sql/compiler.py",
+     "lines": [
+      1697
+     ],
+     "count": 1,
+     "origin": "60e52a047e",
+     "subject": "Refs #27656 -- Updated django.db docstring verbs according to PEP 257.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/sql/compiler.py",
+     "lines": [
+      2082,
+      2085,
+      2087,
+      2089,
+      2092
+     ],
+     "count": 6,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/models/sql/compiler.py",
+     "lines": [
+      2083
+     ],
+     "count": 1,
+     "origin": "f59fd15c49",
+     "subject": "Fixed #14030 -- Allowed annotations to accept all expressions",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/sql/compiler.py",
+     "lines": [
+      2086,
+      2091
+     ],
+     "count": 2,
+     "origin": "ff60c5f9de",
+     "subject": "Fixed #1142 -- Added multiple database support.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned on the spatial placeholder/ST_Transform code from fix #26788 (postgis and base operations); the srid=None fix changed that placeholder logic. Two of five warnings were in other files (ranges.py, compiler.py)"
+  },
+  {
+   "culprit": "7b54ddd5e6",
+   "culprit_subject": "Refs #36025 -- Made get_prep_lookup() pass output_field when wrapping direct values in Value.",
+   "fix": "0751d5fed1",
+   "fix_subject": "Fixed #37311 -- Prevented consumption of rhs iterators in annotation lookups.",
+   "fix_date": "2026-09-01",
+   "kind": "regression",
+   "ref": "7b54ddd5e64c96c641b70bb5f0e958a9e2035fb2",
+   "fix_files": [
+    "django/db/models/lookups.py"
+   ],
+   "ms": 1040,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/db/models/lookups.py",
+     "line": 290,
+     "evidence": [
+      "089deb8 \"Fixed #36025 -- Fixed re-aliasing of iterable (in/range) lookups rhs.\" (2024-12-22, fixes #36025, #22288, #27021)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/db/models/lookups.py",
+     "lines": [
+      290,
+      296,
+      304,
+      310,
+      311
+     ],
+     "count": 7,
+     "origin": "089deb82b9",
+     "subject": "Fixed #36025 -- Fixed re-aliasing of iterable (in/range) lookups rhs.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/lookups.py",
+     "lines": [
+      293
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned on get_prep_lookup's iterable rhs handling from fix #36025; the regression consumed rhs iterators right there"
+  },
+  {
+   "culprit": "821619aa87",
+   "culprit_subject": "Refs #28586 -- Simplified related descriptor get_queryset() methods.",
+   "fix": "60a17fccf4",
+   "fix_subject": "Fixed #37300 -- Preserved parent instance hints on custom Prefetch querysets.",
+   "fix_date": "2026-08-26",
+   "kind": "regression",
+   "ref": "821619aa8771ef211c4c4922001efdf914201ca3",
+   "fix_files": [
+    "django/db/models/fields/related_descriptors.py"
+   ],
+   "ms": 470,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/db/models/fields/related_descriptors.py",
+     "line": 169,
+     "evidence": [
+      "9595183 \"Fixed #13724: Corrected routing of write queries involving managers.\" (2013-09-30, fixes #13724)",
+      "traced past refactor 005c9fc \"Fixed #22341 -- Split django.db.models.fields.related.\""
+     ],
+     "near_fix": "other"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/db/models/fields/related_descriptors.py",
+     "lines": [
+      169,
+      459
+     ],
+     "count": 2,
+     "origin": "9595183d03",
+     "subject": "Fixed #13724: Corrected routing of write queries involving managers.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/fields/related_descriptors.py",
+     "lines": [
+      170,
+      460
+     ],
+     "count": 2,
+     "origin": "631f4ab061",
+     "subject": "Removed Manager.use_for_related_fields and Meta.manager_inheritance_from_future.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/fields/related_descriptors.py",
+     "lines": [
+      179,
+      469
+     ],
+     "count": 2,
+     "origin": "f51c1f5900",
+     "subject": "Fixed #17001 -- Custom querysets for prefetch_related.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned on get_queryset's db_manager(hints=hints) from fix #13724 (routing by instance hints); the regression lost instance hints on prefetch querysets and the fix re-added _add_hints() 13 lines below"
+  },
+  {
+   "culprit": "5d911f2d2f",
+   "culprit_subject": "Fixed #35738 -- Deprecated double-dot variable lookups.",
+   "fix": "b5388a3a80",
+   "fix_subject": "Fixed #37257, Refs #35738 -- Prevented double-dot deprecation warnings for template literals.",
+   "fix_date": "2026-08-08",
+   "kind": "regression",
+   "ref": "5d911f2d2fecc703be91b2b9b28acc59d34b35f3",
+   "fix_files": [
+    "django/template/base.py"
+   ],
+   "ms": 886,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new deprecation warning (pure addition) misfired on literals"
+  },
+  {
+   "culprit": "8096b52510",
+   "culprit_subject": "Fixed #37085 -- Added support for object-based form media stylesheet assets.",
+   "fix": "99d56e5cf1",
+   "fix_subject": "Fixed #37262 -- Restored rendering of html-safe strings in form media.",
+   "fix_date": "2026-08-08",
+   "kind": "regression",
+   "ref": "8096b5251090bf7539c59956e398b027c7525529",
+   "fix_files": [
+    "django/forms/widgets.py"
+   ],
+   "ms": 921,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/forms/widgets.py",
+     "lines": [
+      193
+     ],
+     "count": 1,
+     "origin": "4c76ffc2d6",
+     "subject": "Fixed #29490 -- Added support for object-based Media CSS and JS paths.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/forms/widgets.py",
+     "lines": [
+      194,
+      197
+     ],
+     "count": 2,
+     "origin": "5686ce4195",
+     "subject": "Fixed #36784 -- Added csp_nonce_attr template tag for CSP nonce inclusion.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/forms/widgets.py",
+     "lines": [
+      195
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new Media normalization; the changed lines came from the object-based media feature (#29490)"
+  },
+  {
+   "culprit": "0c487aa3a7",
+   "culprit_subject": "Fixed #21961 -- Added support for database-level delete options for ForeignKey.",
+   "fix": "07d4f69c94",
+   "fix_subject": "Fixed #37260 -- Made alterations between Python on_delete options noops.",
+   "fix_date": "2026-08-08",
+   "kind": "regression",
+   "ref": "0c487aa3a7b2417481bf48c1e5355c855873e210",
+   "fix_files": [
+    "django/db/models/fields/related.py"
+   ],
+   "ms": 8546,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/db/models/deletion.py",
+     "line": 319,
+     "evidence": [
+      "0701bb8 \"Fixed #33928 -- Avoided unnecessary queries when cascade updating.\" (2022-08-17, fixes #33928, #18676)"
+     ],
+     "near_fix": "other"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/contrib/admin/utils.py",
+     "lines": [
+      187
+     ],
+     "count": 1,
+     "origin": "616b30227d",
+     "subject": "Fixed #7539, #13067 -- Added on_delete argument to ForeignKey to control cascade behavior. Also refactored deletion for efficiency and code clarity. Many thanks to Johannes Dollinger and Michael Glassford for extensive work on the patch, and to Alex Gaynor, Russell Keith-Magee, and Jacob Kaplan-Moss for review.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/utils.py",
+     "lines": [
+      188
+     ],
+     "count": 1,
+     "origin": "d6eaf7c018",
+     "subject": "Refs #23919 -- Replaced super(ClassName, self) with super().",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/utils.py",
+     "lines": [
+      245
+     ],
+     "count": 1,
+     "origin": "1cd6e04cd4",
+     "subject": "Fixed #18676 -- Allow fast-path deletion of objects",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/contenttypes/management/commands/remove_stale_contenttypes.py",
+     "lines": [
+      64
+     ],
+     "count": 1,
+     "origin": "fa235004dd",
+     "subject": "Fixed #13251 -- Made pre/post_delete signals dispatch the origin.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/contenttypes/management/commands/remove_stale_contenttypes.py",
+     "lines": [
+      108,
+      109
+     ],
+     "count": 2,
+     "origin": "8db889eaf7",
+     "subject": "Fixed #18682 -- Expanded explanation in stale content type deletion. (#6869)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/backends/base/schema.py",
+     "lines": [
+      124
+     ],
+     "count": 1,
+     "origin": "0123b67f6b",
+     "subject": "Fixed #30060 -- Moved SQL generation for indexes and constraints to SchemaEditor.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/backends/mysql/schema.py",
+     "lines": [
+      17
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/backends/oracle/schema.py",
+     "lines": [
+      23
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/backends/postgresql/schema.py",
+     "lines": [
+      31,
+      32
+     ],
+     "count": 2,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/backends/sqlite3/schema.py",
+     "lines": [
+      16
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/models/deletion.py",
+     "lines": [
+      218
+     ],
+     "count": 1,
+     "origin": "4c599ece57",
+     "subject": "Fixed #28930 -- Simplified code with any() and all().",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/deletion.py",
+     "lines": [
+      319
+     ],
+     "count": 1,
+     "origin": "0701bb8e1f",
+     "subject": "Fixed #33928 -- Avoided unnecessary queries when cascade updating.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/fields/__init__.py",
+     "lines": [
+      159
+     ],
+     "count": 1,
+     "origin": "65effbdb10",
+     "subject": "Fixed #33471 -- Made AlterField operation a noop when changing \"choices\".",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/fields/related.py",
+     "lines": [
+      1050,
+      1052
+     ],
+     "count": 2,
+     "origin": "d818e0c9b2",
+     "subject": "Fixed #16905 -- Added extensible checks (nee validation) framework",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/fields/related.py",
+     "lines": [
+      1055
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-elsewhere",
+   "note": "warned in deletion.py (fix #33928); the regression was on_delete leaving Field.non_db_attrs, fixed in related.py"
+  },
+  {
+   "culprit": "e097e8a12f",
+   "culprit_subject": "Fixed #28586 -- Added model field fetch modes.",
+   "fix": "d992705f9e",
+   "fix_subject": "Fixed #37259 -- Restored support for old-signature Model.from_db() overrides.",
+   "fix_date": "2026-08-08",
+   "kind": "regression",
+   "ref": "e097e8a12f21a4e92594830f1ad1942b31916d0f",
+   "fix_files": [
+    "django/db/models/query.py"
+   ],
+   "ms": 1578,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/contrib/contenttypes/fields.py",
+     "lines": [
+      265
+     ],
+     "count": 1,
+     "origin": "10e3faf191",
+     "subject": "Fixed #19774 -- Deprecated the contenttypes.generic module.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/query_utils.py",
+     "lines": [
+      267
+     ],
+     "count": 1,
+     "origin": "93ffa81bc5",
+     "subject": "Refs #30657 -- Made DeferredAttribute.__init__() to take a field instance instead of a field name.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new from_db() keyword broke old-signature overrides; new code"
+  },
+  {
+   "culprit": "4cecf30395",
+   "culprit_subject": "Fixed #36865 -- Removed casting from exact lookups in admin searches.",
+   "fix": "fe81969e83",
+   "fix_subject": "Fixed #37263 -- Fixed changelist __exact search crashes and over-matching.",
+   "fix_date": "2026-08-08",
+   "kind": "regression",
+   "ref": "4cecf3039586ea738afafb9a28c946bff42c37c1",
+   "fix_files": [
+    "django/contrib/admin/formfields.py",
+    "django/contrib/admin/options.py"
+   ],
+   "ms": 497,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/options.py",
+     "line": 1151,
+     "evidence": [
+      "5fa4cca \"Refs #26001 -- Handled relationship exact lookups in ModelAdmin.search_fields.\" (2024-11-04, fixes #26001)"
+     ],
+     "near_fix": "fix-touched-file"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/options.py",
+     "line": 1186,
+     "evidence": [
+      "f223729 \"Fixed #26001 -- Fixed non-string field exact lookups in ModelAdmin.search_fields.\" (2024-11-01, fixes #26001)"
+     ],
+     "near_fix": "fix-touched-file"
+    },
+    {
+     "check": "readded-bug",
+     "path": "django/contrib/admin/options.py",
+     "line": 1156,
+     "evidence": [
+      "5fa4cca \"Refs #26001 -- Handled relationship exact lookups in ModelAdmin.search_fields.\" (2024-11-04, fixes #26001)"
+     ],
+     "near_fix": "fix-touched-file"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/contrib/admin/options.py",
+     "lines": [
+      1151,
+      1162,
+      1163,
+      1164,
+      1165
+     ],
+     "count": 13,
+     "origin": "5fa4ccab7e",
+     "subject": "Refs #26001 -- Handled relationship exact lookups in ModelAdmin.search_fields.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/options.py",
+     "lines": [
+      1186
+     ],
+     "count": 1,
+     "origin": "f223729f8f",
+     "subject": "Fixed #26001 -- Fixed non-string field exact lookups in ModelAdmin.search_fields.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/options.py",
+     "lines": [
+      1197,
+      1198,
+      1199
+     ],
+     "count": 3,
+     "origin": "9dff316be4",
+     "subject": "Refs #32948, Refs #32946 -- Used Q.create() internally for dynamic Q() objects.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/options.py",
+     "lines": [
+      1205
+     ],
+     "count": 1,
+     "origin": "cd74aad90e",
+     "subject": "Refs #32682 -- Renamed use_distinct variable to may_have_duplicates.",
+     "severity": 1,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned on the exact-lookup search casting from fixes #26001 (removed-fix twice, readded-bug once); removing it caused the __exact search crashes the fix addressed"
+  },
+  {
+   "culprit": "a2348c85fc",
+   "culprit_subject": "Fixed #37139 -- Fixed inlines crash on parent models with db_default on primary key.",
+   "fix": "9465349120",
+   "fix_subject": "Fixed #37238 -- Prevented fallback to python default for a pk with a db_default.",
+   "fix_date": "2026-07-28",
+   "kind": "regression",
+   "ref": "a2348c85fc6c20087935c74cd99340dd4ef2dcdc",
+   "fix_files": [
+    "django/db/models/base.py"
+   ],
+   "ms": 95,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/db/models/base.py",
+     "lines": [
+      713,
+      714
+     ],
+     "count": 2,
+     "origin": "978aae4334",
+     "subject": "Fixed #373 -- Added CompositePrimaryKey.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "changed line came from the CompositePrimaryKey feature"
+  },
+  {
+   "culprit": "7d9aab8da0",
+   "culprit_subject": "Refs #36260 -- Moved _is_pk_set checks into _prepare_for_bulk_create().",
+   "fix": "c9ff757a55",
+   "fix_subject": "Fixed #37234 -- Fixed bulk_create() for late-saved related primary keys.",
+   "fix_date": "2026-07-27",
+   "kind": "regression",
+   "ref": "7d9aab8da0a06787d649762a702e1a518d843a63",
+   "fix_files": [
+    "django/db/models/query.py"
+   ],
+   "ms": 186,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/db/models/query.py",
+     "line": 790,
+     "evidence": [
+      "10f8b82 \"Fixed #29497 -- Fixed loss of assigned parent when saving child with bulk_create() after parent.\" (2020-10-22, fixes #29497)"
+     ],
+     "near_fix": "fix-touched-file"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/db/models/query.py",
+     "lines": [
+      674
+     ],
+     "count": 1,
+     "origin": "5865ff5adc",
+     "subject": "Refs #373 -- Added Model._is_pk_set() abstraction to check if a Model's PK is set.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/query.py",
+     "lines": [
+      790
+     ],
+     "count": 1,
+     "origin": "10f8b82d19",
+     "subject": "Fixed #29497 -- Fixed loss of assigned parent when saving child with bulk_create() after parent.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/query.py",
+     "lines": [
+      792,
+      793
+     ],
+     "count": 2,
+     "origin": "77b4ecbd53",
+     "subject": "Fixed #36260 -- Made bulk_create() work with DB-generated primary keys.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned on the _prepare_related_fields_for_save() call from fix #29497; the culprit moved it after the pk partition and the fix moved it back"
+  },
+  {
+   "culprit": "4b2b4bf0ac",
+   "culprit_subject": "Fixed #36926 -- Made admin use boolean icons for related BooleanFields in list_display.",
+   "fix": "92470ad374",
+   "fix_subject": "Fixed #37230 -- Fixed a crash for second-degree relations in ModelAdmin.list_display.",
+   "fix_date": "2026-07-26",
+   "kind": "regression",
+   "ref": "4b2b4bf0ac2707dc9c4d51cabfa72168eaea95fe",
+   "fix_files": [
+    "AUTHORS",
+    "django/contrib/admin/templatetags/admin_list.py",
+    "django/contrib/admin/utils.py"
+   ],
+   "ms": 44,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new boolean-icon code for related fields (pure addition)"
+  },
+  {
+   "culprit": "78fac1b047",
+   "culprit_subject": "Fixed #36226 -- Accepted str or bytes for password and salt in password hashers.",
+   "fix": "356e5b0f5d",
+   "fix_subject": "Fixed #37184 -- Allowed non-UTF-8 bytes passwords in the PBKDF2 and MD5 password hashers.",
+   "fix_date": "2026-06-25",
+   "kind": "regression",
+   "ref": "78fac1b0473ed8960ecd2a30aca4fa8420d150b8",
+   "fix_files": [
+    "django/contrib/auth/hashers.py"
+   ],
+   "ms": 1116,
+   "findings": [
+    {
+     "check": "readded-bug",
+     "path": "django/contrib/auth/hashers.py",
+     "line": 505,
+     "evidence": [
+      "67b46ba \"Fixed CVE-2016-2513 -- Fixed user enumeration timing attack during login.\" (2016-02-13, fixes CVE-2016-2513)"
+     ],
+     "near_fix": "fix-touched-file"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/contrib/auth/hashers.py",
+     "lines": [
+      255,
+      597
+     ],
+     "count": 2,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/auth/hashers.py",
+     "lines": [
+      399,
+      400,
+      502
+     ],
+     "count": 3,
+     "origin": "16c5a334ff",
+     "subject": "Refs #27795 -- Replaced force_text/bytes() with decode()/encode() in password hashers.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/auth/hashers.py",
+     "lines": [
+      588,
+      589
+     ],
+     "count": 2,
+     "origin": "1783b3cb24",
+     "subject": "Fixed #32275 -- Added scrypt password hasher.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-elsewhere",
+   "note": "readded-bug on the bcrypt hasher's force_bytes lines (CVE-2016-2513 fix); the bug was the force_str(password) added to PBKDF2/MD5"
+  },
+  {
+   "culprit": "087bb9e8f3",
+   "culprit_subject": "Refs #36644 -- Applied default ordering after union().",
+   "fix": "0e1d950fbb",
+   "fix_subject": "Fixed #37097 -- Made Query.clear_ordering() clear ordering on combined queries also.",
+   "fix_date": "2026-05-12",
+   "kind": "regression",
+   "ref": "087bb9e8f3478d53f12b1737af865992af17c5f2",
+   "fix_files": [
+    "django/db/models/sql/query.py"
+   ],
+   "ms": 2,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new default-ordering code after union() (pure addition)"
+  },
+  {
+   "culprit": "2ce5cb0f7a",
+   "culprit_subject": "Fixed #26434 -- Removed faulty clearing of ordering field when missing from explicit grouping.",
+   "fix": "a284a49153",
+   "fix_subject": "Fixed #37047 -- Fixed crash in Query.orderby_issubset_groupby for descending and random order_by strings.",
+   "fix_date": "2026-04-18",
+   "kind": "regression",
+   "ref": "2ce5cb0f7a4618dfdc5f5c10e53e2e9b9543d298",
+   "fix_files": [
+    "django/db/models/sql/query.py"
+   ],
+   "ms": 3252,
+   "findings": [
+    {
+     "check": "readded-bug",
+     "path": "django/db/models/sql/query.py",
+     "line": 2347,
+     "evidence": [
+      "01b9c3d \"Fixed #16715 -- Fixed join promotion logic for nested nullable FKs\" (2012-08-21, fixes #16715)"
+     ],
+     "near_fix": "fix-touched-file"
+    }
+   ],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "hit-elsewhere",
+   "note": "readded-bug matched a generic line from fix #16715 (join promotion) inside the new orderby_issubset_groupby(); the crash fix did change that function, but the cited fix has nothing to do with it"
+  },
+  {
+   "culprit": "31a43c571f",
+   "culprit_subject": "Fixed #36540 -- Updated request.auser() in contrib.auth.alogin() and contrib.auth.alogout().",
+   "fix": "a32c7075cf",
+   "fix_subject": "Fixed #37017 -- Fixed setting or clearing of request.user after alogin/alogout().",
+   "fix_date": "2026-04-01",
+   "kind": "regression",
+   "ref": "31a43c571f4d036827d4fd7a5f615591637dc1be",
+   "fix_files": [
+    "django/contrib/auth/__init__.py"
+   ],
+   "ms": 1236,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/contrib/auth/__init__.py",
+     "lines": [
+      237,
+      272
+     ],
+     "count": 2,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/auth/__init__.py",
+     "lines": [
+      238,
+      275
+     ],
+     "count": 2,
+     "origin": "44dd91ec6d",
+     "subject": "Fixed #4015 -- Changed login() and logout() messages to update request.user if it is relevant. Thanks James Bennett, Vinay Sajip and Gary Wilson.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-gap",
+   "note": "classification: rewrote the request.user update lines from 44dd91e 'Fixed #4015 -- Changed login() and logout() messages to update request.user' (sev 1: 'Changed'); the regression broke exactly that update. Two of the lines also trace only to the Black reformat"
+  },
+  {
+   "culprit": "bc03f1064e",
+   "culprit_subject": "Fixed #34041 -- Added aria-current attribute to admin breadcrumbs.",
+   "fix": "07d6fa5a95",
+   "fix_subject": "Fixed #36948 -- Fixed breadcrumb text overlap at small widths in admin.",
+   "fix_date": "2026-02-25",
+   "kind": "regression",
+   "ref": "bc03f1064e10fa247a46d4e8a98ba9b26aa4790d",
+   "fix_files": [
+    "django/contrib/admin/static/admin/css/base.css"
+   ],
+   "ms": 8465,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/templates/admin/auth/user/change_password.html",
+     "line": 14,
+     "evidence": [
+      "bb64163 \"Fixed #16912 -- Fixed breadcrumb styling in a couple of admin pages, broken since r16857. Thanks Florian Apolloner for the report.\" (2011-09-22, fixes #16912)"
+     ],
+     "near_fix": "other"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/templates/admin/auth/user/change_password.html",
+     "line": 18,
+     "evidence": [
+      "8fdb282 \"Fixed #19331 (again) use the right admin named URL.\" (2012-11-20, fixes #19331)"
+     ],
+     "near_fix": "other"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/templates/admin/change_form.html",
+     "line": 18,
+     "evidence": [
+      "bb64163 \"Fixed #16912 -- Fixed breadcrumb styling in a couple of admin pages, broken since r16857. Thanks Florian Apolloner for the report.\" (2011-09-22, fixes #16912)"
+     ],
+     "near_fix": "other"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/templates/admin/delete_confirmation.html",
+     "line": 17,
+     "evidence": [
+      "a222d6e \"Fixed incorrect URL to object on delete confirmation and history page\" (2012-07-03)"
+     ],
+     "near_fix": "other"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/templates/admin/object_history.html",
+     "line": 5,
+     "evidence": [
+      "853f4d2 \"Fixed #8547 -- Corrected the breadcrumb display in the object_history.html template. Thanks sorl for catching this.\" (2008-08-25, fixes #8547)"
+     ],
+     "near_fix": "other"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/templates/admin/object_history.html",
+     "line": 9,
+     "evidence": [
+      "a222d6e \"Fixed incorrect URL to object on delete confirmation and history page\" (2012-07-03)"
+     ],
+     "near_fix": "other"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/contrib/admin/static/admin/css/base.css",
+     "lines": [
+      757,
+      762
+     ],
+     "count": 2,
+     "origin": "3028e85222",
+     "subject": "Reformatted contrib.admin CSS to use multi-line selector format so changes can be tracked more easily in version control.",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/static/admin/css/base.css",
+     "lines": [
+      765
+     ],
+     "count": 1,
+     "origin": "35901e64b0",
+     "subject": "Fixed #24444 -- Updated contrib.admin to use django-flat-theme",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/css/base.css",
+     "lines": [
+      769
+     ],
+     "count": 1,
+     "origin": "25cccca0a2",
+     "subject": "Fixed #25378 -- Improved tab through experience in admin.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/500.html",
+     "lines": [
+      5
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/500.html",
+     "lines": [
+      6,
+      7
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/app_index.html",
+     "lines": [
+      9
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/app_index.html",
+     "lines": [
+      10
+     ],
+     "count": 1,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/app_index.html",
+     "lines": [
+      12
+     ],
+     "count": 1,
+     "origin": "77c78201b8",
+     "subject": "Fixed #1390 -- Added an app index in the admin interface. Thanks juliae and ext for their work on patches.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/app_index.html",
+     "lines": [
+      13
+     ],
+     "count": 1,
+     "origin": "b80a8357d6",
+     "subject": "Revert \"Changed admin/templates/admin/index.html to make <caption> translatable\"",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/auth/user/change_password.html",
+     "lines": [
+      14
+     ],
+     "count": 1,
+     "origin": "bb641631e5",
+     "subject": "Fixed #16912 -- Fixed breadcrumb styling in a couple of admin pages, broken since r16857. Thanks Florian Apolloner for the report.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/auth/user/change_password.html",
+     "lines": [
+      15
+     ],
+     "count": 1,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/auth/user/change_password.html",
+     "lines": [
+      16
+     ],
+     "count": 1,
+     "origin": "ba60fcbcf7",
+     "subject": "Used application verbose names in the admin.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/auth/user/change_password.html",
+     "lines": [
+      17
+     ],
+     "count": 1,
+     "origin": "752a43e245",
+     "subject": "Reverted [17378] until a public API is available for application labels.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/auth/user/change_password.html",
+     "lines": [
+      18
+     ],
+     "count": 1,
+     "origin": "8fdb28219d",
+     "subject": "Fixed #19331 (again) use the right admin named URL.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/auth/user/change_password.html",
+     "lines": [
+      19
+     ],
+     "count": 1,
+     "origin": "e626716c28",
+     "subject": "Fixed #34429 -- Allowed setting unusable passwords for users in the auth forms.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/base.html",
+     "lines": [
+      75,
+      77
+     ],
+     "count": 2,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/base.html",
+     "lines": [
+      76
+     ],
+     "count": 1,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/change_form.html",
+     "lines": [
+      18
+     ],
+     "count": 1,
+     "origin": "bb641631e5",
+     "subject": "Fixed #16912 -- Fixed breadcrumb styling in a couple of admin pages, broken since r16857. Thanks Florian Apolloner for the report.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/change_form.html",
+     "lines": [
+      19,
+      22
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/change_form.html",
+     "lines": [
+      20
+     ],
+     "count": 1,
+     "origin": "ba60fcbcf7",
+     "subject": "Used application verbose names in the admin.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/change_form.html",
+     "lines": [
+      21
+     ],
+     "count": 1,
+     "origin": "825f0beda8",
+     "subject": "Fixed #8936 -- Added a view permission and a read-only admin.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/change_list.html",
+     "lines": [
+      32
+     ],
+     "count": 1,
+     "origin": "7bc0878922",
+     "subject": "Fixed #8939: added a `list_editable` option to `ModelAdmin`; fields declared `list_editable` may be edited, in bulk, on the changelist page. Thanks, Alex Gaynor.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/change_list.html",
+     "lines": [
+      33
+     ],
+     "count": 1,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/change_list.html",
+     "lines": [
+      34
+     ],
+     "count": 1,
+     "origin": "ba60fcbcf7",
+     "subject": "Used application verbose names in the admin.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/change_list.html",
+     "lines": [
+      35
+     ],
+     "count": 1,
+     "origin": "752a43e245",
+     "subject": "Reverted [17378] until a public API is available for application labels.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/delete_confirmation.html",
+     "lines": [
+      13
+     ],
+     "count": 1,
+     "origin": "f69cf70ed8",
+     "subject": "MERGED MAGIC-REMOVAL BRANCH TO TRUNK. This change is highly backwards-incompatible. Please read http://code.djangoproject.com/wiki/RemovingTheMagic for upgrade instructions.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/delete_confirmation.html",
+     "lines": [
+      14,
+      18
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/delete_confirmation.html",
+     "lines": [
+      15
+     ],
+     "count": 1,
+     "origin": "6e3ca6507c",
+     "subject": "Used app_config.verbose_name instead of app_label|capfirst.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/delete_confirmation.html",
+     "lines": [
+      16
+     ],
+     "count": 1,
+     "origin": "8df7681d0e",
+     "subject": "Removed unneeded escape filter in templates where autoescaping is enabled.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/delete_confirmation.html",
+     "lines": [
+      17
+     ],
+     "count": 1,
+     "origin": "a222d6e800",
+     "subject": "Fixed incorrect URL to object on delete confirmation and history page",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/delete_selected_confirmation.html",
+     "lines": [
+      13
+     ],
+     "count": 1,
+     "origin": "44f3080226",
+     "subject": "Fixed #10505: added support for bulk admin actions, including a globally-available \"delete selected\" action. See the documentation for details.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/delete_selected_confirmation.html",
+     "lines": [
+      14,
+      17
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/delete_selected_confirmation.html",
+     "lines": [
+      15
+     ],
+     "count": 1,
+     "origin": "ba60fcbcf7",
+     "subject": "Used application verbose names in the admin.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/delete_selected_confirmation.html",
+     "lines": [
+      16
+     ],
+     "count": 1,
+     "origin": "752a43e245",
+     "subject": "Reverted [17378] until a public API is available for application labels.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/invalid_setup.html",
+     "lines": [
+      5,
+      7
+     ],
+     "count": 2,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/invalid_setup.html",
+     "lines": [
+      6
+     ],
+     "count": 1,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/object_history.html",
+     "lines": [
+      5
+     ],
+     "count": 1,
+     "origin": "853f4d29b8",
+     "subject": "Fixed #8547 -- Corrected the breadcrumb display in the object_history.html template. Thanks sorl for catching this.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/object_history.html",
+     "lines": [
+      6,
+      10
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/object_history.html",
+     "lines": [
+      7
+     ],
+     "count": 1,
+     "origin": "ba60fcbcf7",
+     "subject": "Used application verbose names in the admin.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/object_history.html",
+     "lines": [
+      8
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/object_history.html",
+     "lines": [
+      9
+     ],
+     "count": 1,
+     "origin": "a222d6e800",
+     "subject": "Fixed incorrect URL to object on delete confirmation and history page",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/logged_out.html",
+     "lines": [
+      4
+     ],
+     "count": 1,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_change_done.html",
+     "lines": [
+      12
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_change_done.html",
+     "lines": [
+      13,
+      14
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_change_form.html",
+     "lines": [
+      15
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_change_form.html",
+     "lines": [
+      16,
+      17
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_reset_complete.html",
+     "lines": [
+      5
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_reset_complete.html",
+     "lines": [
+      6,
+      7
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_reset_confirm.html",
+     "lines": [
+      7
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_reset_confirm.html",
+     "lines": [
+      8,
+      9
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_reset_done.html",
+     "lines": [
+      5
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_reset_done.html",
+     "lines": [
+      6,
+      7
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_reset_form.html",
+     "lines": [
+      7
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/registration/password_reset_form.html",
+     "lines": [
+      8,
+      9
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/bookmarklets.html",
+     "lines": [
+      5
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/bookmarklets.html",
+     "lines": [
+      6,
+      7,
+      8
+     ],
+     "count": 3,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/index.html",
+     "lines": [
+      5
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/index.html",
+     "lines": [
+      6,
+      7
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/missing_docutils.html",
+     "lines": [
+      5
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/missing_docutils.html",
+     "lines": [
+      6,
+      7
+     ],
+     "count": 2,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/model_detail.html",
+     "lines": [
+      13,
+      17
+     ],
+     "count": 2,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/model_detail.html",
+     "lines": [
+      14,
+      15,
+      16
+     ],
+     "count": 3,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/model_index.html",
+     "lines": [
+      7
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/model_index.html",
+     "lines": [
+      8,
+      9,
+      10
+     ],
+     "count": 3,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/template_detail.html",
+     "lines": [
+      5,
+      9
+     ],
+     "count": 2,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/template_detail.html",
+     "lines": [
+      6,
+      7,
+      8
+     ],
+     "count": 3,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/template_filter_index.html",
+     "lines": [
+      6
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/template_filter_index.html",
+     "lines": [
+      7,
+      8,
+      9
+     ],
+     "count": 3,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/template_tag_index.html",
+     "lines": [
+      6
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/template_tag_index.html",
+     "lines": [
+      7,
+      8,
+      9
+     ],
+     "count": 3,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/view_detail.html",
+     "lines": [
+      5,
+      9
+     ],
+     "count": 2,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/view_detail.html",
+     "lines": [
+      6,
+      7,
+      8
+     ],
+     "count": 3,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/view_index.html",
+     "lines": [
+      6
+     ],
+     "count": 1,
+     "origin": "aaf77c1676",
+     "subject": "Converted internal link generation in the admin and admin document generator to use named URLs.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admindocs/templates/admin_doc/view_index.html",
+     "lines": [
+      7,
+      8,
+      9
+     ],
+     "count": 3,
+     "origin": "35d36d9462",
+     "subject": "Refs #30585 -- Updated project templates and tests to use (block)translate tags.",
+     "severity": 1,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-elsewhere",
+   "note": "warned on breadcrumb template lines from old breadcrumb fixes; the visual overlap was fixed in CSS"
+  },
+  {
+   "culprit": "b1ffa9a9d7",
+   "culprit_subject": "Fixed #13883 -- Rendered named choice groups with <optgroup> in FilteredSelectMultiple.",
+   "fix": "380d77ccce",
+   "fix_subject": "Fixed #36921 -- Fixed KeyError in inline form for model not registered with admin.",
+   "fix_date": "2026-02-11",
+   "kind": "regression",
+   "ref": "b1ffa9a9d78b0c2c5ad6ed5a1d84e380d5cfd010",
+   "fix_files": [
+    "django/contrib/admin/options.py"
+   ],
+   "ms": 1795,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/static/admin/js/admin/RelatedObjectLookups.js",
+     "line": 147,
+     "evidence": [
+      "3723f83 \"Fixed #1404 (thanks, Tom Tobin)\" (2006-02-27, fixes #1404)"
+     ],
+     "near_fix": "other"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/contrib/admin/options.py",
+     "lines": [
+      1401
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/static/admin/js/SelectBox.js",
+     "lines": [
+      10,
+      19,
+      60,
+      97,
+      98
+     ],
+     "count": 5,
+     "origin": "dd5320d1d5",
+     "subject": "Added admin media to the Django distribution",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/js/SelectBox.js",
+     "lines": [
+      18
+     ],
+     "count": 1,
+     "origin": "3c5a586ce9",
+     "subject": "Fixed #31542 -- Simplified admin JavaScript with \"for \u2026 of\" statements.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/js/SelectBox.js",
+     "lines": [
+      20
+     ],
+     "count": 1,
+     "origin": "5d37cc703b",
+     "subject": "Fixed #31493 -- Replaced var with const and let keywords in JavaScript.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/static/admin/js/SelectBox.js",
+     "lines": [
+      22
+     ],
+     "count": 1,
+     "origin": "cab3661832",
+     "subject": "Fixed #31027 -- Replaced .getAttribute()/.setAttribute() usage with DOM properties.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/js/SelectBox.js",
+     "lines": [
+      23
+     ],
+     "count": 1,
+     "origin": "ef93fd4683",
+     "subject": "Fixed #31013 -- Removed jQuery usage in SelectBox.js.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/js/SelectBox.js",
+     "lines": [
+      76,
+      88
+     ],
+     "count": 2,
+     "origin": "fb68674ea4",
+     "subject": "Fixed #26561 -- Improved admin's JavaScript SelectBox performance on large lists.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/js/admin/RelatedObjectLookups.js",
+     "lines": [
+      126
+     ],
+     "count": 1,
+     "origin": "07988744b3",
+     "subject": "Fixed #13165 -- Added edit and delete links to admin foreign key widgets.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/js/admin/RelatedObjectLookups.js",
+     "lines": [
+      146
+     ],
+     "count": 1,
+     "origin": "5d37cc703b",
+     "subject": "Fixed #31493 -- Replaced var with const and let keywords in JavaScript.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/static/admin/js/admin/RelatedObjectLookups.js",
+     "lines": [
+      147
+     ],
+     "count": 1,
+     "origin": "3723f83798",
+     "subject": "Fixed #1404 (thanks, Tom Tobin)",
+     "severity": 2,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-elsewhere",
+   "note": "warned in RelatedObjectLookups.js (fix #1404); the KeyError was in admin options.py"
+  },
+  {
+   "culprit": "6ea3319079",
+   "culprit_subject": "Fixed #36511 -- Ensured filters came before table in keyboard navigation in admin changelist.",
+   "fix": "e92d1e3b78",
+   "fix_subject": "Fixed #36850 -- Prevented admin filter sidebar from wrapping below the changelist.",
+   "fix_date": "2026-01-13",
+   "kind": "regression",
+   "ref": "6ea331907996a51842da55c1f8d65eea7b367c7d",
+   "fix_files": [
+    "django/contrib/admin/static/admin/css/changelists.css"
+   ],
+   "ms": 757,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/static/admin/css/changelists.css",
+     "line": 6,
+     "evidence": [
+      "8ee4bb6 \"Fixed #31986 -- Fixed admin filter sidebar scrolling.\" (2020-09-11, fixes #31986)"
+     ],
+     "near_fix": "fix-touched-file"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/static/admin/css/responsive.css",
+     "line": 413,
+     "evidence": [
+      "8ee4bb6 \"Fixed #31986 -- Fixed admin filter sidebar scrolling.\" (2020-09-11, fixes #31986)"
+     ],
+     "near_fix": "other"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/contrib/admin/static/admin/css/changelists.css",
+     "lines": [
+      6,
+      11
+     ],
+     "count": 2,
+     "origin": "8ee4bb6ffc",
+     "subject": "Fixed #31986 -- Fixed admin filter sidebar scrolling.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/css/responsive.css",
+     "lines": [
+      413
+     ],
+     "count": 1,
+     "origin": "8ee4bb6ffc",
+     "subject": "Fixed #31986 -- Fixed admin filter sidebar scrolling.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/css/responsive.css",
+     "lines": [
+      439,
+      440
+     ],
+     "count": 2,
+     "origin": "dc37e8846e",
+     "subject": "Fixed #26818 -- Added responsive CSS for the admin.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned on the changelist flex container from fix #31986 (sidebar scrolling); the fix removed the flex-wrap the culprit added there"
+  },
+  {
+   "culprit": "358fd21c47",
+   "culprit_subject": "Fixed #36143 -- Made max_query_params respect SQLITE_LIMIT_VARIABLE_NUMBER.",
+   "fix": "84bae9c22a",
+   "fix_subject": "Fixed #36818 -- Ensured SQLite connection before accessing max_query_params.",
+   "fix_date": "2025-12-23",
+   "kind": "regression",
+   "ref": "358fd21c47cdf7bda520ce73c5cfd82bba57827b",
+   "fix_files": [
+    "django/db/backends/sqlite3/features.py"
+   ],
+   "ms": 477,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/db/backends/sqlite3/features.py",
+     "lines": [
+      16
+     ],
+     "count": 1,
+     "origin": "f42c7cc87b",
+     "subject": "Refs #21160 -- Replaced DatabaseFeatures.supports_1000_query_parameters by a DatabaseFeatures.max_query_params.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/backends/sqlite3/operations.py",
+     "lines": [
+      34
+     ],
+     "count": 1,
+     "origin": "29132ebdef",
+     "subject": "Fixed #17788 -- Added batch_size argument to qs.bulk_create()",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new max_query_params property read the connection too early; new code"
+  },
+  {
+   "culprit": "4187da258f",
+   "culprit_subject": "Fixed #35892 -- Supported Widget.use_fieldset in admin forms.",
+   "fix": "1eac2659a1",
+   "fix_subject": "Fixed #36807 -- Fixed form field alignment under <fieldset> in the admin.",
+   "fix_date": "2025-12-17",
+   "kind": "regression",
+   "ref": "4187da258fe212d494cb578a0bc2b52c4979ab95",
+   "fix_files": [
+    "django/contrib/admin/static/admin/css/forms.css",
+    "django/contrib/admin/static/admin/css/responsive.css",
+    "django/contrib/admin/templates/admin/auth/user/change_password.html",
+    "django/contrib/admin/templates/admin/includes/fieldset.html"
+   ],
+   "ms": 1555,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/admin/widgets.py",
+     "line": 52,
+     "evidence": [
+      "caf80cb \"Fixed #34645 -- Restored alignment for admin date/time timezone warnings.\" (2023-06-09, fixes #34645)"
+     ],
+     "near_fix": "other"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/contrib/admin/static/admin/js/SelectFilter2.js",
+     "lines": [
+      18,
+      45,
+      50,
+      105,
+      110
+     ],
+     "count": 6,
+     "origin": "857b1048d5",
+     "subject": "Fixed #34619 -- Associated FilteredSelectMultiple elements to their label and help text.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/auth/user/change_password.html",
+     "lines": [
+      43
+     ],
+     "count": 1,
+     "origin": "e626716c28",
+     "subject": "Fixed #34429 -- Allowed setting unusable passwords for users in the auth forms.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/includes/fieldset.html",
+     "lines": [
+      18
+     ],
+     "count": 1,
+     "origin": "a19ed8aea3",
+     "subject": "Merged the newforms-admin branch into trunk.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/includes/fieldset.html",
+     "lines": [
+      20
+     ],
+     "count": 1,
+     "origin": "bcd9482a20",
+     "subject": "Fixed #342 -- added readonly_fields to ModelAdmin. Thanks Alex Gaynor for bootstrapping the patch.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/widgets/split_datetime.html",
+     "lines": [
+      2
+     ],
+     "count": 1,
+     "origin": "ff05de760c",
+     "subject": "Fixed #29038 -- Removed closing slash from HTML void tags.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/widgets/split_datetime.html",
+     "lines": [
+      3
+     ],
+     "count": 1,
+     "origin": "b52c73008a",
+     "subject": "Fixed #15667 -- Added template-based widget rendering.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/widgets.py",
+     "lines": [
+      52,
+      68
+     ],
+     "count": 2,
+     "origin": "caf80cb41f",
+     "subject": "Fixed #34645 -- Restored alignment for admin date/time timezone warnings.",
+     "severity": 2,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-elsewhere",
+   "note": "warned in widgets.py (fix #34645 alignment); the regression was fieldset CSS"
+  },
+  {
+   "culprit": "f9a44cc0fa",
+   "culprit_subject": "Fixed #35453 -- Made ManyToManyField.concrete False.",
+   "fix": "6cc1231285",
+   "fix_subject": "Fixed #36800 -- Restored ManyToManyField renaming in BaseDatabaseSchemaEditor.alter_field().",
+   "fix_date": "2025-12-15",
+   "kind": "regression",
+   "ref": "f9a44cc0fac653f8e0c2ab1cdfb12b2cc5c63fc2",
+   "fix_files": [
+    "django/db/backends/base/schema.py"
+   ],
+   "ms": 1621,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/db/backends/base/schema.py",
+     "line": 1663,
+     "evidence": [
+      "71820c9 \"Fixed #34820 -- Fixed migrations crash when changing a ForeignObject field.\" (2023-09-09, fixes #34820)"
+     ],
+     "near_fix": "fix-touched-file"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/db/models/sql/subqueries.py",
+     "line": 95,
+     "evidence": [
+      "bad03eb \"Fixed #36481 -- Fixed QuerySet.update concrete fields check.\" (2025-06-25, fixes #36481)"
+     ],
+     "near_fix": "other"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/db/backends/base/schema.py",
+     "lines": [
+      1663
+     ],
+     "count": 1,
+     "origin": "71820c9f91",
+     "subject": "Fixed #34820 -- Fixed migrations crash when changing a ForeignObject field.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/db/backends/base/schema.py",
+     "lines": [
+      1695,
+      1696
+     ],
+     "count": 2,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/backends/sqlite3/schema.py",
+     "lines": [
+      147
+     ],
+     "count": 1,
+     "origin": "f333e3513e",
+     "subject": "Fixed #31300 -- Added GeneratedField model field.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/query.py",
+     "lines": [
+      728,
+      739
+     ],
+     "count": 2,
+     "origin": "0f6946495a",
+     "subject": "Fixed #31685 -- Added support for updating conflicts to QuerySet.bulk_create().",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/query.py",
+     "lines": [
+      919
+     ],
+     "count": 1,
+     "origin": "9cbdb44014",
+     "subject": "Fixed #23646 -- Added QuerySet.bulk_update() to efficiently update many models.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/sql/subqueries.py",
+     "lines": [
+      95
+     ],
+     "count": 1,
+     "origin": "bad03eb108",
+     "subject": "Fixed #36481 -- Fixed QuerySet.update concrete fields check.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/sql/subqueries.py",
+     "lines": [
+      97,
+      98
+     ],
+     "count": 2,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned in _field_should_be_altered on the concrete check from fix #34820; the fix restored M2M renaming in that function"
+  },
+  {
+   "culprit": "f920937c8a",
+   "culprit_subject": "Fixed #35518 -- Optimized RoutePattern by using string operations for converter-less routes.",
+   "fix": "7bf3ac3ee2",
+   "fix_subject": "Fixed #36796 -- Handled lazy routes correctly in RoutePattern.match().",
+   "fix_date": "2025-12-14",
+   "kind": "regression",
+   "ref": "f920937c8a63df6bea220e4386f59cdb45b2e355",
+   "fix_files": [
+    "django/urls/resolvers.py"
+   ],
+   "ms": 509,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/urls/resolvers.py",
+     "lines": [
+      325
+     ],
+     "count": 1,
+     "origin": "ed114e1510",
+     "subject": "Imported Django from private SVN repository (created from r. 8825)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new string-based route matching broke lazy routes; the changed lines date from the initial import"
+  },
+  {
+   "culprit": "a89183e638",
+   "culprit_subject": "Fixed #36620 -- Added coverage workflow to summarize coverage in pull requests.",
+   "fix": "e4c4a178aa",
+   "fix_subject": "Reverted \"Fixed #36620 -- Added coverage workflow to summarize coverage in pull requests.\"",
+   "fix_date": "2025-11-25",
+   "kind": "revert",
+   "ref": "a89183e63844a937aacd3ddb73c4952ef869d2cc",
+   "fix_files": [
+    "zizmor.yml"
+   ],
+   "ms": 2,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "CI coverage workflow reverted with no stated bug"
+  },
+  {
+   "culprit": "b8e5a8a9a2",
+   "culprit_subject": "Fixed #36404 -- Fixed Aggregate.filter using OuterRef.",
+   "fix": "2a6e0bd72d",
+   "fix_subject": "Fixed #36751 -- Fixed empty filtered aggregation crash over annotated queryset.",
+   "fix_date": "2025-11-24",
+   "kind": "regression",
+   "ref": "b8e5a8a9a2a767f584cbe89a878a42363706f939",
+   "fix_files": [
+    "django/db/models/expressions.py"
+   ],
+   "ms": 63,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/db/models/aggregates.py",
+     "lines": [
+      98
+     ],
+     "count": 1,
+     "origin": "4b977a5d72",
+     "subject": "Fixed #35444 -- Added generic support for Aggregate.order_by.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/aggregates.py",
+     "lines": [
+      123,
+      124
+     ],
+     "count": 2,
+     "origin": "42b567ab4c",
+     "subject": "Refs #35339 -- Updated Aggregate class to return consistent source expressions.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new replace_expressions handling (pure addition)"
+  },
+  {
+   "culprit": "64b1ac7292",
+   "culprit_subject": "Fixed #24529 -- Allowed double squashing of migrations.",
+   "fix": "b07298a73a",
+   "fix_subject": "Fixed #36141 -- Checked for applied replaced migrations recursively.",
+   "fix_date": "2025-11-18",
+   "kind": "regression",
+   "ref": "64b1ac7292c72d3551b2ad70b2a78c8fe4af3249",
+   "fix_files": [
+    "django/db/migrations/executor.py",
+    "django/db/migrations/loader.py"
+   ],
+   "ms": 1535,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/core/management/commands/squashmigrations.py",
+     "lines": [
+      78
+     ],
+     "count": 1,
+     "origin": "1521861b3c",
+     "subject": "Fixed #24703 -- Changed squashmigrations to use a MigrationLoader",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/core/management/commands/squashmigrations.py",
+     "lines": [
+      144
+     ],
+     "count": 1,
+     "origin": "8ebd6d35d7",
+     "subject": "Fixed #23090: Document and enforce not double-squashing migrations",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/core/management/commands/squashmigrations.py",
+     "lines": [
+      147,
+      148
+     ],
+     "count": 2,
+     "origin": "7119f40c98",
+     "subject": "Refs #33476 -- Refactored code to strictly match 88 characters line length.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/core/management/commands/squashmigrations.py",
+     "lines": [
+      185,
+      187,
+      188,
+      190
+     ],
+     "count": 4,
+     "origin": "c7bf4c27a0",
+     "subject": "Allow squashing of squashed migrations",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/core/management/commands/squashmigrations.py",
+     "lines": [
+      186
+     ],
+     "count": 1,
+     "origin": "763ac8b642",
+     "subject": "First pass on squashmigrations command; files are right, execution not.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/db/migrations/loader.py",
+     "lines": [
+      226
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "double-squash support; the changed line came from a feature hook (traced only to the Black reformat by Blot, refs #24529 behind it)"
+  },
+  {
+   "culprit": "a9fe98d5bd",
+   "culprit_subject": "Fixed #35533 -- Prevented urlize creating broken links given a markdown link input.",
+   "fix": "125b63ca74",
+   "fix_subject": "Fixed #36710 -- Fixed a regression in urlize for multipart domain names.",
+   "fix_date": "2025-11-06",
+   "kind": "regression",
+   "ref": "a9fe98d5bd4212d069afe8316101984aadecfbb2",
+   "fix_files": [
+    "django/utils/html.py"
+   ],
+   "ms": 1048,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/utils/html.py",
+     "lines": [
+      299
+     ],
+     "count": 1,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new urlize markdown handling; the changed line came from the urlize refactor"
+  },
+  {
+   "culprit": "ea3a71c2d0",
+   "culprit_subject": "Fixed #26434 -- Removed faulty clearing of ordering field when missing from explicit grouping.",
+   "fix": "43933a1dca",
+   "fix_subject": "Reverted \"Fixed #26434 -- Removed faulty clearing of ordering field when missing from explicit grouping.\"",
+   "fix_date": "2025-10-28",
+   "kind": "revert",
+   "ref": "ea3a71c2d09f8281d8a50ed20e40e1fb13db5cd9",
+   "fix_files": [
+    "django/db/models/sql/query.py"
+   ],
+   "ms": 39,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "'the implementation was flawed' (group_by holds Cols); new code"
+  },
+  {
+   "culprit": "bb145e2c47",
+   "culprit_subject": "Fixed #13629 -- Added CSS classes to the `<body>` tag of some admin templates to allow style customizations per app or per model.",
+   "fix": "2b62951fec",
+   "fix_subject": "Fixed #36659 -- Fixed flatpage content selector in admin forms.css.",
+   "fix_date": "2025-10-14",
+   "kind": "regression",
+   "ref": "bb145e2c47d71b7f68280c00ced727442d2effa2",
+   "fix_files": [
+    "django/contrib/admin/static/admin/css/forms.css"
+   ],
+   "ms": 350,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/contrib/admin/templates/admin/change_form.html",
+     "lines": [
+      13
+     ],
+     "count": 1,
+     "origin": "f69cf70ed8",
+     "subject": "MERGED MAGIC-REMOVAL BRANCH TO TRUNK. This change is highly backwards-incompatible. Please read http://code.djangoproject.com/wiki/RemovingTheMagic for upgrade instructions.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/templates/admin/change_list.html",
+     "lines": [
+      35
+     ],
+     "count": 1,
+     "origin": "9dda4abee1",
+     "subject": "MERGED NEW-ADMIN BRANCH (except for po/mo files, which will come in a separate commit)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new body CSS classes broke a flatpages selector; new code"
+  },
+  {
+   "culprit": "8638d8bf74",
+   "culprit_subject": "Fixed #36273 -- Moved Index system checks from Model to Index.check().",
+   "fix": "edde2891c3",
+   "fix_subject": "Fixed #36660 -- Fixed a regression in descending Index local field checks.",
+   "fix_date": "2025-10-12",
+   "kind": "regression",
+   "ref": "8638d8bf74c1a58302c97d4436ad2eb08438145b",
+   "fix_files": [
+    "django/db/models/indexes.py"
+   ],
+   "ms": 1253,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/db/models/base.py",
+     "lines": [
+      2124,
+      2153,
+      2169,
+      2185,
+      2200
+     ],
+     "count": 6,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/models/base.py",
+     "lines": [
+      2128,
+      2133,
+      2137
+     ],
+     "count": 3,
+     "origin": "53209f7830",
+     "subject": "Fixed #30613 -- Moved index name validation to system checks.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/db/models/base.py",
+     "lines": [
+      2142,
+      2143,
+      2145,
+      2203
+     ],
+     "count": 4,
+     "origin": "f750377318",
+     "subject": "Fixed #32321 -- Added system checks for invalid model field names in functional indexes.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/base.py",
+     "lines": [
+      2154,
+      2170
+     ],
+     "count": 2,
+     "origin": "f83b44075d",
+     "subject": "Refs #30913 -- Added system checks for covering indexes and unique constraints support.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/base.py",
+     "lines": [
+      2186
+     ],
+     "count": 1,
+     "origin": "83fcfc9ec8",
+     "subject": "Fixed #26167 -- Added support for functional indexes.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/base.py",
+     "lines": [
+      2202
+     ],
+     "count": 1,
+     "origin": "8c7992f658",
+     "subject": "Fixed #30913 -- Added support for covering indexes on PostgreSQL 11+.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "moved Index checks; new code in Index.check()"
+  },
+  {
+   "culprit": "cd0479ff76",
+   "culprit_subject": "Fixed #35331 -- Updated dropdown lists with entries added via the '+' sign from M2M field.",
+   "fix": "08a0b92329",
+   "fix_subject": "Fixed #36468 -- Fixed failure to close popup when adding a related object in the admin.",
+   "fix_date": "2025-10-07",
+   "kind": "regression",
+   "ref": "cd0479ff764272add5e0aba2afcf5649a241ca00",
+   "fix_files": [
+    "django/contrib/admin/static/admin/js/admin/RelatedObjectLookups.js"
+   ],
+   "ms": 120,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/contrib/admin/static/admin/js/admin/RelatedObjectLookups.js",
+     "lines": [
+      103
+     ],
+     "count": 1,
+     "origin": "c72f6f36c1",
+     "subject": "Fixed #11803 -- Allowed admin select widgets to display new related objects.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "the changed line came from #11803 'Allowed admin select widgets to display new related objects', a feature the culprit extended"
+  },
+  {
+   "culprit": "0b83c8cc4d",
+   "culprit_subject": "Refs #31055 -- Added --database option to the check management command.",
+   "fix": "3aba1fced8",
+   "fix_subject": "Fixed #36663 -- Defaulted to running checks against all databases.",
+   "fix_date": "2025-09-29",
+   "kind": "regression",
+   "ref": "0b83c8cc4db95812f1e15ca19d78614e94cf38dd",
+   "fix_files": [
+    "django/core/checks/registry.py"
+   ],
+   "ms": 577,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/core/checks/database.py",
+     "lines": [
+      7,
+      9
+     ],
+     "count": 2,
+     "origin": "0d3c616fbb",
+     "subject": "Refs #26351 -- Added check hook to support database-related checks",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/core/checks/registry.py",
+     "lines": [
+      69
+     ],
+     "count": 1,
+     "origin": "30eb92fc11",
+     "subject": "Removed need for hasattr(check, 'tags') in CheckRegistry.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/core/management/base.py",
+     "lines": [
+      381,
+      382,
+      392
+     ],
+     "count": 3,
+     "origin": "0d3c616fbb",
+     "subject": "Refs #26351 -- Added check hook to support database-related checks",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/core/management/base.py",
+     "lines": [
+      385
+     ],
+     "count": 1,
+     "origin": "2875325889",
+     "subject": "Fixed #25500 -- Added --fail-level option to check command.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/core/management/commands/migrate.py",
+     "lines": [
+      62,
+      63,
+      65
+     ],
+     "count": 3,
+     "origin": "0d3c616fbb",
+     "subject": "Refs #26351 -- Added check hook to support database-related checks",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/core/management/commands/migrate.py",
+     "lines": [
+      64
+     ],
+     "count": 1,
+     "origin": "d6eaf7c018",
+     "subject": "Refs #23919 -- Replaced super(ClassName, self) with super().",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/core/management/commands/migrate.py",
+     "lines": [
+      80
+     ],
+     "count": 1,
+     "origin": "1845bc1d10",
+     "subject": "Refs #26315 -- Cleaned up argparse options in commands.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/core/management/commands/migrate.py",
+     "lines": [
+      81
+     ],
+     "count": 1,
+     "origin": "315ab41e41",
+     "subject": "Initial stab at a migrate command, it's probably quite a way off.",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new --database option defaulted to no databases; new code"
+  },
+  {
+   "culprit": "94680437a4",
+   "culprit_subject": "Fixed #27222 -- Refreshed model field values assigned expressions on save().",
+   "fix": "4fcc2883fa",
+   "fix_subject": "Refs #27222 -- Restored Model.save()'s refreshing of db_returning fields even if a value is set.",
+   "fix_date": "2025-09-16",
+   "kind": "regression",
+   "ref": "94680437a45a71c70ca8bd2e68b72aa1e2eff337",
+   "fix_files": [
+    "django/db/models/base.py"
+   ],
+   "ms": 534,
+   "findings": [
+    {
+     "check": "readded-bug",
+     "path": "django/db/models/base.py",
+     "line": 1151,
+     "evidence": [
+      "b0ec87b \"Fixed #34925 -- Prevented Model.refresh_from_db() from mutating list of fields.\" (2023-10-28, fixes #34925)"
+     ],
+     "near_fix": "fix-touched-file"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/db/models/base.py",
+     "lines": [
+      1145
+     ],
+     "count": 1,
+     "origin": "7254f1138d",
+     "subject": "Refs #29444 -- Allowed returning multiple fields from INSERT statements on PostgreSQL.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/db/models/base.py",
+     "lines": [
+      1206
+     ],
+     "count": 1,
+     "origin": "55a0073b3b",
+     "subject": "Refs #27222 -- Refreshed GeneratedFields values on save() initiated update.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-elsewhere",
+   "note": "readded-bug matched a generic 'for field in fields:' from fix #34925 (refresh_from_db); the loop is the one the fix edited, but the cited fix has nothing to do with it"
+  },
+  {
+   "culprit": "f02b49d2f3",
+   "culprit_subject": "Fixed #27489 -- Renamed permissions upon model renaming in migrations.",
+   "fix": "6e89271a85",
+   "fix_subject": "Refs #27489 -- Made RenamePermission() operation respect database.",
+   "fix_date": "2025-09-15",
+   "kind": "regression",
+   "ref": "f02b49d2f3bf84f5225de920ca510149f1f9f1da",
+   "fix_files": [
+    "django/contrib/auth/management/__init__.py"
+   ],
+   "ms": 286,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new RenamePermission operation (pure addition)"
+  },
+  {
+   "culprit": "a0f50c2a48",
+   "culprit_subject": "Refs #34619 -- Fixed labels width in FilteredSelectMultiple in the admin.",
+   "fix": "1e7728888d",
+   "fix_subject": "Fixed #36601 -- Fixed color contrast of FilteredSelectMultiple widget chosen labels in TabularInlines.",
+   "fix_date": "2025-09-10",
+   "kind": "regression",
+   "ref": "a0f50c2a483678d31bd1ad6f08fd3a0b8399e27b",
+   "fix_files": [
+    "django/contrib/admin/static/admin/css/widgets.css"
+   ],
+   "ms": 426,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/contrib/admin/static/admin/css/widgets.css",
+     "lines": [
+      52
+     ],
+     "count": 1,
+     "origin": "857b1048d5",
+     "subject": "Fixed #34619 -- Associated FilteredSelectMultiple elements to their label and help text.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-gap",
+   "note": "classification: changed the label CSS from 857b104 'Fixed #34619 -- Associated FilteredSelectMultiple elements to their label' (sev 1, no fix word); the contrast regression is on those labels"
+  },
+  {
+   "culprit": "87ab54b488",
+   "culprit_subject": "Fixed #35829 -- Updated admin icons using Font Awesome Free version 6.7.2.",
+   "fix": "c595af6545",
+   "fix_subject": "Fixed #36578, Refs #35791 -- Ensured inline delete icon scales and stays centered in the admin.",
+   "fix_date": "2025-08-28",
+   "kind": "regression",
+   "ref": "87ab54b488cb58d810939112f208bb37068710e0",
+   "fix_files": [
+    "django/contrib/admin/static/admin/css/widgets.css"
+   ],
+   "ms": 3092,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "django/contrib/admin/static/admin/img/calendar-icons.svg",
+     "lines": [
+      1,
+      5,
+      8,
+      9,
+      10
+     ],
+     "count": 32,
+     "origin": "5a46f3fad7",
+     "subject": "Fixed #35112 -- Removed previous/next month animation in admin calendar widget.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-addlink.svg",
+     "lines": [
+      1
+     ],
+     "count": 1,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-addlink.svg",
+     "lines": [
+      2
+     ],
+     "count": 1,
+     "origin": "8a1727dc7f",
+     "subject": "Fixed #34910 -- Improved color contrast for add/change icons in admin.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-alert.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-calendar.svg",
+     "lines": [
+      1,
+      4,
+      8
+     ],
+     "count": 3,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-changelink.svg",
+     "lines": [
+      1
+     ],
+     "count": 1,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-changelink.svg",
+     "lines": [
+      2
+     ],
+     "count": 1,
+     "origin": "8a1727dc7f",
+     "subject": "Fixed #34910 -- Improved color contrast for add/change icons in admin.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-clock.svg",
+     "lines": [
+      1,
+      4,
+      8
+     ],
+     "count": 3,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-deletelink.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-hidelink.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "868e2fcdda",
+     "subject": "Fixed #32539 -- Added toggleable facet filters to ModelAdmin.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-no.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-unknown-alt.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-unknown.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-viewlink.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "825f0beda8",
+     "subject": "Fixed #8936 -- Added a view permission and a read-only admin.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/icon-yes.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/inline-delete.svg",
+     "lines": [
+      1
+     ],
+     "count": 1,
+     "origin": "86661f2449",
+     "subject": "Fixed #35791 -- Updated icon button dimensions to 24x24 pixels.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/inline-delete.svg",
+     "lines": [
+      2
+     ],
+     "count": 1,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/search.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/selector-icons.svg",
+     "lines": [
+      1,
+      4,
+      7,
+      10,
+      13
+     ],
+     "count": 18,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/sorting-icons.svg",
+     "lines": [
+      1,
+      4,
+      7,
+      10,
+      14
+     ],
+     "count": 9,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/tooltag-add.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/admin/static/admin/img/tooltag-arrowright.svg",
+     "lines": [
+      1,
+      2
+     ],
+     "count": 2,
+     "origin": "c32b61c6fd",
+     "subject": "Fixed #20597 -- Replaced admin GIF/PNG icons by SVG",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "icon set replacement; new assets/CSS"
+  },
+  {
+   "culprit": "0246f47888",
+   "culprit_subject": "Fixed #36546 -- Deprecated django.utils.crypto.constant_time_compare() in favor of hmac.compare_digest().",
+   "fix": "d0e4dd5cdd",
+   "fix_subject": "Fixed #36572 -- Revert \"Fixed #36546 -- Deprecated django.utils.crypto.constant_time_compare() in favor of hmac.compare_digest().\"",
+   "fix_date": "2025-08-26",
+   "kind": "revert",
+   "ref": "0246f478882c26bc1fe293224653074cd46a90d0",
+   "fix_files": [
+    "django/contrib/auth/__init__.py",
+    "django/contrib/auth/hashers.py",
+    "django/contrib/auth/tokens.py",
+    "django/core/signing.py",
+    "django/middleware/csrf.py",
+    "django/utils/crypto.py"
+   ],
+   "ms": 2507,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "django/contrib/auth/__init__.py",
+     "line": 326,
+     "evidence": [
+      "2396933 \"Fixed #34384 -- Fixed session validation when rotation secret keys.\" (2023-03-06, fixes #34384)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    },
+    {
+     "check": "removed-fix",
+     "path": "django/middleware/csrf.py",
+     "line": 157,
+     "evidence": [
+      "5d80843 \"Fixed #32800 -- Changed CsrfViewMiddleware not to mask the CSRF secret.\" (2021-08-17, fixes #32800)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "django/contrib/auth/__init__.py",
+     "lines": [
+      178,
+      220
+     ],
+     "count": 2,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/auth/__init__.py",
+     "lines": [
+      326,
+      334,
+      367,
+      375
+     ],
+     "count": 4,
+     "origin": "2396933ca9",
+     "subject": "Fixed #34384 -- Fixed session validation when rotation secret keys.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/auth/hashers.py",
+     "lines": [
+      16,
+      17,
+      18
+     ],
+     "count": 3,
+     "origin": "9c19aff7c7",
+     "subject": "Refs #33476 -- Reformatted code with Black.",
+     "severity": 1,
+     "refactor": true
+    },
+    {
+     "path": "django/contrib/auth/hashers.py",
+     "lines": [
+      352,
+      536,
+      631,
+      684
+     ],
+     "count": 4,
+     "origin": "90e05aaeac",
+     "subject": "Renovated password hashing, including the forgotten files in r17253.",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "django/contrib/auth/tokens.py",
+     "lines": [
+      70
+     ],
+     "count": 1,
+     "origin": "0dcd549bbe",
+     "subject": "Fixed #30360 -- Added support for secret key rotation.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/core/signing.py",
+     "lines": [
+      212
+     ],
+     "count": 1,
+     "origin": "0dcd549bbe",
+     "subject": "Fixed #30360 -- Added support for secret key rotation.",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "django/middleware/csrf.py",
+     "lines": [
+      157
+     ],
+     "count": 1,
+     "origin": "5d80843ebc",
+     "subject": "Fixed #32800 -- Changed CsrfViewMiddleware not to mask the CSRF secret.",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "django/utils/crypto.py",
+     "lines": [
+      67
+     ],
+     "count": 1,
+     "origin": "1d0bab0bfd",
+     "subject": "Fixed #27635 -- Used secrets module in django.utils.crypto.",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-on-target",
+   "note": "warned on the constant_time_compare call sites from fixes #34384 and #32800; the deprecation dropped force_bytes and broke mixed-type calls (#36572, release blocker); the revert restored those lines"
+  }
+ ]
+}

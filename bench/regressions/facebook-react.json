@@ -1,0 +1,4736 @@
+{
+ "repo": "C:\\Users\\N Jayasankar\\AppData\\Local/Temp/wl/rp/react",
+ "head": "9ffcb463b0ab01a42e781d4dc2e00f3a1b97a188",
+ "max_files": 50,
+ "cap": 40,
+ "candidates": 191,
+ "dropped": {
+  "merge": 10,
+  "sha not found or not an ancestor of the fix": 36,
+  "touches no checked file (tests, docs, generated)": 8,
+  "pr not mapped to exactly one commit": 1,
+  "culprit is itself a revert (a re-land, not a bug)": 16,
+  "culprit already named by an earlier fix": 2,
+  "more than 50 files": 1,
+  "older than the newest 40": 77
+ },
+ "pairs": [
+  {
+   "culprit": "ba39b32a46",
+   "culprit_subject": "Preserve the rendered shell on synchronous prerender abort (#37853)",
+   "fix": "e92156b119",
+   "fix_subject": "Allow resumeAndPrerender to postpone an existing boundary again (#37876)",
+   "fix_date": "2026-10-19",
+   "kind": "regression-pr",
+   "ref": "#37853",
+   "fix_files": [
+    "packages/react-server/src/ReactFizzServer.js"
+   ],
+   "ms": 2676,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-server/src/ReactFizzServer.js",
+     "lines": [
+      3719
+     ],
+     "count": 1,
+     "origin": "d4f58c3b81",
+     "subject": "Support Promise as a renderable node  (#25634)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFizzServer.js",
+     "lines": [
+      4456
+     ],
+     "count": 1,
+     "origin": "9baecbf02b",
+     "subject": "[Fizz] Avoid hanging when suspending after aborting while rendering (#34192)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "false reference: the fix says its bug 'predates #37853'; the matched 'regression from #37853' is about a test"
+  },
+  {
+   "culprit": "35e64cf2bc",
+   "culprit_subject": "[rust-compiler] Bail out on nested TypeScript `this` parameters (#37232)",
+   "fix": "6c3bd60a90",
+   "fix_subject": "Revert \"[rust-compiler] Bail out on nested TypeScript `this` parameters (#37232)\" (#37363)",
+   "fix_date": "2026-08-24",
+   "kind": "revert",
+   "ref": "35e64cf2bc4a980274ae0cb2a4bda11970560b7e",
+   "fix_files": [
+    "compiler/crates/react_compiler_lowering/src/build_hir.rs"
+   ],
+   "ms": 74,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "compiler/crates/react_compiler_lowering/src/build_hir.rs",
+     "lines": [
+      2592,
+      2601
+     ],
+     "count": 2,
+     "origin": "03e775554a",
+     "subject": "[compiler] Port React Compiler to Rust (#36173)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug"
+  },
+  {
+   "culprit": "dd453071d9",
+   "culprit_subject": "[FlightReply] Type hardening and performance improvements (#36425)",
+   "fix": "b91823e214",
+   "fix_subject": "[FlightReply] Don't drop FormData entries in `decodeReplyFromBusboy` (#36468)",
+   "fix_date": "2026-05-14",
+   "kind": "regression-pr",
+   "ref": "#36425",
+   "fix_files": [
+    "package.json",
+    "packages/react-server-dom-esm/src/server/ReactFlightDOMServerNode.js",
+    "packages/react-server-dom-parcel/src/server/ReactFlightDOMServerNode.js",
+    "packages/react-server-dom-turbopack/src/server/ReactFlightDOMServerNode.js",
+    "packages/react-server-dom-unbundled/src/server/ReactFlightDOMServerNode.js",
+    "packages/react-server-dom-webpack/src/server/ReactFlightDOMServerNode.js"
+   ],
+   "ms": 476,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "flow-typed/environments/bom.js",
+     "lines": [
+      685,
+      689
+     ],
+     "count": 2,
+     "origin": "6de32a5a07",
+     "subject": "Update Flow to 0.263 (#34269)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-client/src/ReactFlightReplyClient.js",
+     "lines": [
+      601
+     ],
+     "count": 1,
+     "origin": "d8089f2cf2",
+     "subject": "[Flight Reply] Encode FormData (#26663)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFlightReplyServer.js",
+     "lines": [
+      195,
+      806,
+      1602,
+      1613,
+      1862
+     ],
+     "count": 7,
+     "origin": "d8089f2cf2",
+     "subject": "[Flight Reply] Encode FormData (#26663)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFlightReplyServer.js",
+     "lines": [
+      694
+     ],
+     "count": 1,
+     "origin": "7dc903cd29",
+     "subject": "Patch FlightReplyServer with fixes from ReactFlightClient (#35277)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFlightReplyServer.js",
+     "lines": [
+      789
+     ],
+     "count": 1,
+     "origin": "894bc73cb4",
+     "subject": "[Flight] Patch Promise cycles and toString on Server Functions (#35345)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFlightReplyServer.js",
+     "lines": [
+      790,
+      1024,
+      1039,
+      1610,
+      1611
+     ],
+     "count": 11,
+     "origin": "10680271fa",
+     "subject": "[Flight] Add more DoS mitigations to Flight Reply, and harden Flight (#35632)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFlightReplyServer.js",
+     "lines": [
+      1014
+     ],
+     "count": 1,
+     "origin": "ef8bdbecb6",
+     "subject": "[Flight Reply] Add Reply Encoding (#26360)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFlightReplyServer.js",
+     "lines": [
+      1198
+     ],
+     "count": 1,
+     "origin": "17e920c00d",
+     "subject": "[Flight Reply] Encode Typed Arrays and Blobs (#28819)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFlightReplyServer.js",
+     "lines": [
+      1298
+     ],
+     "count": 1,
+     "origin": "ec9400dc41",
+     "subject": "[Flight Reply] Encode ReadableStream and AsyncIterables (#28893)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFlightReplyServer.js",
+     "lines": [
+      1812
+     ],
+     "count": 1,
+     "origin": "12ba7d8129",
+     "subject": "[Flight Reply] Early bailout if backing entry for Blob deserialization is not a Blob (#36055)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFlightReplyServer.js",
+     "lines": [
+      1934
+     ],
+     "count": 1,
+     "origin": "a21d1475ff",
+     "subject": "[Flight] Fix File Upload in Node.js (#26700)",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "#36468: 'regression from #36425' dropped FormData entries; the bug is in new code (a new backing-form-data file), no fix-added line changed in the fixed file"
+  },
+  {
+   "culprit": "ced705d756",
+   "culprit_subject": "[DevTools] Always include the root in the timeline and select it by default (#34654)",
+   "fix": "62ff1e61fc",
+   "fix_subject": "Revert \"[DevTools] Always include the root in the timeline and select it by default\" (#34739)",
+   "fix_date": "2025-10-05",
+   "kind": "revert-pr",
+   "ref": "#34654",
+   "fix_files": [
+    "packages/react-devtools-shared/src/devtools/views/SuspenseTab/SuspenseTab.js"
+   ],
+   "ms": 2,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "DevTools feature reverted with no stated bug"
+  },
+  {
+   "culprit": "f702620cea",
+   "culprit_subject": "[fb-www] ship enableViewTransition (#33357)",
+   "fix": "283f87f083",
+   "fix_subject": "Revert \"enableViewTransition in www\" (#33362)",
+   "fix_date": "2025-05-27",
+   "kind": "revert-pr",
+   "ref": "#33357",
+   "fix_files": [
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+    "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+    "packages/shared/forks/ReactFeatureFlags.www.js"
+   ],
+   "ms": 217,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+     "lines": [
+      81
+     ],
+     "count": 1,
+     "origin": "a4d122f2d1",
+     "subject": "Add <ViewTransition> Component (#31975)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+     "lines": [
+      39
+     ],
+     "count": 1,
+     "origin": "32b411496b",
+     "subject": "Set enableViewTransition to dynamic for www (#32306)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www.js",
+     "lines": [
+      37
+     ],
+     "count": 1,
+     "origin": "32b411496b",
+     "subject": "Set enableViewTransition to dynamic for www (#32306)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "flag rollout reverted for 'more testing'"
+  },
+  {
+   "culprit": "de1eaa2655",
+   "culprit_subject": "Fix:- Improve HOC support and state preservation in React Refresh (#30660)",
+   "fix": "86d5ac0882",
+   "fix_subject": "Revert \"Fix:- Improve HOC support and state preservation in React Refresh\" (#32214)",
+   "fix_date": "2025-03-18",
+   "kind": "revert-pr",
+   "ref": "#30660",
+   "fix_files": [
+    "packages/react-refresh/src/ReactFreshRuntime.js"
+   ],
+   "ms": 637,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-refresh/src/ReactFreshRuntime.js",
+     "lines": [
+      215
+     ],
+     "count": 1,
+     "origin": "d0e041aee8",
+     "subject": "[Fresh] Support classes by force-remounting them on edit (#15801)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-refresh/src/ReactFreshRuntime.js",
+     "lines": [
+      216,
+      218
+     ],
+     "count": 2,
+     "origin": "6d4f85b611",
+     "subject": "[Fresh] Set up infra for runtime and Babel plugin (#15698)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted for lack of confidence in the approach, no bug stated"
+  },
+  {
+   "culprit": "67338703aa",
+   "culprit_subject": "[ci] Update yarn and node_modules cache key (#32603)",
+   "fix": "5200721e5c",
+   "fix_subject": "Revert \"[ci] Update yarn and node_modules cache key (#32603)\" (#32607)",
+   "fix_date": "2025-03-13",
+   "kind": "revert",
+   "ref": "67338703aa52d662998733e58671dc9fe1edae47",
+   "fix_files": [
+    "package.json",
+    "scripts/react-compiler/build-compiler.sh"
+   ],
+   "ms": 73,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "package.json",
+     "lines": [
+      121
+     ],
+     "count": 1,
+     "origin": "5ccfcd17ff",
+     "subject": "feat(eslint-plugin-react-hooks): merge rule from eslint-plugin-react-compiler into `react-hooks` plugin (#32416)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "CI cache key change reverted, no bug stated"
+  },
+  {
+   "culprit": "8759c5c8d6",
+   "culprit_subject": "Ship enableFabricCompleteRootInCommitPhase (#32318)",
+   "fix": "885532c124",
+   "fix_subject": "Revert \"Ship enableFabricCompleteRootInCommitPhase (#32318)\" (#32434)",
+   "fix_date": "2025-02-20",
+   "kind": "revert",
+   "ref": "8759c5c8d6aef34df576827215ff7ebaeafc79ea",
+   "fix_files": [
+    "packages/react-native-renderer/src/ReactFiberConfigFabric.js",
+    "packages/shared/ReactFeatureFlags.js",
+    "packages/shared/forks/ReactFeatureFlags.native-fb-dynamic.js",
+    "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+    "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.native-fb.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+    "packages/shared/forks/ReactFeatureFlags.www.js"
+   ],
+   "ms": 642,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-native-renderer/src/ReactFiberConfigFabric.js",
+     "lines": [
+      61,
+      62,
+      63,
+      508,
+      518
+     ],
+     "count": 5,
+     "origin": "6b82f3c904",
+     "subject": "[RN] experiment to move Fabric completeWork to the commit phase (#30513)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/shared/ReactFeatureFlags.js",
+     "lines": [
+      98
+     ],
+     "count": 1,
+     "origin": "6b82f3c904",
+     "subject": "[RN] experiment to move Fabric completeWork to the commit phase (#30513)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.native-fb-dynamic.js",
+     "lines": [
+      26
+     ],
+     "count": 1,
+     "origin": "6b82f3c904",
+     "subject": "[RN] experiment to move Fabric completeWork to the commit phase (#30513)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+     "lines": [
+      23
+     ],
+     "count": 1,
+     "origin": "6b82f3c904",
+     "subject": "[RN] experiment to move Fabric completeWork to the commit phase (#30513)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+     "lines": [
+      33
+     ],
+     "count": 1,
+     "origin": "6b82f3c904",
+     "subject": "[RN] experiment to move Fabric completeWork to the commit phase (#30513)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+     "lines": [
+      39
+     ],
+     "count": 1,
+     "origin": "6b82f3c904",
+     "subject": "[RN] experiment to move Fabric completeWork to the commit phase (#30513)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.native-fb.js",
+     "lines": [
+      64
+     ],
+     "count": 1,
+     "origin": "6b82f3c904",
+     "subject": "[RN] experiment to move Fabric completeWork to the commit phase (#30513)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+     "lines": [
+      42
+     ],
+     "count": 1,
+     "origin": "6b82f3c904",
+     "subject": "[RN] experiment to move Fabric completeWork to the commit phase (#30513)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www.js",
+     "lines": [
+      51
+     ],
+     "count": 1,
+     "origin": "6b82f3c904",
+     "subject": "[RN] experiment to move Fabric completeWork to the commit phase (#30513)",
+     "severity": 0,
+     "refactor": true
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "flag ship reverted: the experiment setup was faulty, not the code"
+  },
+  {
+   "culprit": "7670501b0d",
+   "culprit_subject": "Replace deprecated dependency in `eslint-plugin-react-compiler` (#31629)",
+   "fix": "b9b510df2a",
+   "fix_subject": "Revert \"Replace deprecated dependency in `eslint-plugin-react-compiler`\" (#31665)",
+   "fix_date": "2024-12-03",
+   "kind": "revert-pr",
+   "ref": "#31629",
+   "fix_files": [
+    "compiler/packages/eslint-plugin-react-compiler/package.json",
+    "compiler/packages/eslint-plugin-react-compiler/rollup.config.js",
+    "compiler/packages/eslint-plugin-react-compiler/src/rules/ReactCompilerRule.ts"
+   ],
+   "ms": 380,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "compiler/packages/eslint-plugin-react-compiler/package.json",
+     "lines": [
+      16
+     ],
+     "count": 1,
+     "origin": "8405d8644f",
+     "subject": "[eslint] Add plugin-proposal-private-methods",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "compiler/packages/eslint-plugin-react-compiler/rollup.config.js",
+     "lines": [
+      20
+     ],
+     "count": 1,
+     "origin": "fd2b3e13d3",
+     "subject": "Compiler: unfork prettier config (#30205)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "compiler/packages/eslint-plugin-react-compiler/src/rules/ReactCompilerRule.ts",
+     "lines": [
+      285
+     ],
+     "count": 1,
+     "origin": "fdd6a1b8b1",
+     "subject": "Add rollup to eslint-plugin-react-forget",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "dependency swap broke older @babel/traverse users (#31665); config/dependency lines, no fix behind them"
+  },
+  {
+   "culprit": "6c4bbc7832",
+   "culprit_subject": "[Re-land] Make prerendering always non-blocking (#31268)",
+   "fix": "cae764ce81",
+   "fix_subject": "Revert \"[Re-land] Make prerendering always non-blocking (#31268)\" (#31355)",
+   "fix_date": "2024-10-25",
+   "kind": "revert",
+   "ref": "6c4bbc783286bf6eebd9927cb52e8fec5ad4dd74",
+   "fix_files": [
+    "packages/react-reconciler/src/ReactFiberLane.js",
+    "packages/react-reconciler/src/ReactFiberRootScheduler.js",
+    "packages/react-reconciler/src/ReactFiberWorkLoop.js"
+   ],
+   "ms": 472,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.js",
+     "lines": [
+      768
+     ],
+     "count": 1,
+     "origin": "76aee6f39d",
+     "subject": "Revert \"Make prerendering always non-blocking\" (#31080)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.js",
+     "lines": [
+      773
+     ],
+     "count": 1,
+     "origin": "13411e4589",
+     "subject": "[Re-land] Make prerendering always non-blocking: Add missing feature flag checks (#31238)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberRootScheduler.js",
+     "lines": [
+      209,
+      344,
+      379
+     ],
+     "count": 3,
+     "origin": "76aee6f39d",
+     "subject": "Revert \"Make prerendering always non-blocking\" (#31080)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      772,
+      839,
+      919,
+      983,
+      1115
+     ],
+     "count": 8,
+     "origin": "e10e868182",
+     "subject": "Schedule prerender after something suspends (#30800)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      901,
+      903,
+      908,
+      911,
+      915
+     ],
+     "count": 17,
+     "origin": "76aee6f39d",
+     "subject": "Revert \"Make prerendering always non-blocking\" (#31080)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      2090
+     ],
+     "count": 1,
+     "origin": "796fff5483",
+     "subject": "Allow suspending outside a Suspense boundary (#23267)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      2158
+     ],
+     "count": 1,
+     "origin": "ec652f4daf",
+     "subject": "Bugfix: Expired partial tree infinite loops (#17949)",
+     "severity": 1,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "re-land reverted for 'additional bugs internally'; the changed lines come from the original land, its revert and features"
+  },
+  {
+   "culprit": "0f1856c49f",
+   "culprit_subject": "Make prerendering always non-blocking (#31056)",
+   "fix": "76aee6f39d",
+   "fix_subject": "Revert \"Make prerendering always non-blocking\" (#31080)",
+   "fix_date": "2024-09-26",
+   "kind": "revert-pr",
+   "ref": "#31056",
+   "fix_files": [
+    "packages/react-reconciler/src/ReactFiberCompleteWork.js",
+    "packages/react-reconciler/src/ReactFiberLane.js",
+    "packages/react-reconciler/src/ReactFiberRootScheduler.js",
+    "packages/react-reconciler/src/ReactFiberWorkLoop.js"
+   ],
+   "ms": 688,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "line": 2092,
+     "evidence": [
+      "fc80111 \"Detect crashes caused by Async Client Components (#27019)\" (2023-06-29, fixes #27019)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.js",
+     "lines": [
+      763,
+      768
+     ],
+     "count": 2,
+     "origin": "e10e868182",
+     "subject": "Schedule prerender after something suspends (#30800)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberRootScheduler.js",
+     "lines": [
+      209,
+      344
+     ],
+     "count": 2,
+     "origin": "09c8d25633",
+     "subject": "Move update scheduling to microtask (#26512)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberRootScheduler.js",
+     "lines": [
+      379
+     ],
+     "count": 1,
+     "origin": "dcd13045ef",
+     "subject": "Use Lane to track root callback priority (#21089)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      772,
+      839,
+      915,
+      919,
+      979
+     ],
+     "count": 15,
+     "origin": "e10e868182",
+     "subject": "Schedule prerender after something suspends (#30800)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      901,
+      903
+     ],
+     "count": 2,
+     "origin": "3c7667a694",
+     "subject": "Unify perform{Sync,Concurrent}WorkOnRoot implementation (#31029)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      908,
+      911,
+      2088
+     ],
+     "count": 3,
+     "origin": "796fff5483",
+     "subject": "Allow suspending outside a Suspense boundary (#23267)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      1966
+     ],
+     "count": 1,
+     "origin": "66cf2cfc8a",
+     "subject": "Prerender during same pass if blocked anyway (#30879)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      2026
+     ],
+     "count": 1,
+     "origin": "93e078ddf2",
+     "subject": "Initial Lanes implementation (#18796)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      2092,
+      2093
+     ],
+     "count": 2,
+     "origin": "fc801116c8",
+     "subject": "Detect crashes caused by Async Client Components (#27019)",
+     "severity": 2,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      2133
+     ],
+     "count": 1,
+     "origin": "a724a3b578",
+     "subject": "[RFC] Codemod invariant -> throw new Error (#22435)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      2156
+     ],
+     "count": 1,
+     "origin": "ec652f4daf",
+     "subject": "Bugfix: Expired partial tree infinite loops (#17949)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      2202
+     ],
+     "count": 1,
+     "origin": "d6cb4e7713",
+     "subject": "Start prerendering Suspense retries immediately (#30934)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "hit-elsewhere",
+   "note": "warned on the suspend-in-shell code from fix fc80111 (#27019); the whole PR was reverted with no stated bug location (the re-land #31355 found more bugs), so whether the warned code was the bug is unknown: counted as elsewhere"
+  },
+  {
+   "culprit": "b34b750729",
+   "culprit_subject": "[compiler][eslint] remove compilationMode override; report bailouts on first line",
+   "fix": "b57d282369",
+   "fix_subject": "Revert \"[compiler][eslint] remove compilationMode override; report bailouts on first line\"",
+   "fix_date": "2024-08-22",
+   "kind": "revert",
+   "ref": "b34b750729bcbcfd80f72f82f46da5bc3e72158f",
+   "fix_files": [
+    "compiler/packages/eslint-plugin-react-compiler/src/rules/ReactCompilerRule.ts"
+   ],
+   "ms": 210,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "compiler/packages/eslint-plugin-react-compiler/src/rules/ReactCompilerRule.ts",
+     "lines": [
+      103
+     ],
+     "count": 1,
+     "origin": "fd2b3e13d3",
+     "subject": "Compiler: unfork prettier config (#30205)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "compiler/packages/eslint-plugin-react-compiler/src/rules/ReactCompilerRule.ts",
+     "lines": [
+      166
+     ],
+     "count": 1,
+     "origin": "1f60a41801",
+     "subject": "[compiler][eslint] Add donotuse flag for bailouts",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "'doesn't play well internally', no bug stated"
+  },
+  {
+   "culprit": "52c9c43735",
+   "culprit_subject": "[Flight] Emit Infinite Promise as a Halted Row (#30746)",
+   "fix": "0fa9476b9b",
+   "fix_subject": "[Flight] Revert Emit Infinite Promise as a Halted Row (#30746) (#30748)",
+   "fix_date": "2024-08-19",
+   "kind": "revert",
+   "ref": "52c9c43735d0d5ebb9cd5e2a47c174cb5a5a1713",
+   "fix_files": [
+    "packages/react-client/src/ReactFlightClient.js",
+    "packages/react-server/src/ReactFlightServer.js"
+   ],
+   "ms": 176,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-client/src/ReactFlightClient.js",
+     "lines": [
+      1197,
+      1199
+     ],
+     "count": 2,
+     "origin": "9a5b6bd84f",
+     "subject": "[Flight] Instrument the Console in the RSC Environment and Replay Logs on the Client (#28384)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-client/src/ReactFlightClient.js",
+     "lines": [
+      2641
+     ],
+     "count": 1,
+     "origin": "9d082b5500",
+     "subject": "[Flight] model halted references explicitly (#30731)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFlightServer.js",
+     "lines": [
+      1820,
+      3276
+     ],
+     "count": 2,
+     "origin": "9a5b6bd84f",
+     "subject": "[Flight] Instrument the Console in the RSC Environment and Replay Logs on the Client (#28384)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted as a design change ('just kidding')"
+  },
+  {
+   "culprit": "babe5a2f1b",
+   "culprit_subject": "www: remove dynamic feature flag enableSchedulingProfiler (#29994)",
+   "fix": "6ab67c35f1",
+   "fix_subject": "Revert \"www: remove dynamic feature flag enableSchedulingProfiler\" (#29995)",
+   "fix_date": "2024-06-20",
+   "kind": "revert-pr",
+   "ref": "#29994",
+   "fix_files": [
+    "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+    "packages/shared/forks/ReactFeatureFlags.www.js"
+   ],
+   "ms": 236,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+     "lines": [
+      43
+     ],
+     "count": 1,
+     "origin": "760d9ab57a",
+     "subject": "Scheduling profiler tweaks (#20215)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www.js",
+     "lines": [
+      63
+     ],
+     "count": 1,
+     "origin": "346c7d4c43",
+     "subject": "straightford explicit types (#25253)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www.js",
+     "lines": [
+      64
+     ],
+     "count": 1,
+     "origin": "760d9ab57a",
+     "subject": "Scheduling profiler tweaks (#20215)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "flag removal reverted with no stated bug"
+  },
+  {
+   "culprit": "fb9a90fa48",
+   "culprit_subject": "Set disableLegacyMode to true for www (#29871)",
+   "fix": "88959fd54a",
+   "fix_subject": "Revert \"Set disableLegacyMode to true for www\" (#29901)",
+   "fix_date": "2024-06-14",
+   "kind": "revert-pr",
+   "ref": "#29871",
+   "fix_files": [
+    "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+    "packages/shared/forks/ReactFeatureFlags.www.js"
+   ],
+   "ms": 89,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+     "lines": [
+      35
+     ],
+     "count": 1,
+     "origin": "142b2a8230",
+     "subject": "www: make disableLegacyMode dynamic flag (#29774)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www.js",
+     "lines": [
+      122,
+      123
+     ],
+     "count": 2,
+     "origin": "142b2a8230",
+     "subject": "www: make disableLegacyMode dynamic flag (#29774)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "flag flip reverted 'temporarily while we're investigating'"
+  },
+  {
+   "culprit": "ea24427d16",
+   "culprit_subject": "Support writing to this.refs from userspace (#28867)",
+   "fix": "f5ce642dee",
+   "fix_subject": "Revert \"Support writing to this.refs from userspace\" (#28877)",
+   "fix_date": "2024-04-19",
+   "kind": "revert-pr",
+   "ref": "#28867",
+   "fix_files": [
+    "packages/react-reconciler/src/ReactFiberClassComponent.js",
+    "packages/react/src/ReactBaseClasses.js"
+   ],
+   "ms": 353,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-reconciler/src/ReactFiberClassComponent.js",
+     "lines": [
+      822
+     ],
+     "count": 1,
+     "origin": "d65b88d031",
+     "subject": "Eagerly initialize an mutable object for instance.refs (#25696)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react/src/ReactBaseClasses.js",
+     "lines": [
+      11,
+      12,
+      13
+     ],
+     "count": 3,
+     "origin": "b1b3acbd6b",
+     "subject": "Inline fbjs/lib/emptyObject (#13055)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react/src/ReactBaseClasses.js",
+     "lines": [
+      23
+     ],
+     "count": 1,
+     "origin": "1224a203bb",
+     "subject": "Inject the update queue into classes",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react/src/ReactBaseClasses.js",
+     "lines": [
+      136
+     ],
+     "count": 1,
+     "origin": "c8fbdac227",
+     "subject": "Add React.PureComponent (#7195)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "'broke some tests' internally (#28877); the changed lines came from features (emptyObject, PureComponent, update queue)"
+  },
+  {
+   "culprit": "f24cf4a1af",
+   "culprit_subject": "Remove zoom from special cases list (#26631)",
+   "fix": "19c7c2929b",
+   "fix_subject": "Revert \"Remove zoom from special cases list\" (#28673)",
+   "fix_date": "2024-03-29",
+   "kind": "revert-pr",
+   "ref": "#26631",
+   "fix_files": [
+    "packages/react-dom-bindings/src/shared/isUnitlessNumber.js"
+   ],
+   "ms": 1,
+   "findings": [],
+   "removed_origins": [],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "CSS spec changed afterwards; not a bug when committed"
+  },
+  {
+   "culprit": "56e20051c3",
+   "culprit_subject": "Land enableClientRenderFallbackOnTextMismatch for www (#28538)",
+   "fix": "3e6bc7d2d7",
+   "fix_subject": "Revert \"Land enableClientRenderFallbackOnTextMismatch for www\" (#28548)",
+   "fix_date": "2024-03-12",
+   "kind": "revert-pr",
+   "ref": "#28538",
+   "fix_files": [
+    "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+    "packages/shared/forks/ReactFeatureFlags.www.js"
+   ],
+   "ms": 90,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+     "lines": [
+      32
+     ],
+     "count": 1,
+     "origin": "239d06e2b8",
+     "subject": "Make enableClientRenderFallbackOnText dynamic (#28436)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www.js",
+     "lines": [
+      41
+     ],
+     "count": 1,
+     "origin": "239d06e2b8",
+     "subject": "Make enableClientRenderFallbackOnText dynamic (#28436)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "flag rollout reverted for more experiments"
+  },
+  {
+   "culprit": "822386f252",
+   "culprit_subject": "Fix: Detect infinite update loops caused by render phase updates (#26625)",
+   "fix": "7f362de158",
+   "fix_subject": "Revert \"Fix: Detect infinite update loops caused by render phase updates (#26625)\" (#27027)",
+   "fix_date": "2023-06-30",
+   "kind": "revert",
+   "ref": "822386f252fd1f0e949efa904a1ed790133329f7",
+   "fix_files": [
+    "packages/react-reconciler/src/ReactFiberRootScheduler.js",
+    "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+    "scripts/jest/matchers/toWarnDev.js"
+   ],
+   "ms": 535,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      144,
+      145,
+      146,
+      1273
+     ],
+     "count": 4,
+     "origin": "93e078ddf2",
+     "subject": "Initial Lanes implementation (#18796)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "lines": [
+      2932
+     ],
+     "count": 1,
+     "origin": "fabef7a6b7",
+     "subject": "Resubmit Add HydrationSyncLane (#25878)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "scripts/jest/matchers/toWarnDev.js",
+     "lines": [
+      75
+     ],
+     "count": 1,
+     "origin": "20da1dae4b",
+     "subject": "Fix error logging in getDerivedStateFromProps (#15797)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "scripts/jest/matchers/toWarnDev.js",
+     "lines": [
+      77
+     ],
+     "count": 1,
+     "origin": "b2adcfba32",
+     "subject": "Don't suppress jsdom error reporting in our tests (#13401)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "'broke a number of tests when synced internally'; the changed lines are Lanes/hydration features, and one line from 20da1da 'Fix error logging in getDerivedStateFromProps' (sev 1) that the breakage is not tied to"
+  },
+  {
+   "culprit": "b2ae9ddb3b",
+   "culprit_subject": "Cleanup enableSyncDefaultUpdate flag (#26236)",
+   "fix": "da94e8b24a",
+   "fix_subject": "Revert \"Cleanup enableSyncDefaultUpdate flag (#26236)\" (#26528)",
+   "fix_date": "2023-04-04",
+   "kind": "revert",
+   "ref": "b2ae9ddb3b497d16a7c27c051da1827d08871138",
+   "fix_files": [
+    "packages/react-reconciler/src/ReactFiber.js",
+    "packages/shared/ReactFeatureFlags.js",
+    "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+    "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.native.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+    "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+    "packages/shared/forks/ReactFeatureFlags.www.js"
+   ],
+   "ms": 854,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-reconciler/src/ReactFiber.js",
+     "lines": [
+      36,
+      464,
+      466
+     ],
+     "count": 3,
+     "origin": "9e9dac6505",
+     "subject": "Add unstable_concurrentUpdatesByDefault (#21227)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/ReactFeatureFlags.js",
+     "lines": [
+      139
+     ],
+     "count": 1,
+     "origin": "933880b454",
+     "subject": "Make time-slicing opt-in (#21072)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+     "lines": [
+      70
+     ],
+     "count": 1,
+     "origin": "2d8d133e17",
+     "subject": "Turn on enableSyncDefaultUpdates everywhere (#21548)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+     "lines": [
+      61
+     ],
+     "count": 1,
+     "origin": "933880b454",
+     "subject": "Make time-slicing opt-in (#21072)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+     "lines": [
+      61
+     ],
+     "count": 1,
+     "origin": "933880b454",
+     "subject": "Make time-slicing opt-in (#21072)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.native.js",
+     "lines": [
+      60
+     ],
+     "count": 1,
+     "origin": "2d8d133e17",
+     "subject": "Turn on enableSyncDefaultUpdates everywhere (#21548)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+     "lines": [
+      61
+     ],
+     "count": 1,
+     "origin": "2d8d133e17",
+     "subject": "Turn on enableSyncDefaultUpdates everywhere (#21548)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.testing.js",
+     "lines": [
+      61
+     ],
+     "count": 1,
+     "origin": "933880b454",
+     "subject": "Make time-slicing opt-in (#21072)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.testing.www.js",
+     "lines": [
+      61
+     ],
+     "count": 1,
+     "origin": "933880b454",
+     "subject": "Make time-slicing opt-in (#21072)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+     "lines": [
+      24
+     ],
+     "count": 1,
+     "origin": "933880b454",
+     "subject": "Make time-slicing opt-in (#21072)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www.js",
+     "lines": [
+      31
+     ],
+     "count": 1,
+     "origin": "933880b454",
+     "subject": "Make time-slicing opt-in (#21072)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "flag cleanup reverted to keep test coverage, no bug"
+  },
+  {
+   "culprit": "645ae2686b",
+   "culprit_subject": "[react-www] remove forked bundle (#25831)",
+   "fix": "d4bc16a7d6",
+   "fix_subject": "Revert \"[react-www] remove forked bundle\" (#25837)",
+   "fix_date": "2022-12-06",
+   "kind": "revert-pr",
+   "ref": "#25831",
+   "fix_files": [
+    "dangerfile.js",
+    "scripts/rollup/bundles.js"
+   ],
+   "ms": 242,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "dangerfile.js",
+     "lines": [
+      49
+     ],
+     "count": 1,
+     "origin": "bbb2ba8c8d",
+     "subject": "sizebot: Combine stable and experimental results (#20753)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "scripts/rollup/bundles.js",
+     "lines": [
+      168,
+      169
+     ],
+     "count": 2,
+     "origin": "3e9251d605",
+     "subject": "make testing builds for React/ReactDOM (#17915)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "scripts/rollup/bundles.js",
+     "lines": [
+      170,
+      171,
+      174
+     ],
+     "count": 3,
+     "origin": "cd48a06547",
+     "subject": "Set up infra for react-reconciler fork (#18285)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "scripts/rollup/bundles.js",
+     "lines": [
+      172
+     ],
+     "count": 1,
+     "origin": "a724a3b578",
+     "subject": "[RFC] Codemod invariant -> throw new Error (#22435)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "scripts/rollup/bundles.js",
+     "lines": [
+      173
+     ],
+     "count": 1,
+     "origin": "4ba20579da",
+     "subject": "Scheduling Profiler: De-emphasize React internal frames (#22588)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "build fork removal reverted with no stated bug"
+  },
+  {
+   "culprit": "f31005d6ad",
+   "culprit_subject": "Add SyncHydrationLane (#25698)",
+   "fix": "c08d8b8041",
+   "fix_subject": "Revert \"Add SyncHydrationLane\" (#25708)",
+   "fix_date": "2022-11-18",
+   "kind": "revert-pr",
+   "ref": "#25698",
+   "fix_files": [
+    "packages/react-reconciler/src/ReactFiberLane.new.js",
+    "packages/react-reconciler/src/ReactFiberLane.old.js",
+    "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+    "packages/react-reconciler/src/ReactFiberWorkLoop.old.js"
+   ],
+   "ms": 711,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.new.js",
+     "lines": [
+      39
+     ],
+     "count": 1,
+     "origin": "93e078ddf2",
+     "subject": "Initial Lanes implementation (#18796)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.new.js",
+     "lines": [
+      41
+     ],
+     "count": 1,
+     "origin": "933880b454",
+     "subject": "Make time-slicing opt-in (#21072)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.new.js",
+     "lines": [
+      42,
+      45
+     ],
+     "count": 2,
+     "origin": "bafe912a5f",
+     "subject": "update types for InputContinuousLane and DefaultLane (#24316)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.new.js",
+     "lines": [
+      44,
+      47,
+      48,
+      49,
+      50
+     ],
+     "count": 26,
+     "origin": "a63f0953be",
+     "subject": "Delete SyncBatchedLane (#21061)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.new.js",
+     "lines": [
+      367
+     ],
+     "count": 1,
+     "origin": "77be527297",
+     "subject": "Remove LanePriority from computeExpirationTime (#21087)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.new.js",
+     "lines": [
+      462
+     ],
+     "count": 1,
+     "origin": "f7f7ed089e",
+     "subject": "Allow suspending in the shell during hydration (#23304)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.new.js",
+     "lines": [
+      778
+     ],
+     "count": 1,
+     "origin": "3221e8fba4",
+     "subject": "Remove LanePriority from getBumpedLaneForHydration (#21086)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.old.js",
+     "lines": [
+      39
+     ],
+     "count": 1,
+     "origin": "93e078ddf2",
+     "subject": "Initial Lanes implementation (#18796)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.old.js",
+     "lines": [
+      41
+     ],
+     "count": 1,
+     "origin": "933880b454",
+     "subject": "Make time-slicing opt-in (#21072)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.old.js",
+     "lines": [
+      42,
+      45
+     ],
+     "count": 2,
+     "origin": "bafe912a5f",
+     "subject": "update types for InputContinuousLane and DefaultLane (#24316)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.old.js",
+     "lines": [
+      44,
+      47,
+      48,
+      49,
+      50
+     ],
+     "count": 26,
+     "origin": "a63f0953be",
+     "subject": "Delete SyncBatchedLane (#21061)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.old.js",
+     "lines": [
+      367
+     ],
+     "count": 1,
+     "origin": "77be527297",
+     "subject": "Remove LanePriority from computeExpirationTime (#21087)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.old.js",
+     "lines": [
+      462
+     ],
+     "count": 1,
+     "origin": "f7f7ed089e",
+     "subject": "Allow suspending in the shell during hydration (#23304)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberLane.old.js",
+     "lines": [
+      778
+     ],
+     "count": 1,
+     "origin": "3221e8fba4",
+     "subject": "Remove LanePriority from getBumpedLaneForHydration (#21086)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+     "lines": [
+      144
+     ],
+     "count": 1,
+     "origin": "93e078ddf2",
+     "subject": "Initial Lanes implementation (#18796)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+     "lines": [
+      921
+     ],
+     "count": 1,
+     "origin": "dcd13045ef",
+     "subject": "Use Lane to track root callback priority (#21089)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+     "lines": [
+      939
+     ],
+     "count": 1,
+     "origin": "ef37d55b68",
+     "subject": "Use performConcurrentWorkOnRoot for \"sync default\" (#21322)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+     "lines": [
+      1483
+     ],
+     "count": 1,
+     "origin": "48740429b4",
+     "subject": "Expiration: Do nothing except disable time slicing (#21345)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+     "lines": [
+      2934,
+      2935
+     ],
+     "count": 2,
+     "origin": "bacc87068a",
+     "subject": "Re-land \"Flush discrete passive effects before paint (#21150)\"",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+     "lines": [
+      2942
+     ],
+     "count": 1,
+     "origin": "e6a0f27630",
+     "subject": "Profiler: Improve nested-update checks (#20299)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.old.js",
+     "lines": [
+      144
+     ],
+     "count": 1,
+     "origin": "8f05f2bd6d",
+     "subject": "Land Lanes implementation in old fork (#19108)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.old.js",
+     "lines": [
+      921
+     ],
+     "count": 1,
+     "origin": "dcd13045ef",
+     "subject": "Use Lane to track root callback priority (#21089)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.old.js",
+     "lines": [
+      939
+     ],
+     "count": 1,
+     "origin": "ef37d55b68",
+     "subject": "Use performConcurrentWorkOnRoot for \"sync default\" (#21322)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.old.js",
+     "lines": [
+      1483
+     ],
+     "count": 1,
+     "origin": "48740429b4",
+     "subject": "Expiration: Do nothing except disable time slicing (#21345)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.old.js",
+     "lines": [
+      2934,
+      2935
+     ],
+     "count": 2,
+     "origin": "bacc87068a",
+     "subject": "Re-land \"Flush discrete passive effects before paint (#21150)\"",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.old.js",
+     "lines": [
+      2942
+     ],
+     "count": 1,
+     "origin": "e6a0f27630",
+     "subject": "Profiler: Improve nested-update checks (#20299)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "new lane broke DevTools CI for older versions; new code"
+  },
+  {
+   "culprit": "401296310f",
+   "culprit_subject": "[Transition Tracing] Refactor Transition Tracing Root Code (#24766)",
+   "fix": "e61fd91f5c",
+   "fix_subject": "Revert \"[Transition Tracing] Refactor Transition Tracing Root Code (#24766)\" (#24829)",
+   "fix_date": "2022-06-30",
+   "kind": "revert",
+   "ref": "401296310fbc6a9e769936eda6a6d0269e9c84d0",
+   "fix_files": [
+    "packages/react-reconciler/src/ReactFiberBeginWork.new.js",
+    "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+    "packages/react-reconciler/src/ReactFiberCommitWork.new.js",
+    "packages/react-reconciler/src/ReactFiberCommitWork.old.js",
+    "packages/react-reconciler/src/ReactFiberCompleteWork.new.js",
+    "packages/react-reconciler/src/ReactFiberCompleteWork.old.js",
+    "packages/react-reconciler/src/ReactFiberOffscreenComponent.js",
+    "packages/react-reconciler/src/ReactFiberRoot.new.js",
+    "packages/react-reconciler/src/ReactFiberRoot.old.js",
+    "packages/react-reconciler/src/ReactFiberTracingMarkerComponent.new.js",
+    "packages/react-reconciler/src/ReactFiberTracingMarkerComponent.old.js",
+    "packages/react-reconciler/src/ReactFiberUnwindWork.new.js",
+    "packages/react-reconciler/src/ReactFiberUnwindWork.old.js",
+    "packages/react-reconciler/src/ReactInternalTypes.js"
+   ],
+   "ms": 949,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.new.js",
+     "lines": [
+      265,
+      266,
+      2101,
+      2104,
+      2191
+     ],
+     "count": 6,
+     "origin": "a4bed46969",
+     "subject": "[Transition Tracing] Add Tracing Markers (#24686)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.new.js",
+     "lines": [
+      782
+     ],
+     "count": 1,
+     "origin": "12a738f1a8",
+     "subject": "[Transition Tracing] Add Support for Multiple Transitions on Root (#24732)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.new.js",
+     "lines": [
+      912,
+      3697
+     ],
+     "count": 2,
+     "origin": "a8555c308e",
+     "subject": "[Transition Tracing] Add Tracing Marker Stack (#24661)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+     "lines": [
+      262,
+      263,
+      2117,
+      2120,
+      2203
+     ],
+     "count": 6,
+     "origin": "a4bed46969",
+     "subject": "[Transition Tracing] Add Tracing Markers (#24686)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+     "lines": [
+      787
+     ],
+     "count": 1,
+     "origin": "12a738f1a8",
+     "subject": "[Transition Tracing] Add Support for Multiple Transitions on Root (#24732)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+     "lines": [
+      912,
+      3705
+     ],
+     "count": 2,
+     "origin": "a8555c308e",
+     "subject": "[Transition Tracing] Add Tracing Marker Stack (#24661)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCommitWork.new.js",
+     "lines": [
+      2814,
+      2817,
+      2818,
+      2853,
+      2899
+     ],
+     "count": 8,
+     "origin": "cf665c4b73",
+     "subject": "[DevTools] Refactor incompleteTransitions field from Root Fiber memoized state to FiberRoot (#24765)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCommitWork.new.js",
+     "lines": [
+      2827,
+      2828,
+      2835,
+      2836,
+      2837
+     ],
+     "count": 12,
+     "origin": "12a738f1a8",
+     "subject": "[Transition Tracing] Add Support for Multiple Transitions on Root (#24732)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCommitWork.new.js",
+     "lines": [
+      2937,
+      2938,
+      2939,
+      2940,
+      2944
+     ],
+     "count": 5,
+     "origin": "a4bed46969",
+     "subject": "[Transition Tracing] Add Tracing Markers (#24686)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCommitWork.old.js",
+     "lines": [
+      2814,
+      2817,
+      2818,
+      2853,
+      2899
+     ],
+     "count": 8,
+     "origin": "cf665c4b73",
+     "subject": "[DevTools] Refactor incompleteTransitions field from Root Fiber memoized state to FiberRoot (#24765)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCommitWork.old.js",
+     "lines": [
+      2827,
+      2828,
+      2835,
+      2836,
+      2837
+     ],
+     "count": 12,
+     "origin": "12a738f1a8",
+     "subject": "[Transition Tracing] Add Support for Multiple Transitions on Root (#24732)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCommitWork.old.js",
+     "lines": [
+      2937,
+      2938,
+      2939,
+      2940,
+      2944
+     ],
+     "count": 5,
+     "origin": "a4bed46969",
+     "subject": "[Transition Tracing] Add Tracing Markers (#24686)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCompleteWork.new.js",
+     "lines": [
+      1582
+     ],
+     "count": 1,
+     "origin": "a8555c308e",
+     "subject": "[Transition Tracing] Add Tracing Marker Stack (#24661)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCompleteWork.old.js",
+     "lines": [
+      1582
+     ],
+     "count": 1,
+     "origin": "a8555c308e",
+     "subject": "[Transition Tracing] Add Tracing Marker Stack (#24661)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberOffscreenComponent.js",
+     "lines": [
+      42
+     ],
+     "count": 1,
+     "origin": "a4bed46969",
+     "subject": "[Transition Tracing] Add Tracing Markers (#24686)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberRoot.new.js",
+     "lines": [
+      101
+     ],
+     "count": 1,
+     "origin": "cf665c4b73",
+     "subject": "[DevTools] Refactor incompleteTransitions field from Root Fiber memoized state to FiberRoot (#24765)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberRoot.old.js",
+     "lines": [
+      101
+     ],
+     "count": 1,
+     "origin": "cf665c4b73",
+     "subject": "[DevTools] Refactor incompleteTransitions field from Root Fiber memoized state to FiberRoot (#24765)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberTracingMarkerComponent.new.js",
+     "lines": [
+      103,
+      105,
+      107,
+      108,
+      111
+     ],
+     "count": 10,
+     "origin": "a8555c308e",
+     "subject": "[Transition Tracing] Add Tracing Marker Stack (#24661)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberTracingMarkerComponent.old.js",
+     "lines": [
+      103,
+      105,
+      107,
+      108,
+      111
+     ],
+     "count": 10,
+     "origin": "a8555c308e",
+     "subject": "[Transition Tracing] Add Tracing Marker Stack (#24661)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberUnwindWork.new.js",
+     "lines": [
+      168,
+      236
+     ],
+     "count": 2,
+     "origin": "a8555c308e",
+     "subject": "[Transition Tracing] Add Tracing Marker Stack (#24661)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberUnwindWork.old.js",
+     "lines": [
+      165,
+      233
+     ],
+     "count": 2,
+     "origin": "a8555c308e",
+     "subject": "[Transition Tracing] Add Tracing Marker Stack (#24661)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactInternalTypes.js",
+     "lines": [
+      338
+     ],
+     "count": 1,
+     "origin": "12a738f1a8",
+     "subject": "[Transition Tracing] Add Support for Multiple Transitions on Root (#24732)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "refactor failing on main after a merge conflict; the changed lines came from Transition Tracing features"
+  },
+  {
+   "culprit": "327e4a1f96",
+   "culprit_subject": "[Follow-up] Land enableClientRenderFallbackOnTextMismatch",
+   "fix": "229c86af07",
+   "fix_subject": "Revert \"Land enableClientRenderFallbackOnTextMismatch\" (#24738)",
+   "fix_date": "2022-06-16",
+   "kind": "revert",
+   "ref": "327e4a1f96fbb874001b17684fbb073046a84938",
+   "fix_files": [
+    "packages/react-dom/src/client/ReactDOMComponent.js",
+    "packages/shared/ReactFeatureFlags.js",
+    "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+    "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.native.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+    "packages/shared/forks/ReactFeatureFlags.testing.js",
+    "packages/shared/forks/ReactFeatureFlags.testing.www.js",
+    "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+    "packages/shared/forks/ReactFeatureFlags.www.js"
+   ],
+   "ms": 651,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-dom/src/client/ReactDOMComponent.js",
+     "lines": [
+      75,
+      253
+     ],
+     "count": 2,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/ReactFeatureFlags.js",
+     "lines": [
+      35
+     ],
+     "count": 1,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+     "lines": [
+      54
+     ],
+     "count": 1,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+     "lines": [
+      44
+     ],
+     "count": 1,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+     "lines": [
+      44
+     ],
+     "count": 1,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.native.js",
+     "lines": [
+      53
+     ],
+     "count": 1,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+     "lines": [
+      44
+     ],
+     "count": 1,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.testing.js",
+     "lines": [
+      44
+     ],
+     "count": 1,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.testing.www.js",
+     "lines": [
+      44
+     ],
+     "count": 1,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+     "lines": [
+      29
+     ],
+     "count": 1,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www.js",
+     "lines": [
+      35
+     ],
+     "count": 1,
+     "origin": "ef23a9ee81",
+     "subject": "Flag for text hydration mismatch (#24107)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "flag shipped before the internal rollout, no bug"
+  },
+  {
+   "culprit": "f6c130f614",
+   "culprit_subject": "React DevTools 4.23.0 -> 4.24.0 (#23400)",
+   "fix": "82762bea55",
+   "fix_subject": "React DevTools 4.23.0 -> 4.24.0 (#24066)",
+   "fix_date": "2022-03-10",
+   "kind": "revert",
+   "ref": "f6c130f6145dbae5436625560f520957b5e27859",
+   "fix_files": [],
+   "ms": 385,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-devtools-core/package.json",
+     "lines": [
+      3
+     ],
+     "count": 1,
+     "origin": "e28a0db224",
+     "subject": "React DevTools 4.22.1 -> 4.23.0",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/chrome/manifest.json",
+     "lines": [
+      5,
+      6
+     ],
+     "count": 2,
+     "origin": "e28a0db224",
+     "subject": "React DevTools 4.22.1 -> 4.23.0",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/edge/manifest.json",
+     "lines": [
+      5,
+      6
+     ],
+     "count": 2,
+     "origin": "e28a0db224",
+     "subject": "React DevTools 4.22.1 -> 4.23.0",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/firefox/manifest.json",
+     "lines": [
+      5
+     ],
+     "count": 1,
+     "origin": "e28a0db224",
+     "subject": "React DevTools 4.22.1 -> 4.23.0",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-inline/package.json",
+     "lines": [
+      3
+     ],
+     "count": 1,
+     "origin": "e28a0db224",
+     "subject": "React DevTools 4.22.1 -> 4.23.0",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-timeline/package.json",
+     "lines": [
+      4
+     ],
+     "count": 1,
+     "origin": "e28a0db224",
+     "subject": "React DevTools 4.22.1 -> 4.23.0",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools/package.json",
+     "lines": [
+      3,
+      29
+     ],
+     "count": 2,
+     "origin": "e28a0db224",
+     "subject": "React DevTools 4.22.1 -> 4.23.0",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "scripts/devtools/prepare-release.js",
+     "lines": [
+      207
+     ],
+     "count": 1,
+     "origin": "b9964684bd",
+     "subject": "DevTools release script updates: (#22170)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "DevTools release bump redone"
+  },
+  {
+   "culprit": "8edeb787b0",
+   "culprit_subject": "Fix Node package.json ./ exports deprecation warning (#22783)",
+   "fix": "bddbfb86d8",
+   "fix_subject": "Revert \"Fix Node package.json ./ exports deprecation warning (#22783)\" (#22792)",
+   "fix_date": "2021-11-19",
+   "kind": "revert",
+   "ref": "8edeb787b001f1b989c812aad6ac04f9d67a41dc",
+   "fix_files": [
+    "packages/react/package.json"
+   ],
+   "ms": 44,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "package.json exports change 'broke builds on main'; new package config lines"
+  },
+  {
+   "culprit": "b72dc8e930",
+   "culprit_subject": "Only show DevTools warning about unrecognized build in Chrome (#22571)",
+   "fix": "26bc8ff9bf",
+   "fix_subject": "Revert logic for checking for duplicate installations of DevTools (#22638)",
+   "fix_date": "2021-10-27",
+   "kind": "revert",
+   "ref": "b72dc8e9300f5ae997f7f5cfcd79b604cca3df0c",
+   "fix_files": [
+    "packages/react-devtools-extensions/src/background.js",
+    "packages/react-devtools-extensions/src/checkForDuplicateInstallations.js",
+    "packages/react-devtools-extensions/src/constants.js",
+    "packages/react-devtools-extensions/src/contentScript.js",
+    "packages/react-devtools-extensions/src/injectGlobalHook.js",
+    "packages/react-devtools-extensions/src/main.js",
+    "packages/react-devtools-shared/src/devtools/views/DevTools.js",
+    "packages/react-devtools-shared/src/devtools/views/DuplicateInstallationDialog.js"
+   ],
+   "ms": 1,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "part of the duplicate-DevTools check the PR says 'seems' to cause #22636 (unconfirmed); new logic"
+  },
+  {
+   "culprit": "930c9e7eeb",
+   "culprit_subject": "Show warning in UI when duplicate installations of DevTools extension are detected (#22563)",
+   "fix": "26bc8ff9bf",
+   "fix_subject": "Revert logic for checking for duplicate installations of DevTools (#22638)",
+   "fix_date": "2021-10-27",
+   "kind": "revert",
+   "ref": "930c9e7eeb4c9721e1b8dee074c2eef4d1eae5dc",
+   "fix_files": [
+    "packages/react-devtools-extensions/src/background.js",
+    "packages/react-devtools-extensions/src/checkForDuplicateInstallations.js",
+    "packages/react-devtools-extensions/src/constants.js",
+    "packages/react-devtools-extensions/src/contentScript.js",
+    "packages/react-devtools-extensions/src/injectGlobalHook.js",
+    "packages/react-devtools-extensions/src/main.js",
+    "packages/react-devtools-shared/src/devtools/views/DevTools.js",
+    "packages/react-devtools-shared/src/devtools/views/DuplicateInstallationDialog.js"
+   ],
+   "ms": 1355,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-devtools-extensions/src/background.js",
+     "lines": [
+      123
+     ],
+     "count": 1,
+     "origin": "545d4c2de7",
+     "subject": "Prevent errors/crashing when multiple installs of DevTools are present (#22517)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/src/checkForDuplicateInstallations.js",
+     "lines": [
+      14,
+      20,
+      71,
+      73,
+      83
+     ],
+     "count": 7,
+     "origin": "545d4c2de7",
+     "subject": "Prevent errors/crashing when multiple installs of DevTools are present (#22517)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/src/constants.js",
+     "lines": [
+      14
+     ],
+     "count": 1,
+     "origin": "545d4c2de7",
+     "subject": "Prevent errors/crashing when multiple installs of DevTools are present (#22517)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "duplicate-DevTools check, 'seems' to cause #22636 (unconfirmed); its changed lines came from 545d4c2, itself part of the culprit logic"
+  },
+  {
+   "culprit": "545d4c2de7",
+   "culprit_subject": "Prevent errors/crashing when multiple installs of DevTools are present (#22517)",
+   "fix": "26bc8ff9bf",
+   "fix_subject": "Revert logic for checking for duplicate installations of DevTools (#22638)",
+   "fix_date": "2021-10-27",
+   "kind": "revert",
+   "ref": "545d4c2de7934a43b0c5d3ce050d77b4c3113bd3",
+   "fix_files": [
+    "packages/react-devtools-extensions/src/background.js",
+    "packages/react-devtools-extensions/src/checkForDuplicateInstallations.js",
+    "packages/react-devtools-extensions/src/constants.js",
+    "packages/react-devtools-extensions/src/contentScript.js",
+    "packages/react-devtools-extensions/src/injectGlobalHook.js",
+    "packages/react-devtools-extensions/src/main.js",
+    "packages/react-devtools-shared/src/devtools/views/DevTools.js",
+    "packages/react-devtools-shared/src/devtools/views/DuplicateInstallationDialog.js"
+   ],
+   "ms": 1617,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-devtools-extensions/package.json",
+     "lines": [
+      7
+     ],
+     "count": 1,
+     "origin": "c5c25d35a3",
+     "subject": "Fixed DevTools extension build:dev command (#18648)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/package.json",
+     "lines": [
+      10,
+      12
+     ],
+     "count": 2,
+     "origin": "30b8ef3756",
+     "subject": "Iterated on Webpack configs until I got the inline and shell packages seemingly working",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/package.json",
+     "lines": [
+      15
+     ],
+     "count": 1,
+     "origin": "d5ddc16a33",
+     "subject": "React developer tools extension for Microsoft Edge  (#18041)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/src/main.js",
+     "lines": [
+      163
+     ],
+     "count": 1,
+     "origin": "6a3de7a414",
+     "subject": "[DevTools] postMessage target origin needs to be '*' for local files (#16953)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "duplicate-DevTools check, 'seems' to cause #22636 (unconfirmed); changed a line from a postMessage feature fix (sev 0) not tied to the crash"
+  },
+  {
+   "culprit": "e9b2028b32",
+   "culprit_subject": "Show a soft error when a text string or number is supplied as a child to non text wrappers (#21953)",
+   "fix": "424fe58708",
+   "fix_subject": "Revert \"Show a soft error when a text string or number is supplied as a child to non text wrappers (#21953)\" (#22108)",
+   "fix_date": "2021-08-16",
+   "kind": "revert",
+   "ref": "e9b2028b3280c15138bd92b0d27ffa066de3d5ca",
+   "fix_files": [
+    "packages/react-native-renderer/src/ReactFabricHostConfig.js",
+    "packages/react-native-renderer/src/ReactNativeHostConfig.js"
+   ],
+   "ms": 1765,
+   "findings": [
+    {
+     "check": "forgot-related-file",
+     "path": "packages/react-native-renderer/src/ReactNativeHostConfig.js",
+     "line": null,
+     "evidence": [],
+     "near_fix": "fix-touched-file"
+    }
+   ],
+   "removed_origins": [
+    {
+     "path": "packages/react-native-renderer/src/ReactFabricHostConfig.js",
+     "lines": [
+      268
+     ],
+     "count": 1,
+     "origin": "c802d29bd1",
+     "subject": "Use HostContext to warn about invalid View/Text nesting (#12766)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-native-renderer/src/ReactFabricHostConfig.js",
+     "lines": [
+      269
+     ],
+     "count": 1,
+     "origin": "380dc95de8",
+     "subject": "Revert \"Append text string to <Text> error message (#19581)\" (#19723)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-native-renderer/src/ReactNativeHostConfig.js",
+     "lines": [
+      151
+     ],
+     "count": 1,
+     "origin": "c802d29bd1",
+     "subject": "Use HostContext to warn about invalid View/Text nesting (#12766)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-native-renderer/src/ReactNativeHostConfig.js",
+     "lines": [
+      152
+     ],
+     "count": 1,
+     "origin": "380dc95de8",
+     "subject": "Revert \"Append text string to <Text> error message (#19581)\" (#19723)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted to narrow the change to Fabric, no bug stated"
+  },
+  {
+   "culprit": "39f0074892",
+   "culprit_subject": "Make enableSuspenseLayoutEffectSemantics static for www (#21617)",
+   "fix": "c1536795ca",
+   "fix_subject": "Revert \"Make enableSuspenseLayoutEffectSemantics static for www (#21617)\" (#21656)",
+   "fix_date": "2021-06-10",
+   "kind": "revert",
+   "ref": "39f00748922cf40e06cd08d0c81f8b28fc8503fa",
+   "fix_files": [
+    "packages/shared/forks/ReactFeatureFlags.www.js"
+   ],
+   "ms": 48,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www.js",
+     "lines": [
+      29
+     ],
+     "count": 1,
+     "origin": "7c1ba2b57d",
+     "subject": "Proposed new Suspense layout effect semantics (#21079)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "flag made static before it was rolled out, no bug"
+  },
+  {
+   "culprit": "266c26ad45",
+   "culprit_subject": "Emit reactroot attribute on the first element we discover (#21154)",
+   "fix": "ad091759a9",
+   "fix_subject": "Revert \"Emit reactroot attribute on the first element we discover (#21154)\" (#21340)",
+   "fix_date": "2021-04-23",
+   "kind": "revert",
+   "ref": "266c26ad45c977ecf67e9359809c37da1489ca63",
+   "fix_files": [
+    "packages/react-dom/src/server/ReactDOMServerFormatConfig.js"
+   ],
+   "ms": 3,
+   "findings": [],
+   "removed_origins": [],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "data-reactroot emission 'wasn't quite equivalent' to the old renderer; new code"
+  },
+  {
+   "culprit": "1f8583de8c",
+   "culprit_subject": "Offscreen: Use JS stack to track hidden/unhidden subtree state (#21192)",
+   "fix": "e90c76a651",
+   "fix_subject": "Revert \"Offscreen: Use JS stack to track hidden/unhidden subtree state\" (#21194)",
+   "fix_date": "2021-04-07",
+   "kind": "revert",
+   "ref": "1f8583de8c5e69f27a871a2069dcb5aecac02f40",
+   "fix_files": [
+    "packages/react-reconciler/src/ReactFiberCommitWork.new.js",
+    "packages/react-reconciler/src/ReactFiberCommitWork.old.js"
+   ],
+   "ms": 141,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCommitWork.new.js",
+     "lines": [
+      159,
+      161,
+      2308,
+      2309,
+      2311
+     ],
+     "count": 18,
+     "origin": "7c1ba2b57d",
+     "subject": "Proposed new Suspense layout effect semantics (#21079)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCommitWork.old.js",
+     "lines": [
+      159,
+      161,
+      2308,
+      2309,
+      2311
+     ],
+     "count": 18,
+     "origin": "7c1ba2b57d",
+     "subject": "Proposed new Suspense layout effect semantics (#21079)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "reverted with no stated bug"
+  },
+  {
+   "culprit": "94fd1214d2",
+   "culprit_subject": "apply prettier (#21165)",
+   "fix": "c03197063d",
+   "fix_subject": "Revert \"apply prettier (#21165)\"",
+   "fix_date": "2021-04-01",
+   "kind": "revert",
+   "ref": "94fd1214d2054799485cdcca87a37d956a4240eb",
+   "fix_files": [
+    "packages/eslint-plugin-react-hooks/src/ExhaustiveDeps.js"
+   ],
+   "ms": 93,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/eslint-plugin-react-hooks/src/ExhaustiveDeps.js",
+     "lines": [
+      259
+     ],
+     "count": 1,
+     "origin": "a8500be893",
+     "subject": "Add `startTransition` as a known stable method (#19720)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/eslint-plugin-react-hooks/src/ExhaustiveDeps.js",
+     "lines": [
+      260
+     ],
+     "count": 1,
+     "origin": "b130a0f5cd",
+     "subject": "Remove redundant initial of isArray (#21163)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "formatting revert"
+  },
+  {
+   "culprit": "b130a0f5cd",
+   "culprit_subject": "Remove redundant initial of isArray (#21163)",
+   "fix": "b4f119cdf1",
+   "fix_subject": "Revert \"Remove redundant initial of isArray (#21163)\"",
+   "fix_date": "2021-04-01",
+   "kind": "revert",
+   "ref": "b130a0f5cd4f29a1c3147f66e10914c42847678a",
+   "fix_files": [
+    "packages/eslint-plugin-react-hooks/src/ExhaustiveDeps.js",
+    "packages/jest-react/src/JestReact.js",
+    "packages/react-devtools-shared/src/backend/renderer.js",
+    "packages/react-devtools-shared/src/backend/utils.js",
+    "packages/react-dom/src/client/ReactDOMSelect.js",
+    "packages/react-dom/src/client/ReactDOMTextarea.js",
+    "packages/react-dom/src/server/ReactDOMServerFormatConfig.js",
+    "packages/react-dom/src/server/ReactPartialRenderer.js",
+    "packages/react-dom/src/test-utils/ReactTestUtils.js",
+    "packages/react-native-renderer/src/ReactNativeAttributePayload.js",
+    "packages/react-native-renderer/src/legacy-events/EventPluginUtils.js",
+    "packages/react-native-renderer/src/legacy-events/accumulate.js",
+    "packages/react-native-renderer/src/legacy-events/accumulateInto.js",
+    "packages/react-noop-renderer/src/createReactNoop.js",
+    "packages/react-reconciler/src/ReactChildFiber.new.js",
+    "packages/react-reconciler/src/ReactChildFiber.old.js",
+    "packages/react-reconciler/src/ReactFiberClassComponent.new.js",
+    "packages/react-reconciler/src/ReactFiberClassComponent.old.js",
+    "packages/react-reconciler/src/ReactFiberReconciler.new.js",
+    "packages/react-reconciler/src/ReactFiberReconciler.old.js",
+    "packages/react-server-dom-relay/src/ReactFlightDOMRelayServerHostConfig.js",
+    "packages/react-server-native-relay/src/ReactFlightNativeRelayServerHostConfig.js",
+    "packages/react-server/src/ReactFizzServer.js",
+    "packages/react-server/src/ReactFlightServer.js",
+    "packages/react/src/ReactChildren.js",
+    "packages/react/src/ReactElementValidator.js",
+    "packages/react/src/jsx/ReactJSXElementValidator.js",
+    "packages/shared/isArray.js"
+   ],
+   "ms": 2291,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/eslint-plugin-react-hooks/src/ExhaustiveDeps.js",
+     "lines": [
+      160,
+      273
+     ],
+     "count": 2,
+     "origin": "fa5d4ee43b",
+     "subject": "[ESLint] Treat functions that don't capture anything as static (#14996)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/eslint-plugin-react-hooks/src/ExhaustiveDeps.js",
+     "lines": [
+      229,
+      258
+     ],
+     "count": 2,
+     "origin": "197703ecc7",
+     "subject": "[ESLint] Add more hints to lint messages (#15046)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/jest-react/src/JestReact.js",
+     "lines": [
+      45
+     ],
+     "count": 1,
+     "origin": "96bcae9d50",
+     "subject": "Jest + test renderer helpers for concurrent mode (#13751)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-shared/src/backend/renderer.js",
+     "lines": [
+      1140
+     ],
+     "count": 1,
+     "origin": "bb1b7951d1",
+     "subject": "fix: don't run effects if a render phase update results in unchanged deps (#20676)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-shared/src/backend/utils.js",
+     "lines": [
+      64,
+      87,
+      114
+     ],
+     "count": 3,
+     "origin": "a4212dcdce",
+     "subject": "Support editable props, state, and context values",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-shared/src/backend/utils.js",
+     "lines": [
+      66,
+      92
+     ],
+     "count": 2,
+     "origin": "50d9451f32",
+     "subject": "Improve DevTools editing interface (#19774)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMSelect.js",
+     "lines": [
+      48
+     ],
+     "count": 1,
+     "origin": "5bd2321ae3",
+     "subject": "Remove vars (#11780)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMSelect.js",
+     "lines": [
+      49,
+      56
+     ],
+     "count": 2,
+     "origin": "9c3e9fbb05",
+     "subject": "Fork ReactDOMComponent and the wrappers to Fiber",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMTextarea.js",
+     "lines": [
+      103
+     ],
+     "count": 1,
+     "origin": "9c3e9fbb05",
+     "subject": "Fork ReactDOMComponent and the wrappers to Fiber",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/server/ReactPartialRenderer.js",
+     "lines": [
+      1441,
+      1471,
+      1477,
+      1518
+     ],
+     "count": 4,
+     "origin": "8af729231b",
+     "subject": "Initial Stack-Free SSR Implementation (#9673)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/server/ReactPartialRenderer.js",
+     "lines": [
+      1470
+     ],
+     "count": 1,
+     "origin": "37e4329bc8",
+     "subject": "Remove vars (#11766)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/test-utils/ReactTestUtils.js",
+     "lines": [
+      100
+     ],
+     "count": 1,
+     "origin": "0072b59984",
+     "subject": "Improve scry() error message for bad first argument (#13351)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/test-utils/ReactTestUtils.js",
+     "lines": [
+      200
+     ],
+     "count": 1,
+     "origin": "e9c571acc6",
+     "subject": "Make ReactTestUtils.scryRenderedComponentWithClass find multiple classes",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/test-utils/ReactTestUtils.js",
+     "lines": [
+      368
+     ],
+     "count": 1,
+     "origin": "a3875663f6",
+     "subject": "React Event System: cleanup plugins + break out update batching logic (#18503)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-native-renderer/src/ReactNativeAttributePayload.js",
+     "lines": [
+      54,
+      166,
+      171,
+      181,
+      215
+     ],
+     "count": 6,
+     "origin": "f463b731ee",
+     "subject": "Copy files from the react-native repo",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-native-renderer/src/legacy-events/EventPluginUtils.js",
+     "lines": [
+      39,
+      46
+     ],
+     "count": 2,
+     "origin": "2decfe97dc",
+     "subject": "events: convert var to let/const (#11714)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-native-renderer/src/legacy-events/EventPluginUtils.js",
+     "lines": [
+      81,
+      109,
+      153
+     ],
+     "count": 3,
+     "origin": "75897c2dcd",
+     "subject": "Initial public release",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-native-renderer/src/legacy-events/accumulate.js",
+     "lines": [
+      34,
+      38
+     ],
+     "count": 2,
+     "origin": "1c71970431",
+     "subject": "[flow] annotate accumulate and accumulateInto",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-native-renderer/src/legacy-events/accumulateInto.js",
+     "lines": [
+      40,
+      41,
+      49
+     ],
+     "count": 3,
+     "origin": "1c71970431",
+     "subject": "[flow] annotate accumulate and accumulateInto",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-noop-renderer/src/createReactNoop.js",
+     "lines": [
+      607,
+      621,
+      671,
+      690
+     ],
+     "count": 4,
+     "origin": "dac9202a9c",
+     "subject": "Hide timed-out children instead of deleting them so their state is preserved (#13823)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberReconciler.new.js",
+     "lines": [
+      485,
+      513,
+      567
+     ],
+     "count": 3,
+     "origin": "17f582e045",
+     "subject": "Add forked copies of reconciler modules",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberReconciler.new.js",
+     "lines": [
+      487,
+      518
+     ],
+     "count": 2,
+     "origin": "50d9451f32",
+     "subject": "Improve DevTools editing interface (#19774)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberReconciler.old.js",
+     "lines": [
+      485,
+      513,
+      567
+     ],
+     "count": 3,
+     "origin": "cd48a06547",
+     "subject": "Set up infra for react-reconciler fork (#18285)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberReconciler.old.js",
+     "lines": [
+      487,
+      518
+     ],
+     "count": 2,
+     "origin": "50d9451f32",
+     "subject": "Improve DevTools editing interface (#19774)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server-dom-relay/src/ReactFlightDOMRelayServerHostConfig.js",
+     "lines": [
+      85
+     ],
+     "count": 1,
+     "origin": "99d7371863",
+     "subject": "[Flight] Split Streaming from Relay Implemenation (#18260)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-server-native-relay/src/ReactFlightNativeRelayServerHostConfig.js",
+     "lines": [
+      83
+     ],
+     "count": 1,
+     "origin": "c3e20f18fe",
+     "subject": "Add Relay specific React Native build of Flight (#20149)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-server/src/ReactFizzServer.js",
+     "lines": [
+      290
+     ],
+     "count": 1,
+     "origin": "1d1e49cfa4",
+     "subject": "[Fizz] Assign an ID to the first DOM element in a fallback or insert a dummy (and testing infra) (#21020)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react/src/ReactChildren.js",
+     "lines": [
+      113
+     ],
+     "count": 1,
+     "origin": "6013105a9c",
+     "subject": "Make React.Children.map do one pass only",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react/src/ReactChildren.js",
+     "lines": [
+      145
+     ],
+     "count": 1,
+     "origin": "240b84ed8e",
+     "subject": "Remove PooledClass from isomorphic build (#10227)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react/src/ReactElementValidator.js",
+     "lines": [
+      171
+     ],
+     "count": 1,
+     "origin": "505bc7595b",
+     "subject": "Fix up variable names and types to be correct",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "packages/react/src/ReactElementValidator.js",
+     "lines": [
+      316,
+      440
+     ],
+     "count": 2,
+     "origin": "9f848f8ebe",
+     "subject": "Update additional tests to use .toWarnDev() matcher (#11957)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react/src/ReactElementValidator.js",
+     "lines": [
+      355
+     ],
+     "count": 1,
+     "origin": "f512537754",
+     "subject": "Babel Transform JSX to React.jsx/React.jsxDEV Plugin (#16432)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react/src/jsx/ReactJSXElementValidator.js",
+     "lines": [
+      185,
+      332,
+      369
+     ],
+     "count": 3,
+     "origin": "90f8fe6f55",
+     "subject": "add jsx-runtime and jsx-dev-runtime (#18299)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "cleanup reverted with no stated bug"
+  },
+  {
+   "culprit": "553440bd15",
+   "culprit_subject": "Remove blocking mode and blocking root (#20888)",
+   "fix": "ee43263572",
+   "fix_subject": "Revert \"Remove blocking mode and blocking root (#20888)\" (#20916)",
+   "fix_date": "2021-03-02",
+   "kind": "revert",
+   "ref": "553440bd1578ef71982c4a10e2cc8c462f33d9be",
+   "fix_files": [
+    "packages/react-dom/index.classic.fb.js",
+    "packages/react-dom/index.experimental.js",
+    "packages/react-dom/index.js",
+    "packages/react-dom/index.modern.fb.js",
+    "packages/react-dom/src/client/ReactDOM.js",
+    "packages/react-dom/src/client/ReactDOMRoot.js",
+    "packages/react-noop-renderer/src/ReactNoop.js",
+    "packages/react-noop-renderer/src/ReactNoopPersistent.js",
+    "packages/react-noop-renderer/src/createReactNoop.js",
+    "packages/react-reconciler/src/ReactFiber.new.js",
+    "packages/react-reconciler/src/ReactFiber.old.js",
+    "packages/react-reconciler/src/ReactFiberBeginWork.new.js",
+    "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+    "packages/react-reconciler/src/ReactFiberCompleteWork.new.js",
+    "packages/react-reconciler/src/ReactFiberCompleteWork.old.js",
+    "packages/react-reconciler/src/ReactFiberHooks.new.js",
+    "packages/react-reconciler/src/ReactFiberHooks.old.js",
+    "packages/react-reconciler/src/ReactFiberRoot.new.js",
+    "packages/react-reconciler/src/ReactFiberRoot.old.js",
+    "packages/react-reconciler/src/ReactFiberThrow.new.js",
+    "packages/react-reconciler/src/ReactFiberThrow.old.js",
+    "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+    "packages/react-reconciler/src/ReactFiberWorkLoop.old.js",
+    "packages/react-reconciler/src/ReactRootTags.js",
+    "packages/react-reconciler/src/ReactTypeOfMode.js",
+    "packages/shared/ReactFeatureFlags.js"
+   ],
+   "ms": 2538,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-dom/index.classic.fb.js",
+     "lines": [
+      33
+     ],
+     "count": 1,
+     "origin": "60016c448b",
+     "subject": "Export React as Named Exports instead of CommonJS (#18106)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/index.classic.fb.js",
+     "lines": [
+      34
+     ],
+     "count": 1,
+     "origin": "fe7163e73d",
+     "subject": "Add unstable prefix to experimental APIs (#18825)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/index.experimental.js",
+     "lines": [
+      23
+     ],
+     "count": 1,
+     "origin": "fe7163e73d",
+     "subject": "Add unstable prefix to experimental APIs (#18825)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/index.js",
+     "lines": [
+      24,
+      25
+     ],
+     "count": 2,
+     "origin": "fe7163e73d",
+     "subject": "Add unstable prefix to experimental APIs (#18825)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/index.modern.fb.js",
+     "lines": [
+      18
+     ],
+     "count": 1,
+     "origin": "60016c448b",
+     "subject": "Export React as Named Exports instead of CommonJS (#18106)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/index.modern.fb.js",
+     "lines": [
+      19
+     ],
+     "count": 1,
+     "origin": "fe7163e73d",
+     "subject": "Add unstable prefix to experimental APIs (#18825)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOM.js",
+     "lines": [
+      204
+     ],
+     "count": 1,
+     "origin": "60016c448b",
+     "subject": "Export React as Named Exports instead of CommonJS (#18106)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMRoot.js",
+     "lines": [
+      55,
+      56,
+      58
+     ],
+     "count": 3,
+     "origin": "c5d2fc7127",
+     "subject": "Move some files out of /shared and rename to upper case (#18363)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMRoot.js",
+     "lines": [
+      64,
+      72,
+      172,
+      175,
+      181
+     ],
+     "count": 6,
+     "origin": "b8f8258775",
+     "subject": "Split ReactDOM entry point (#17331)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMRoot.js",
+     "lines": [
+      65,
+      173
+     ],
+     "count": 2,
+     "origin": "ccab494738",
+     "subject": "Move type DOMContainer to HostConfig (#18112)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMRoot.js",
+     "lines": [
+      66,
+      174,
+      180
+     ],
+     "count": 3,
+     "origin": "283ce53204",
+     "subject": "Add ReactDOM.unstable_createSyncRoot (#15504)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMRoot.js",
+     "lines": [
+      67
+     ],
+     "count": 1,
+     "origin": "c80678c760",
+     "subject": "Add \"hydrationOptions\" behind the enableSuspenseCallback flag (#16434)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMRoot.js",
+     "lines": [
+      69
+     ],
+     "count": 1,
+     "origin": "0a527707cd",
+     "subject": "Event Replaying (#16725)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMRoot.js",
+     "lines": [
+      102
+     ],
+     "count": 1,
+     "origin": "e26682a9f3",
+     "subject": "Removed Root API callback params and added warnings (#17916)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMRoot.js",
+     "lines": [
+      177
+     ],
+     "count": 1,
+     "origin": "8095ebaae7",
+     "subject": "[Fiber] Throw when attempting to unmount at an invalid node (#8688)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-dom/src/client/ReactDOMRoot.js",
+     "lines": [
+      178
+     ],
+     "count": 1,
+     "origin": "d364d8555f",
+     "subject": "Set up experimental builds (#17071)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-noop-renderer/src/ReactNoop.js",
+     "lines": [
+      26
+     ],
+     "count": 1,
+     "origin": "549e418830",
+     "subject": "Move remaining things to named exports (#18165)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-noop-renderer/src/ReactNoopPersistent.js",
+     "lines": [
+      26
+     ],
+     "count": 1,
+     "origin": "549e418830",
+     "subject": "Move remaining things to named exports (#18165)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-noop-renderer/src/createReactNoop.js",
+     "lines": [
+      25,
+      26,
+      28
+     ],
+     "count": 3,
+     "origin": "c5d2fc7127",
+     "subject": "Move some files out of /shared and rename to upper case (#18363)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-noop-renderer/src/createReactNoop.js",
+     "lines": [
+      759
+     ],
+     "count": 1,
+     "origin": "f6b8d31a76",
+     "subject": "Rename createSyncRoot to createBlockingRoot (#17165)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-noop-renderer/src/createReactNoop.js",
+     "lines": [
+      760,
+      761,
+      762,
+      763,
+      765
+     ],
+     "count": 12,
+     "origin": "862f499fac",
+     "subject": "Add Batched Mode (#15502)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-noop-renderer/src/createReactNoop.js",
+     "lines": [
+      767
+     ],
+     "count": 1,
+     "origin": "b8f8258775",
+     "subject": "Split ReactDOM entry point (#17331)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiber.new.js",
+     "lines": [
+      71,
+      447
+     ],
+     "count": 2,
+     "origin": "17f582e045",
+     "subject": "Add forked copies of reconciler modules",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiber.new.js",
+     "lines": [
+      430,
+      431,
+      432,
+      433,
+      435
+     ],
+     "count": 11,
+     "origin": "9209c30ff9",
+     "subject": "Add StrictMode level prop and createRoot unstable_strictModeLevel option (#20849)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiber.old.js",
+     "lines": [
+      71
+     ],
+     "count": 1,
+     "origin": "f6b8d31a76",
+     "subject": "Rename createSyncRoot to createBlockingRoot (#17165)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiber.old.js",
+     "lines": [
+      430,
+      431,
+      432,
+      433,
+      435
+     ],
+     "count": 11,
+     "origin": "9209c30ff9",
+     "subject": "Add StrictMode level prop and createRoot unstable_strictModeLevel option (#20849)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiber.old.js",
+     "lines": [
+      447
+     ],
+     "count": 1,
+     "origin": "b8f8258775",
+     "subject": "Split ReactDOM entry point (#17331)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.new.js",
+     "lines": [
+      129,
+      2192,
+      2355,
+      2371,
+      2376
+     ],
+     "count": 7,
+     "origin": "17f582e045",
+     "subject": "Add forked copies of reconciler modules",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.new.js",
+     "lines": [
+      2120
+     ],
+     "count": 1,
+     "origin": "1df756ba2c",
+     "subject": "Always wrap Suspense children in fragment (#18711)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.new.js",
+     "lines": [
+      2233
+     ],
+     "count": 1,
+     "origin": "6ba25b96df",
+     "subject": "Bugfix: Legacy Mode + DevTools \"force fallback\" (#19164)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+     "lines": [
+      129,
+      2192,
+      2371,
+      2376,
+      2429
+     ],
+     "count": 6,
+     "origin": "f6b8d31a76",
+     "subject": "Rename createSyncRoot to createBlockingRoot (#17165)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+     "lines": [
+      2120
+     ],
+     "count": 1,
+     "origin": "1df756ba2c",
+     "subject": "Always wrap Suspense children in fragment (#18711)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+     "lines": [
+      2233
+     ],
+     "count": 1,
+     "origin": "6ba25b96df",
+     "subject": "Bugfix: Legacy Mode + DevTools \"force fallback\" (#19164)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+     "lines": [
+      2355
+     ],
+     "count": 1,
+     "origin": "9d67847f7b",
+     "subject": "[Bugfix] Dropped updates inside a suspended tree (#18384)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCompleteWork.new.js",
+     "lines": [
+      60,
+      62,
+      63
+     ],
+     "count": 3,
+     "origin": "b66ae09b6e",
+     "subject": "Track subtreeFlags et al with bubbleProperties",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCompleteWork.new.js",
+     "lines": [
+      1067
+     ],
+     "count": 1,
+     "origin": "17f582e045",
+     "subject": "Add forked copies of reconciler modules",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCompleteWork.old.js",
+     "lines": [
+      60,
+      62,
+      63
+     ],
+     "count": 3,
+     "origin": "b66ae09b6e",
+     "subject": "Track subtreeFlags et al with bubbleProperties",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberCompleteWork.old.js",
+     "lines": [
+      1067
+     ],
+     "count": 1,
+     "origin": "f6b8d31a76",
+     "subject": "Rename createSyncRoot to createBlockingRoot (#17165)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberHooks.new.js",
+     "lines": [
+      37
+     ],
+     "count": 1,
+     "origin": "3957853ae5",
+     "subject": "Re-add \"strict effects mode\" for legacy roots only (#20639)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberHooks.new.js",
+     "lines": [
+      1832
+     ],
+     "count": 1,
+     "origin": "17f582e045",
+     "subject": "Add forked copies of reconciler modules",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberHooks.old.js",
+     "lines": [
+      37
+     ],
+     "count": 1,
+     "origin": "3957853ae5",
+     "subject": "Re-add \"strict effects mode\" for legacy roots only (#20639)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberHooks.old.js",
+     "lines": [
+      1832
+     ],
+     "count": 1,
+     "origin": "3278d24218",
+     "subject": "Add useOpaqueIdentifier Hook (#17322)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberRoot.new.js",
+     "lines": [
+      76,
+      77
+     ],
+     "count": 2,
+     "origin": "aefb97e6bb",
+     "subject": "DevTools: Add root and renderer version to inspected props panel (#18963)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberRoot.old.js",
+     "lines": [
+      76,
+      77
+     ],
+     "count": 2,
+     "origin": "aefb97e6bb",
+     "subject": "DevTools: Add root and renderer version to inspected props panel (#18963)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberThrow.new.js",
+     "lines": [
+      217
+     ],
+     "count": 1,
+     "origin": "efc57e5cbb",
+     "subject": "Add built-in Suspense cache with support for invalidation (refreshing) (#20456)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberThrow.new.js",
+     "lines": [
+      272
+     ],
+     "count": 1,
+     "origin": "5711811da1",
+     "subject": "Reconcile element types of lazy component yielding the same type (#20357)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberThrow.old.js",
+     "lines": [
+      217
+     ],
+     "count": 1,
+     "origin": "efc57e5cbb",
+     "subject": "Add built-in Suspense cache with support for invalidation (refreshing) (#20456)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberThrow.old.js",
+     "lines": [
+      272
+     ],
+     "count": 1,
+     "origin": "5711811da1",
+     "subject": "Reconcile element types of lazy component yielding the same type (#20357)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+     "lines": [
+      109,
+      395,
+      486,
+      3007
+     ],
+     "count": 4,
+     "origin": "17f582e045",
+     "subject": "Add forked copies of reconciler modules",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+     "lines": [
+      680
+     ],
+     "count": 1,
+     "origin": "f15f8f64bb",
+     "subject": "Store interleaved updates on separate queue until end of render (#20615)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
+     "lines": [
+      2628
+     ],
+     "count": 1,
+     "origin": "55f5cdee01",
+     "subject": "Disable setState before mount in legacy mode (#18851)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.old.js",
+     "lines": [
+      109,
+      395,
+      486,
+      3007
+     ],
+     "count": 4,
+     "origin": "f6b8d31a76",
+     "subject": "Rename createSyncRoot to createBlockingRoot (#17165)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.old.js",
+     "lines": [
+      680
+     ],
+     "count": 1,
+     "origin": "7cb9fd7ef8",
+     "subject": "Land interleaved updates change in main fork (#20710)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.old.js",
+     "lines": [
+      2628
+     ],
+     "count": 1,
+     "origin": "55f5cdee01",
+     "subject": "Disable setState before mount in legacy mode (#18851)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactRootTags.js",
+     "lines": [
+      10,
+      14
+     ],
+     "count": 2,
+     "origin": "862f499fac",
+     "subject": "Add Batched Mode (#15502)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactRootTags.js",
+     "lines": [
+      13
+     ],
+     "count": 1,
+     "origin": "b8f8258775",
+     "subject": "Split ReactDOM entry point (#17331)",
+     "severity": 0,
+     "refactor": true
+    },
+    {
+     "path": "packages/react-reconciler/src/ReactTypeOfMode.js",
+     "lines": [
+      14,
+      15,
+      16,
+      17,
+      18
+     ],
+     "count": 6,
+     "origin": "9209c30ff9",
+     "subject": "Add StrictMode level prop and createRoot unstable_strictModeLevel option (#20849)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "removed an API still 'used in one place in www'; the removed lines came from export features"
+  },
+  {
+   "culprit": "a99bf5c5f4",
+   "culprit_subject": "DevTools: Improve browser extension iframe support (#19854)",
+   "fix": "461cd84944",
+   "fix_subject": "Revert \"DevTools: Improve browser extension iframe support (#19854)\" (#19959)",
+   "fix_date": "2020-10-05",
+   "kind": "revert",
+   "ref": "a99bf5c5f4840c558f5e5923fcbe4ad6cb8ade98",
+   "fix_files": [
+    "fixtures/devtools/iframe/iframe-in-component.html",
+    "fixtures/devtools/iframe/iframe-other-origin.html",
+    "fixtures/devtools/iframe/iframe-same-origin-sandbox.html",
+    "fixtures/devtools/iframe/iframe-same-origin.html",
+    "fixtures/devtools/iframe/index.html",
+    "fixtures/devtools/iframe/main.html",
+    "fixtures/devtools/iframe/server.js",
+    "fixtures/devtools/regression/14.9.html",
+    "fixtures/devtools/regression/15.0.html",
+    "fixtures/devtools/regression/15.1.html",
+    "fixtures/devtools/regression/15.2.html",
+    "fixtures/devtools/regression/15.3.html",
+    "fixtures/devtools/regression/15.4.html",
+    "fixtures/devtools/regression/15.5.html",
+    "fixtures/devtools/regression/15.6.html",
+    "fixtures/devtools/regression/16.0.html",
+    "fixtures/devtools/regression/16.1.html",
+    "fixtures/devtools/regression/16.2.html",
+    "fixtures/devtools/regression/16.3.html",
+    "fixtures/devtools/regression/16.4.html",
+    "fixtures/devtools/regression/16.5.html",
+    "fixtures/devtools/regression/16.6.html",
+    "fixtures/devtools/regression/16.7.html",
+    "fixtures/devtools/regression/canary.html",
+    "fixtures/devtools/regression/next.html",
+    "packages/react-devtools-extensions/chrome/manifest.json",
+    "packages/react-devtools-extensions/edge/manifest.json",
+    "packages/react-devtools-extensions/firefox/manifest.json",
+    "packages/react-devtools-shared/src/hook.js"
+   ],
+   "ms": 1532,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "fixtures/devtools/regression/14.9.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.0.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.1.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.2.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.3.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.4.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.5.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.6.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.0.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.1.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.2.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.3.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.4.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.5.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.6.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.7.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/canary.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/next.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/chrome/manifest.json",
+     "lines": [
+      56
+     ],
+     "count": 1,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/edge/manifest.json",
+     "lines": [
+      56
+     ],
+     "count": 1,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/firefox/manifest.json",
+     "lines": [
+      60
+     ],
+     "count": 1,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-shared/src/hook.js",
+     "lines": [
+      285
+     ],
+     "count": 1,
+     "origin": "26857ecfa9",
+     "subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "extension crashed after this change (#19959); the changed lines came from the previous attempt's revert"
+  },
+  {
+   "culprit": "ec39a5e901",
+   "culprit_subject": "DevTools: Improve browser extension iframe support (#19827)",
+   "fix": "26857ecfa9",
+   "fix_subject": "Revert \"DevTools: Improve browser extension iframe support (#19827)\" (#19852)",
+   "fix_date": "2020-09-17",
+   "kind": "revert",
+   "ref": "ec39a5e9017dfa2c3311bc2b74a4d535ea2630a2",
+   "fix_files": [
+    "fixtures/devtools/iframe/iframe-in-component.html",
+    "fixtures/devtools/iframe/iframe-other-origin.html",
+    "fixtures/devtools/iframe/iframe-same-origin-sandbox.html",
+    "fixtures/devtools/iframe/iframe-same-origin.html",
+    "fixtures/devtools/iframe/index.html",
+    "fixtures/devtools/iframe/main.html",
+    "fixtures/devtools/iframe/server.js",
+    "fixtures/devtools/regression/14.9.html",
+    "fixtures/devtools/regression/15.0.html",
+    "fixtures/devtools/regression/15.1.html",
+    "fixtures/devtools/regression/15.2.html",
+    "fixtures/devtools/regression/15.3.html",
+    "fixtures/devtools/regression/15.4.html",
+    "fixtures/devtools/regression/15.5.html",
+    "fixtures/devtools/regression/15.6.html",
+    "fixtures/devtools/regression/16.0.html",
+    "fixtures/devtools/regression/16.1.html",
+    "fixtures/devtools/regression/16.2.html",
+    "fixtures/devtools/regression/16.3.html",
+    "fixtures/devtools/regression/16.4.html",
+    "fixtures/devtools/regression/16.5.html",
+    "fixtures/devtools/regression/16.6.html",
+    "fixtures/devtools/regression/16.7.html",
+    "fixtures/devtools/regression/canary.html",
+    "fixtures/devtools/regression/next.html",
+    "packages/react-devtools-extensions/chrome/manifest.json",
+    "packages/react-devtools-extensions/edge/manifest.json",
+    "packages/react-devtools-extensions/firefox/manifest.json",
+    "packages/react-devtools-shared/src/hook.js"
+   ],
+   "ms": 1960,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "fixtures/devtools/regression/14.9.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.0.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.1.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.2.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.3.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.4.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.5.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/15.6.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.0.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.1.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.2.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.3.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.4.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.5.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.6.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/16.7.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/canary.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "fixtures/devtools/regression/next.html",
+     "lines": [
+      8,
+      11
+     ],
+     "count": 2,
+     "origin": "7ab93402a8",
+     "subject": "Initial support for v15+ via new legaacy renderer",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/chrome/manifest.json",
+     "lines": [
+      49
+     ],
+     "count": 1,
+     "origin": "d57ec69561",
+     "subject": "Added initial Chrome/Firefox shells",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/edge/manifest.json",
+     "lines": [
+      49
+     ],
+     "count": 1,
+     "origin": "d5ddc16a33",
+     "subject": "React developer tools extension for Microsoft Edge  (#18041)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-extensions/firefox/manifest.json",
+     "lines": [
+      53
+     ],
+     "count": 1,
+     "origin": "d57ec69561",
+     "subject": "Added initial Chrome/Firefox shells",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-devtools-shared/src/hook.js",
+     "lines": [
+      285
+     ],
+     "count": 1,
+     "origin": "8cd8b29015",
+     "subject": "Added support for editable hook values (pending facebook/react/pull/14906)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "'broke the development test harness' (#19852); the changed lines came from a feature"
+  },
+  {
+   "culprit": "1a41a196bc",
+   "culprit_subject": "Append text string to <Text> error message (#19581)",
+   "fix": "380dc95de8",
+   "fix_subject": "Revert \"Append text string to <Text> error message (#19581)\" (#19723)",
+   "fix_date": "2020-08-28",
+   "kind": "revert",
+   "ref": "1a41a196bcb30d456d1692c4a40cb8273fa2cb92",
+   "fix_files": [
+    "packages/react-native-renderer/src/ReactFabricHostConfig.js",
+    "packages/react-native-renderer/src/ReactNativeHostConfig.js"
+   ],
+   "ms": 295,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-native-renderer/src/ReactFabricHostConfig.js",
+     "lines": [
+      247
+     ],
+     "count": 1,
+     "origin": "c802d29bd1",
+     "subject": "Use HostContext to warn about invalid View/Text nesting (#12766)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/react-native-renderer/src/ReactNativeHostConfig.js",
+     "lines": [
+      149
+     ],
+     "count": 1,
+     "origin": "c802d29bd1",
+     "subject": "Use HostContext to warn about invalid View/Text nesting (#12766)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "scripts/error-codes/codes.json",
+     "lines": [
+      257
+     ],
+     "count": 1,
+     "origin": "30b47103d4",
+     "subject": "Fix spelling errors and typos (#19138)",
+     "severity": 1,
+     "refactor": false
+    },
+    {
+     "path": "scripts/error-codes/codes.json",
+     "lines": [
+      364
+     ],
+     "count": 1,
+     "origin": "4eb9b1d2b4",
+     "subject": "Refactor createEventHandle signature (#19174)",
+     "severity": 0,
+     "refactor": true
+    }
+   ],
+   "bug": true,
+   "verdict": "miss-outside",
+   "note": "logged user-supplied text in an error (security concern, #19723); a message change on a feature line"
+  },
+  {
+   "culprit": "e9721e14e4",
+   "culprit_subject": "Remove onScroll bubbling flag (#19535)",
+   "fix": "64ddef44c6",
+   "fix_subject": "Revert \"Remove onScroll bubbling flag (#19535)\" (#19655)",
+   "fix_date": "2020-08-19",
+   "kind": "revert",
+   "ref": "e9721e14e4b8776c107afa3cdd7c6d664fe20c24",
+   "fix_files": [
+    "packages/react-dom/src/events/plugins/SimpleEventPlugin.js",
+    "packages/shared/ReactFeatureFlags.js",
+    "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+    "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+    "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+    "packages/shared/forks/ReactFeatureFlags.testing.js",
+    "packages/shared/forks/ReactFeatureFlags.testing.www.js",
+    "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+    "packages/shared/forks/ReactFeatureFlags.www.js"
+   ],
+   "ms": 479,
+   "findings": [],
+   "removed_origins": [
+    {
+     "path": "packages/react-dom/src/events/plugins/SimpleEventPlugin.js",
+     "lines": [
+      51,
+      52,
+      53,
+      180,
+      181
+     ],
+     "count": 6,
+     "origin": "06d104e8ec",
+     "subject": "Don't emulate bubbling of the scroll event (#19464)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/ReactFeatureFlags.js",
+     "lines": [
+      129
+     ],
+     "count": 1,
+     "origin": "3d0895557a",
+     "subject": "Disable onScroll bubbling statically except for WWW (#19503)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.native-fb.js",
+     "lines": [
+      47
+     ],
+     "count": 1,
+     "origin": "3d0895557a",
+     "subject": "Disable onScroll bubbling statically except for WWW (#19503)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.native-oss.js",
+     "lines": [
+      46
+     ],
+     "count": 1,
+     "origin": "3d0895557a",
+     "subject": "Disable onScroll bubbling statically except for WWW (#19503)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.js",
+     "lines": [
+      46
+     ],
+     "count": 1,
+     "origin": "3d0895557a",
+     "subject": "Disable onScroll bubbling statically except for WWW (#19503)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
+     "lines": [
+      46
+     ],
+     "count": 1,
+     "origin": "3d0895557a",
+     "subject": "Disable onScroll bubbling statically except for WWW (#19503)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.testing.js",
+     "lines": [
+      46
+     ],
+     "count": 1,
+     "origin": "3d0895557a",
+     "subject": "Disable onScroll bubbling statically except for WWW (#19503)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.testing.www.js",
+     "lines": [
+      46
+     ],
+     "count": 1,
+     "origin": "3d0895557a",
+     "subject": "Disable onScroll bubbling statically except for WWW (#19503)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
+     "lines": [
+      21
+     ],
+     "count": 1,
+     "origin": "06d104e8ec",
+     "subject": "Don't emulate bubbling of the scroll event (#19464)",
+     "severity": 0,
+     "refactor": false
+    },
+    {
+     "path": "packages/shared/forks/ReactFeatureFlags.www.js",
+     "lines": [
+      30
+     ],
+     "count": 1,
+     "origin": "06d104e8ec",
+     "subject": "Don't emulate bubbling of the scroll event (#19464)",
+     "severity": 0,
+     "refactor": false
+    }
+   ],
+   "bug": false,
+   "verdict": "miss-outside",
+   "note": "flag removal reverted for temporary internal testing"
+  }
+ ]
+}
