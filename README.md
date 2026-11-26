@@ -22,7 +22,19 @@ It runs locally, needs no account or AI, and stays quiet unless the history give
 
 *A real run on Flask. Plain `git blame` points to a 2023 commit that only moved this line; Blot traces past it to the 2020 fix that explains it. (Regenerate with `python assets/demo/make_demo.py`.)*
 
-> **Status:** pre-alpha. Milestones M1 and M2 are done: `blot index` builds the history index (Flask's 3,800 commits in ~2 s), `blot install-hook` wires up git, and `blot check` runs the three checks. On Flask it traces an edit to `self_ref = weakref.ref(self)` past the 2023 file split to the 2020 fix, in under 500 ms. Replayed on the last 500 commits of Flask, requests, Express, Django and React, it warns on 0.6–9.5% of commits, and about half of its warnings (57 of 109, each labelled by hand) are worth a reviewer's time; see [bench/RESULTS.md](bench/RESULTS.md). Roadmap: [PRD](docs/PRD.md#12-milestones-4-weeks-part-time).
+> **Status:** alpha. The checks, `why`, `map`, the agent guard and the MCP server all work and are tested live; a check takes about 500 ms on Flask. Measured on the last 500 commits of Flask, requests, Express, Django and React, it warns on 0.6–11% of commits, and 69 of its 124 warnings (56%, each labelled by hand) were worth a reviewer's time. Numbers and method: [bench/RESULTS.md](bench/RESULTS.md).
+
+## What Blot catches, and what it doesn't
+
+Blot catches one kind of regression well: **a change that undoes or breaks an earlier bug fix**. Replayed
+on 71 real regressions from the same five repos (commits that a later fix or revert named as the culprit),
+it warned on the right code before 11 of them were committed. Most regressions are a different kind:
+a bug in brand-new code, or in code that never came from a fix. Blot can't see those, so it caught 11 of the
+25 regressions of its kind (44%), and 15% of all of them.
+
+So treat Blot as a reviewer who remembers your project's bug history, not as a bug finder. It stays
+quiet about most changes, and when it speaks, it tells you which earlier fix to check. Details:
+[recall on real regressions](bench/RESULTS.md#recall-real-regressions-measured-2026-11-25).
 
 ## Meet Sora
 

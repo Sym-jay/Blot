@@ -187,6 +187,26 @@ Two narrower leads came out of this, both unmeasured: let the refactor hop match
 (Black's trailing commas, as in `025589ee`), and follow renamed attributes (`self.session` →
 `self._session`).
 
+### Tried and dropped: a per-commit warning budget (2026-11-25)
+
+Idea: show at most N warnings per commit, ranked by strength (strong defect or CVE wording first, then
+a linked issue), to bring Django under 1 warning per 10 commits. Simulated on the labelled replays
+(after #45), with no new runs:
+
+| Budget | Precision | Django, warnings / 10 commits | Useful warnings hidden |
+|---|---|---|---|
+| none | 69/124 (55.6%) | 1.43 | 0 |
+| 3 | 68/114 (59.6%) | 1.37 | 1 |
+| 2 | 65/107 (60.7%) | 1.31 | 4 |
+| 1 | 55/89 (61.8%) | 1.09 | 14 |
+
+It doesn't fix the volume: 71 of the 89 commits that warn have a single warning, so Django's rate
+comes from many commits warning once (a Django fix often touches an earlier fix, and 69% of those
+warnings are useful). It also hides useful warnings, because the ranking can't tell them apart: at a
+budget of 2, a requests commit would show two noise warnings and hide its one useful one. The
+precision gain is only noise from a few huge commits being cut. Not kept. If anything, long lists
+could be collapsed in the output ("+4 more") without dropping a warning.
+
 ## Recall: real regressions (measured 2026-11-25)
 
 Precision asks "when Blot warns, is it worth reading?". Recall asks the other half: **of the commits
