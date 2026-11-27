@@ -931,6 +931,36 @@
    "cited": "96aca5f",
    "verdict": "useful",
    "reason": "changes the ping callbacks in the stack-overflow fix #30419"
+  },
+  {
+   "sha": "01c4d03d8",
+   "subject": "[DevTools] Clear element inspection if host element not owned by any renderer is selected (#35504)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-shared/src/backend/agent.js",
+   "line": 941,
+   "cited": "f963c80",
+   "verdict": "noise",
+   "reason": "--github replay: cited commit is a feature (\"Implement best renderer\") a label promoted"
+  },
+  {
+   "sha": "c0060cf2a",
+   "subject": "[DevTools] Enable support for the React DevTools Client to connect to different host/port/path  (#35886)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools/app.html",
+   "line": 161,
+   "cited": "aef9303",
+   "verdict": "noise",
+   "reason": "--github replay: destructuring extended with new fields; cited commit is an upgrade"
+  },
+  {
+   "sha": "aac12ce59",
+   "subject": "[DevTools] chore: extract pure functions from fiber/renderer.js (#35924)",
+   "check": "removed-fix",
+   "path": "packages/react-devtools-shared/src/backend/fiber/renderer.js",
+   "line": 4535,
+   "cited": "24f215c",
+   "verdict": "noise",
+   "reason": "--github replay: a refactor passes a new leading argument to the fix's call"
   }
  ]
 }

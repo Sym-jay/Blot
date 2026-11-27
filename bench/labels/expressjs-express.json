@@ -241,6 +241,36 @@
    "cited": "d2de128",
    "verdict": "noise",
    "reason": "dev dependency bump; cited commit was a deps bump"
+  },
+  {
+   "sha": "3bb6d96ba",
+   "subject": "examples: demonstrate sub directory download",
+   "check": "removed-fix",
+   "path": "examples/downloads/index.js",
+   "line": 13,
+   "cited": "e606d99",
+   "verdict": "noise",
+   "reason": "--github replay: an example page's link list changed; cited fix (Unicode filenames) untouched"
+  },
+  {
+   "sha": "da4d763ff",
+   "subject": "Improved fix for open redirect allow list bypass",
+   "check": "removed-fix",
+   "path": "lib/response.js",
+   "line": 908,
+   "cited": "a003cfa",
+   "verdict": "useful",
+   "reason": "--github replay: the improved open-redirect fix changes String(url) from fix #5554"
+  },
+  {
+   "sha": "0b746953c",
+   "subject": "Improved fix for open redirect allow list bypass",
+   "check": "removed-fix",
+   "path": "lib/response.js",
+   "line": 908,
+   "cited": "a003cfa",
+   "verdict": "useful",
+   "reason": "--github replay: the improved open-redirect fix changes String(url) from fix #5554 (same change, other branch)"
   }
  ]
 }

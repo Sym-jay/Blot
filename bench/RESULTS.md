@@ -307,6 +307,24 @@ python bench/regressions.py run --repo <clone> --file bench/regressions/<owner>-
 python bench/regressions.py report bench/regressions/*.json
 ```
 
+### `--github` on both measures (2026-11-27)
+
+Re-run on today's code (after #45) for the four GitHub-tracked repos, with issue and PR labels
+(`blot bench --replay 500 --github`, `regressions.py run --github`). Django is unchanged, since its
+GitHub Issues are off.
+
+| | Without `--github` | With `--github` |
+|---|---|---|
+| Precision, all five | 69/124 (55.6%) | 78/143 (54.5%): +9 useful, +10 noise |
+| Real regressions warned on target | 11/71 | 12/71 |
+
+Labels mostly *upgrade* commits (194 upgraded, 4 demoted), so they widen coverage at about the same
+precision. The one regression gained is React `553440bd1`: the warning lands on the hunk the later
+fix touched, citing `9d67847` "[Bugfix] Dropped updates inside a suspended tree". That fix is
+plain from its subject, but without labels Blot misses it because it reads `[Bugfix]` as a project
+tag like `[DevTools]`, an offline classification gap worth measuring on its own. `--github` stays an
+opt-in, not a default. The 6 new replay warnings are labelled (reasons prefixed "--github replay").
+
 ## Reproduce
 
 ```bash
