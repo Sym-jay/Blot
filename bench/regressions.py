@@ -288,7 +288,9 @@ def fix_proximity(finding: dict, culprit_hunks: dict, touched: set[tuple[str, in
     return "fix-touched-file" if in_file else "other"
 
 
-def run(data: dict, config: Config, progress=None) -> dict:
+def run(data: dict, config: Config, progress=None, github: bool = False) -> dict:
+    """With `github`, commit facts also use issue/PR labels, as after `blot index --github`
+    (labels are read as they are today, as in `blot bench --replay --github`)."""
     repo = data["repo"]
     head = run_git(repo, "rev-parse", "HEAD").strip()
     if head != data["head"]:
@@ -297,6 +299,12 @@ def run(data: dict, config: Config, progress=None) -> dict:
     try:
         build_index(repo, full=True, config=config, db_path=os.path.join(tmp, "full.db"))
         full = Store.open(repo, os.path.join(tmp, "full.db"))
+        if github:
+            from blot.github import enrich
+
+            got = enrich(repo, full)
+            data["github"] = got.status if got.status != "ok" else (
+                f"{got.fetched} issues/PRs fetched, {got.upgraded} commits upgraded, {got.demoted} demoted")
         history = [(info.sha, paths) for info, _, paths in _read_history(repo, head)]
         checks = all_checks(config)
         for i, pair in enumerate(data["pairs"], 1):
@@ -379,6 +387,7 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("run")
     p.add_argument("--repo", required=True)
     p.add_argument("--file", required=True)
+    p.add_argument("--github", action="store_true", help="also use issue/PR labels (needs the gh CLI)")
     p = sub.add_parser("report")
     p.add_argument("files", nargs="+")
     args = parser.parse_args(argv)
@@ -395,7 +404,9 @@ def main(argv: list[str] | None = None) -> int:
             data = json.load(f)
         data["repo"] = args.repo
         data = run(data, load_config(args.repo),
-                   progress=lambda i, n: print(f"replayed {i}/{n}", file=sys.stderr))
+                   progress=lambda i, n: print(f"replayed {i}/{n}", file=sys.stderr), github=args.github)
+        if data.get("github"):
+            print(f"github: {data['github']}")
         _save(args.file, data)
         print(f"{sum(bool(p['findings']) for p in data['pairs'])}/{len(data['pairs'])} culprits warned")
     else:
