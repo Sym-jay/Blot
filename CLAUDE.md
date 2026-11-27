@@ -56,11 +56,12 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
 - Writing code through bash heredocs mangles `\b`, `\n`, `\s`: use the Edit tool for regexes/strings.
 - `gh api` paths: no leading slash (Git Bash rewrites it).
 
-## State (2026-11-21)
-- Released 0.7.1: checks, `why`, `map`, `--github`, agent guard (`blot guard` / `install-agent-hook`),
+## State (2026-11-27)
+- Released 0.7.2: checks, `why`, `map`, `--github`, agent guard (`blot guard` / `install-agent-hook`),
   MCP server (`blot mcp` / `install-mcp`, tools `explain_lines` and `load_bearing_lines`), bench/replay
-  with labels, parallel indexing, pre-commit framework (`rev: v0.7.1`), GitHub Action (`@v0.7.1`).
-  0.7.1 adds the docstring rule (#40) and the structural `KeptLines` matcher (#45).
+  with labels, parallel indexing, pre-commit framework (`rev: v0.7.2`), GitHub Action (`@v0.7.2`).
+  0.7.1 added the docstring rule (#40) and the structural `KeptLines` matcher (#45); 0.7.2 adds the
+  explicit bug-fix marker rule (#56).
 - Live-tested in Claude Code: the guard (2026-11-06: the agent cited fix 8efea0c it was undoing) and MCP
   (2026-11-14: an agent called `load_bearing_lines` on its own and answered correctly).
   Throwaway test folder: `Documents\flask-guard-test` (guard hook + `.mcp.json`).
