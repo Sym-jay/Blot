@@ -44,6 +44,12 @@ def commit(subject, body="", files=1, added=5, removed=5, renames=0):
         ("[DevTools] upgrade to Manifest V3 (#25145)", "fixes #24522", 1),
         ("Change Flask.__init__ to accept two new keyword arguments (#1560)", "fixes #1559", 1),
         ("[Fizz] Fix crash when capturing the callsite of a stalled use()", "", 2),
+        # an explicit bug-fix marker, even when the description starts like a feature
+        ("[Bugfix] Dropped updates inside a suspended tree (#18384)", "", 2),
+        ("Bugfix: Dropped updates when a tree suspends", "", 2),
+        ("[Fix] Remove the stale listener on unmount", "", 2),
+        ("[DevTools] Dropped support for React 15", "", 0),  # a project tag is not a marker
+        ("[Bugfix] Fix typo in docs", "", 1),  # routine still wins
     ],
 )
 def test_fix_severity(subject, body, expected):

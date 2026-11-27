@@ -26,7 +26,7 @@
    "fix_files": [
     "packages/react-server/src/ReactFizzServer.js"
    ],
-   "ms": 2676,
+   "ms": 3290,
    "findings": [],
    "removed_origins": [
     {
@@ -67,7 +67,7 @@
    "fix_files": [
     "compiler/crates/react_compiler_lowering/src/build_hir.rs"
    ],
-   "ms": 74,
+   "ms": 87,
    "findings": [],
    "removed_origins": [
     {
@@ -103,7 +103,7 @@
     "packages/react-server-dom-unbundled/src/server/ReactFlightDOMServerNode.js",
     "packages/react-server-dom-webpack/src/server/ReactFlightDOMServerNode.js"
    ],
-   "ms": 476,
+   "ms": 541,
    "findings": [],
    "removed_origins": [
     {
@@ -252,7 +252,7 @@
    "fix_files": [
     "packages/react-devtools-shared/src/devtools/views/SuspenseTab/SuspenseTab.js"
    ],
-   "ms": 2,
+   "ms": 5,
    "findings": [],
    "removed_origins": [],
    "bug": false,
@@ -272,7 +272,7 @@
     "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
     "packages/shared/forks/ReactFeatureFlags.www.js"
    ],
-   "ms": 217,
+   "ms": 598,
    "findings": [],
    "removed_origins": [
     {
@@ -324,7 +324,7 @@
    "fix_files": [
     "packages/react-refresh/src/ReactFreshRuntime.js"
    ],
-   "ms": 637,
+   "ms": 1388,
    "findings": [],
    "removed_origins": [
     {
@@ -367,7 +367,7 @@
     "package.json",
     "scripts/react-compiler/build-compiler.sh"
    ],
-   "ms": 73,
+   "ms": 158,
    "findings": [],
    "removed_origins": [
     {
@@ -405,7 +405,7 @@
     "packages/shared/forks/ReactFeatureFlags.test-renderer.www.js",
     "packages/shared/forks/ReactFeatureFlags.www.js"
    ],
-   "ms": 642,
+   "ms": 1659,
    "findings": [],
    "removed_origins": [
     {
@@ -529,7 +529,7 @@
     "compiler/packages/eslint-plugin-react-compiler/rollup.config.js",
     "compiler/packages/eslint-plugin-react-compiler/src/rules/ReactCompilerRule.ts"
    ],
-   "ms": 380,
+   "ms": 838,
    "findings": [],
    "removed_origins": [
     {
@@ -583,8 +583,18 @@
     "packages/react-reconciler/src/ReactFiberRootScheduler.js",
     "packages/react-reconciler/src/ReactFiberWorkLoop.js"
    ],
-   "ms": 472,
-   "findings": [],
+   "ms": 873,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "line": 2158,
+     "evidence": [
+      "ec652f4 \"Bugfix: Expired partial tree infinite loops (#17949)\" (2020-03-03, fixes #17949, #17926)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    }
+   ],
    "removed_origins": [
     {
      "path": "packages/react-reconciler/src/ReactFiberLane.js",
@@ -670,13 +680,13 @@
      "count": 1,
      "origin": "ec652f4daf",
      "subject": "Bugfix: Expired partial tree infinite loops (#17949)",
-     "severity": 1,
+     "severity": 2,
      "refactor": false
     }
    ],
    "bug": true,
-   "verdict": "miss-outside",
-   "note": "re-land reverted for 'additional bugs internally'; the changed lines come from the original land, its revert and features"
+   "verdict": "hit-elsewhere",
+   "note": "with the [Bugfix] marker rule: warns on code from fix #17949 (ec652f4, 'Bugfix: ...'), but the revert names no bug location ('additional bugs internally')"
   },
   {
    "culprit": "0f1856c49f",
@@ -692,7 +702,7 @@
     "packages/react-reconciler/src/ReactFiberRootScheduler.js",
     "packages/react-reconciler/src/ReactFiberWorkLoop.js"
    ],
-   "ms": 688,
+   "ms": 1404,
    "findings": [
     {
      "check": "removed-fix",
@@ -700,6 +710,15 @@
      "line": 2092,
      "evidence": [
       "fc80111 \"Detect crashes caused by Async Client Components (#27019)\" (2023-06-29, fixes #27019)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    },
+    {
+     "check": "removed-fix",
+     "path": "packages/react-reconciler/src/ReactFiberWorkLoop.js",
+     "line": 2156,
+     "evidence": [
+      "ec652f4 \"Bugfix: Expired partial tree infinite loops (#17949)\" (2020-03-03, fixes #17949, #17926)"
      ],
      "near_fix": "fix-touched-hunk"
     }
@@ -833,7 +852,7 @@
      "count": 1,
      "origin": "ec652f4daf",
      "subject": "Bugfix: Expired partial tree infinite loops (#17949)",
-     "severity": 1,
+     "severity": 2,
      "refactor": false
     },
     {
@@ -863,7 +882,7 @@
    "fix_files": [
     "compiler/packages/eslint-plugin-react-compiler/src/rules/ReactCompilerRule.ts"
    ],
-   "ms": 210,
+   "ms": 495,
    "findings": [],
    "removed_origins": [
     {
@@ -905,7 +924,7 @@
     "packages/react-client/src/ReactFlightClient.js",
     "packages/react-server/src/ReactFlightServer.js"
    ],
-   "ms": 176,
+   "ms": 369,
    "findings": [],
    "removed_origins": [
     {
@@ -960,7 +979,7 @@
     "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
     "packages/shared/forks/ReactFeatureFlags.www.js"
    ],
-   "ms": 236,
+   "ms": 496,
    "findings": [],
    "removed_origins": [
     {
@@ -1013,7 +1032,7 @@
     "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
     "packages/shared/forks/ReactFeatureFlags.www.js"
    ],
-   "ms": 89,
+   "ms": 210,
    "findings": [],
    "removed_origins": [
     {
@@ -1056,7 +1075,7 @@
     "packages/react-reconciler/src/ReactFiberClassComponent.js",
     "packages/react/src/ReactBaseClasses.js"
    ],
-   "ms": 353,
+   "ms": 791,
    "findings": [],
    "removed_origins": [
     {
@@ -1121,7 +1140,7 @@
    "fix_files": [
     "packages/react-dom-bindings/src/shared/isUnitlessNumber.js"
    ],
-   "ms": 1,
+   "ms": 2,
    "findings": [],
    "removed_origins": [],
    "bug": false,
@@ -1140,7 +1159,7 @@
     "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
     "packages/shared/forks/ReactFeatureFlags.www.js"
    ],
-   "ms": 90,
+   "ms": 241,
    "findings": [],
    "removed_origins": [
     {
@@ -1183,7 +1202,7 @@
     "packages/react-reconciler/src/ReactFiberWorkLoop.js",
     "scripts/jest/matchers/toWarnDev.js"
    ],
-   "ms": 535,
+   "ms": 1148,
    "findings": [],
    "removed_origins": [
     {
@@ -1257,7 +1276,7 @@
     "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
     "packages/shared/forks/ReactFeatureFlags.www.js"
    ],
-   "ms": 854,
+   "ms": 2036,
    "findings": [],
    "removed_origins": [
     {
@@ -1400,7 +1419,7 @@
     "dangerfile.js",
     "scripts/rollup/bundles.js"
    ],
-   "ms": 242,
+   "ms": 306,
    "findings": [],
    "removed_origins": [
     {
@@ -1480,7 +1499,7 @@
     "packages/react-reconciler/src/ReactFiberWorkLoop.new.js",
     "packages/react-reconciler/src/ReactFiberWorkLoop.old.js"
    ],
-   "ms": 711,
+   "ms": 1594,
    "findings": [],
    "removed_origins": [
     {
@@ -1810,7 +1829,7 @@
     "packages/react-reconciler/src/ReactFiberUnwindWork.old.js",
     "packages/react-reconciler/src/ReactInternalTypes.js"
    ],
-   "ms": 949,
+   "ms": 2322,
    "findings": [],
    "removed_origins": [
     {
@@ -2125,7 +2144,7 @@
     "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
     "packages/shared/forks/ReactFeatureFlags.www.js"
    ],
-   "ms": 651,
+   "ms": 1626,
    "findings": [],
    "removed_origins": [
     {
@@ -2264,7 +2283,7 @@
    "kind": "revert",
    "ref": "f6c130f6145dbae5436625560f520957b5e27859",
    "fix_files": [],
-   "ms": 385,
+   "ms": 1034,
    "findings": [],
    "removed_origins": [
     {
@@ -2374,7 +2393,7 @@
    "fix_files": [
     "packages/react/package.json"
    ],
-   "ms": 44,
+   "ms": 111,
    "findings": [],
    "removed_origins": [],
    "bug": true,
@@ -2399,7 +2418,7 @@
     "packages/react-devtools-shared/src/devtools/views/DevTools.js",
     "packages/react-devtools-shared/src/devtools/views/DuplicateInstallationDialog.js"
    ],
-   "ms": 1,
+   "ms": 2,
    "findings": [],
    "removed_origins": [],
    "bug": true,
@@ -2424,7 +2443,7 @@
     "packages/react-devtools-shared/src/devtools/views/DevTools.js",
     "packages/react-devtools-shared/src/devtools/views/DuplicateInstallationDialog.js"
    ],
-   "ms": 1355,
+   "ms": 3350,
    "findings": [],
    "removed_origins": [
     {
@@ -2487,7 +2506,7 @@
     "packages/react-devtools-shared/src/devtools/views/DevTools.js",
     "packages/react-devtools-shared/src/devtools/views/DuplicateInstallationDialog.js"
    ],
-   "ms": 1617,
+   "ms": 3889,
    "findings": [],
    "removed_origins": [
     {
@@ -2552,7 +2571,7 @@
     "packages/react-native-renderer/src/ReactFabricHostConfig.js",
     "packages/react-native-renderer/src/ReactNativeHostConfig.js"
    ],
-   "ms": 1765,
+   "ms": 4361,
    "findings": [
     {
      "check": "forgot-related-file",
@@ -2623,7 +2642,7 @@
    "fix_files": [
     "packages/shared/forks/ReactFeatureFlags.www.js"
    ],
-   "ms": 48,
+   "ms": 123,
    "findings": [],
    "removed_origins": [
     {
@@ -2653,7 +2672,7 @@
    "fix_files": [
     "packages/react-dom/src/server/ReactDOMServerFormatConfig.js"
    ],
-   "ms": 3,
+   "ms": 7,
    "findings": [],
    "removed_origins": [],
    "bug": true,
@@ -2672,7 +2691,7 @@
     "packages/react-reconciler/src/ReactFiberCommitWork.new.js",
     "packages/react-reconciler/src/ReactFiberCommitWork.old.js"
    ],
-   "ms": 141,
+   "ms": 439,
    "findings": [],
    "removed_origins": [
     {
@@ -2721,7 +2740,7 @@
    "fix_files": [
     "packages/eslint-plugin-react-hooks/src/ExhaustiveDeps.js"
    ],
-   "ms": 93,
+   "ms": 252,
    "findings": [],
    "removed_origins": [
     {
@@ -2789,7 +2808,7 @@
     "packages/react/src/jsx/ReactJSXElementValidator.js",
     "packages/shared/isArray.js"
    ],
-   "ms": 2291,
+   "ms": 5150,
    "findings": [],
    "removed_origins": [
     {
@@ -3227,8 +3246,36 @@
     "packages/react-reconciler/src/ReactTypeOfMode.js",
     "packages/shared/ReactFeatureFlags.js"
    ],
-   "ms": 2538,
-   "findings": [],
+   "ms": 5690,
+   "findings": [
+    {
+     "check": "removed-fix",
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.new.js",
+     "line": 2233,
+     "evidence": [
+      "6ba25b9 \"Bugfix: Legacy Mode + DevTools \"force fallback\" (#19164)\" (2020-06-19, fixes #19164, #19108)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    },
+    {
+     "check": "removed-fix",
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+     "line": 2233,
+     "evidence": [
+      "6ba25b9 \"Bugfix: Legacy Mode + DevTools \"force fallback\" (#19164)\" (2020-06-19, fixes #19164, #19108)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    },
+    {
+     "check": "removed-fix",
+     "path": "packages/react-reconciler/src/ReactFiberBeginWork.old.js",
+     "line": 2355,
+     "evidence": [
+      "9d67847 \"[Bugfix] Dropped updates inside a suspended tree (#18384)\" (2020-03-26, fixes #18384)"
+     ],
+     "near_fix": "fix-touched-hunk"
+    }
+   ],
    "removed_origins": [
     {
      "path": "packages/react-dom/index.classic.fb.js",
@@ -3586,7 +3633,7 @@
      "count": 1,
      "origin": "6ba25b96df",
      "subject": "Bugfix: Legacy Mode + DevTools \"force fallback\" (#19164)",
-     "severity": 1,
+     "severity": 2,
      "refactor": false
     },
     {
@@ -3623,7 +3670,7 @@
      "count": 1,
      "origin": "6ba25b96df",
      "subject": "Bugfix: Legacy Mode + DevTools \"force fallback\" (#19164)",
-     "severity": 1,
+     "severity": 2,
      "refactor": false
     },
     {
@@ -3634,7 +3681,7 @@
      "count": 1,
      "origin": "9d67847f7b",
      "subject": "[Bugfix] Dropped updates inside a suspended tree (#18384)",
-     "severity": 1,
+     "severity": 2,
      "refactor": false
     },
     {
@@ -3909,8 +3956,8 @@
     }
    ],
    "bug": true,
-   "verdict": "miss-outside",
-   "note": "removed an API still 'used in one place in www'; the removed lines came from export features"
+   "verdict": "hit-on-target",
+   "note": "with the [Bugfix] marker rule: warns on removing code from fix #19164 (6ba25b9, 'Bugfix: ...'); the bug was the removal itself (API still used in www). Before the rule these lines' fixes were misread as features"
   },
   {
    "culprit": "a99bf5c5f4",
@@ -3951,7 +3998,7 @@
     "packages/react-devtools-extensions/firefox/manifest.json",
     "packages/react-devtools-shared/src/hook.js"
    ],
-   "ms": 1532,
+   "ms": 3957,
    "findings": [],
    "removed_origins": [
     {
@@ -4258,7 +4305,7 @@
     "packages/react-devtools-extensions/firefox/manifest.json",
     "packages/react-devtools-shared/src/hook.js"
    ],
-   "ms": 1960,
+   "ms": 4754,
    "findings": [],
    "removed_origins": [
     {
@@ -4538,7 +4585,7 @@
     "packages/react-native-renderer/src/ReactFabricHostConfig.js",
     "packages/react-native-renderer/src/ReactNativeHostConfig.js"
    ],
-   "ms": 295,
+   "ms": 678,
    "findings": [],
    "removed_origins": [
     {
@@ -4610,7 +4657,7 @@
     "packages/shared/forks/ReactFeatureFlags.www-dynamic.js",
     "packages/shared/forks/ReactFeatureFlags.www.js"
    ],
-   "ms": 479,
+   "ms": 1229,
    "findings": [],
    "removed_origins": [
     {
