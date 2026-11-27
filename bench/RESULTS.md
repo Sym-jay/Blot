@@ -325,6 +325,30 @@ plain from its subject, but without labels Blot misses it because it reads `[Bug
 tag like `[DevTools]`, an offline classification gap worth measuring on its own. `--github` stays an
 opt-in, not a default. The 6 new replay warnings are labelled (reasons prefixed "--github replay").
 
+### Kept: explicit bug-fix markers (2026-11-27)
+
+The lead above, measured on both sides. `[Bugfix] Dropped updates …` was rated a feature: the `[Tag]`
+skip added for `[DevTools] upgrade …` read `[Bugfix]` as a project tag, then "Dropped" as a feature
+verb. Now an explicit marker at the start (`[Bugfix]`, `[Bug fix]`, `[Bug]`, `[Hotfix]`, `[Fix]`,
+`Bugfix:`, `Hotfix:`) makes a commit a fix unless it is routine (docs, tests). About 60 commits in the
+five repos carry one, almost all in React; Django has none, so its results can't change and it wasn't
+re-run.
+
+| | Before | With the rule |
+|---|---|---|
+| Real regressions warned on target | 11/71 | **12/71 (17%)** |
+| Within Blot's model | 11/25 | 12/27 (44%) |
+| Precision | 69/124 (55.6%) | 69/125 (55.2%) |
+
+Three React regressions changed. Two were "outside the model" only because their removed lines came
+from `Bugfix:` commits that Blot hadn't recognised: `553440bd1` (removing blocking mode) is now
+warned on target, since the bug was the removal itself and Blot flags removing code from fix #19164;
+`6c4bbc783` now warns, but its revert names no bug location, so it counts as elsewhere, the convention
+#53 set for such reverts. `0f1856c49` gained a second warning and stays elsewhere. The one new replay
+warning is noise (an assignment chain reflowed). Precision slips by that one warning, but the rule is
+narrow and the recall gain is real, so it is kept: the first rule judged on recall as well as
+precision.
+
 ## Reproduce
 
 ```bash

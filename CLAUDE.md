@@ -77,8 +77,10 @@ python -m venv .venv && .venv/Scripts/python -m pip install -e ".[dev]"
   target), others ≤ 0.62.
   `forgot-related-file` has 0 useful warnings in 45 labelled; candidate to become opt-in.
 - `--github` re-measured (2026-11-27, after #45): precision 55.6% → 54.5% (+9 useful, +10 noise), recall
-  11 → 12 of 71 on target. Opt-in, not default. `regressions.py run --github` exists. Lead from it:
-  `[Bugfix] …` subjects are misread as a project tag (React `9d67847`), an offline classifier gap.
+  11 → 12 of 71 on target. Opt-in, not default. `regressions.py run --github` exists.
+- Kept (2026-11-27): explicit bug-fix markers (`[Bugfix]`, `Bugfix:`, …) make a commit a fix
+  (`_FIX_MARKER` in classify.py). Recall 11 → 12 of 71 on target (12/27 within model), precision
+  69/124 → 69/125. Rules are now judged on recall (`bench/regressions/`) as well as precision.
 - Tried and dropped (2026-11-01): "fix word + PR number" as an offline fix rule: +85 warnings at 22%
   useful. Don't retry it without a narrower signal (see bench/RESULTS.md).
 - Known recall limit: tracing only passes commits classified as refactors, so a big non-refactor rewrite

@@ -55,6 +55,9 @@ _FEATURE_START = re.compile(
     r"new|allow\w*|enabl\w*|expos\w*|deprecat\w*|remov\w*|drop\w*|bump\w*|releas\w*|merg\w*)\b",
     re.IGNORECASE,
 )
+# An explicit bug-fix marker: "[Bugfix] Dropped updates ..." (React), "Hotfix: ...". Without this the
+# `[Tag]` skip in _FEATURE_START reads "[Bugfix] Dropped ..." as a feature ("Dropped" = drop).
+_FIX_MARKER = re.compile(r"^\s*(?:\[\s*(?:bug\s?fix|bug|hot\s?fix|fix)\s*\]|(?:bug\s?fix|hot\s?fix)\s*:)", re.IGNORECASE)
 _STARTS_WITH_FIX = re.compile(r"^\s*(?:\[\w+\]\s*)?(?:fix(?:e[sd]|ing)?|bug(?:fix)?|hotfix)\b", re.IGNORECASE)
 _REFACTOR = re.compile(
     r"\b(?:move[sd]?|moving|split|splits|splitting|rename[sd]?|renaming|reorganiz\w*|clean(?:s|ed|ing)? up|cleanup|"
@@ -96,7 +99,7 @@ def fix_severity(commit: CommitInfo, issue_labels: list[str] | None = None) -> i
     fixish = bool(_FIX_WORD.search(subject) or _FIX_ISSUE.search(text))
     if _ROUTINE.search(subject):  # docs/tests/style work, even when it mentions a defect word
         return 1 if fixish else 0
-    if _DEFECT.search(subject):
+    if _DEFECT.search(subject) or _FIX_MARKER.search(subject):
         return 2
     # features and code moves that close an issue are not bug fixes ("Split up testsuite... fixes #246")
     if _FEATURE_START.search(subject) or (_REFACTOR.search(subject) and not _STARTS_WITH_FIX.search(subject)):
