@@ -61,6 +61,16 @@
    "cited": "e08bcf9",
    "verdict": "noise",
    "reason": "trace-past-unchanged experiment (2026-11-18): type-hint modernization of the `self.session` annotation; behaviour unchanged"
+  },
+  {
+   "sha": "c17f37939",
+   "subject": "request context tracks session access",
+   "check": "removed-fix",
+   "path": "src/flask/ctx.py",
+   "line": 354,
+   "cited": "e08bcf9",
+   "verdict": "useful",
+   "reason": "copy() switches from the session property to its backing field to avoid access tracking while preserving the current-session propagation from fix #2935"
   }
  ]
 }
